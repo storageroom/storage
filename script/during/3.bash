@@ -1,0 +1,6 @@
+echo "micro /etc/locale.gen"
+echo "uncomment en_US UTF-8"
+echo "locale-gen"
+echo "LANG=en-US.UTF-8"
+echo "micro /etc/locale.conf"
+echo "micro /etc/hostname"

@@ -1,0 +1,9 @@
+gamehub
+google-chrome
+goverlay-git
+latte-dock-git
+mangohud
+minecraft-launcher
+pamac-aur
+whatsapp-nativefier
+yay

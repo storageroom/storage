@@ -1,0 +1,12 @@
+git 
+mc 
+micro 
+neofetch 
+python 
+python-pip 
+python-wheel 
+wget 
+xclip
+xsel 
+zsh 
+zsh-theme-powerlevel10k-git
