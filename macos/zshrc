@@ -1,16 +1,5 @@
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
 
-source ~/powerlevel10k/powerlevel10k.zsh-theme
-
-eval $(thefuck --alias)
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+eval "$(starship init zsh)"
 
 # Super
 alias upgrade="brew update;brew outdated;brew upgrade"
@@ -47,7 +36,7 @@ alias fc='sudo chmod -R 777'
 alias pipupgrade="s -H pip_upgrade_outdated -3 -p"
 alias checkrain="sudo /private/etc/racoon/9ec5be08a8790d5d9a080166dfccc82da0997ce5b487df69273ca6e2643f164fa3d1824800f4df2a07d5a2082178d30592663ad5e4548c89a72c2b12b47d5fda"
 
-alias iphone="ssh mobile@joshys-iphone"
+
 
 # Autocorrect
 alias python='python3'
@@ -64,10 +53,10 @@ alias ubuntuup="vagrant up 742b363;vagrant ssh 742b363"
 alias ubuntu=";vagrant ssh 742b363"
 alias ubuntudown="vagrant halt 742b363"
 
-# ASCII Art or sth
+# ASCII Art fun
 alias shrek="/Users/joshy/shrek.txt"
-alias xx="/Users/joshy/LMAO.txt"
-alias x="/Users/joshy/HAHAHAHAHAH.txt"
+alias nothentai="/Users/joshy/LMAO.txt"
+alias hentai="/Users/joshy/HAHAHAHAHAH.txt"
 
 # ZSH PLUGINS
 source /usr/local/share/copy-pasta/copy-pasta.plugin.zsh
