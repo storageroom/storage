@@ -82,10 +82,13 @@ cask "zoom"
 cask "xcodes"
 cask "fliqlo"
 cask "handbrake"
+cask "hiddenbar"
 
 mas "Keynote", id: 409183694
 mas "Pages", id: 409201541
 mas "Tab Suspender", id: 1495356253
-mas "Xcode", id: 497799835
 mas "GoodNotes", id: 1444383602
 mas "Paste", id: 967805235
+mas "Canary Mail", id: 1236045954
+
+mas "Xcode", id: 497799835
