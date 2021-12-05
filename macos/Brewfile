@@ -10,7 +10,7 @@ tap "homebrew/cask-drivers"
 
 brew "nghttp2"
 brew "python@3.9"
-brew "node", link: false
+brew "node"
 brew "bcrypt"
 brew "composer"
 brew "coreutils"
@@ -51,7 +51,7 @@ brew "starship"
 brew "wget"
 brew "xclip"
 brew "youtube-dl"
-brew "sass/sass/sass", link: false
+brew "sass/sass/sass"
 
 cask "adobe-creative-cloud"
 cask "audacity"
@@ -71,7 +71,6 @@ cask "whatsapp"
 cask "alfred"
 cask "appcleaner"
 cask "coconutbattery"
-cask "github"
 cask "iina"
 cask "logitech-options"
 cask "krisp"
@@ -83,6 +82,7 @@ cask "xcodes"
 cask "fliqlo"
 cask "handbrake"
 cask "hiddenbar"
+cask "intellij-idea"
 
 mas "Keynote", id: 409183694
 mas "Pages", id: 409201541
