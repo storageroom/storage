@@ -82,6 +82,7 @@ cask "xcodes"
 cask "fliqlo"
 cask "handbrake"
 cask "hiddenbar"
+cask "pycharm"
 cask "intellij-idea"
 
 mas "Keynote", id: 409183694
