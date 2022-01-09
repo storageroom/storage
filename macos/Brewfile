@@ -88,6 +88,7 @@ cask "pycharm"
 cask "intellij-idea"
 
 # appstore stuff
+mas "Step Two", id: 1448916662
 mas "Keynote", id: 409183694
 mas "Pages", id: 409201541
 mas "Tab Suspender", id: 1495356253
