@@ -3,30 +3,137 @@
 # install apps (TBC)
 #echo "Please select the applications you would like to install."
 
-# install zsh plugins, zshrc and starship.toml
+# check os
+echo "what operating system are on on?"
+echo "note that linux refers to a debian derivative"
+echo "arch, gentoo, red hat and other non debian derivatives"
+echo "WILL NOT WORK"
+select os in "Linux" "Macos"; do
+  case $os in
+   Linux ) os=Linux; break;;
+   Macos ) os=Macos; break;;
+ esac
+done
 
+# offer to install homebrew if on mac
+if [ "$os" = Macos ] ; then
+  echo "would you like to install homebrew?"
+  select yn in "Yes" "No"; do
+  case $yn in
+   Yes ) installhomebrew=true; break;;
+    No ) installhomebrew=false; break;;
+  esac
+  done
+else
+fi
+
+if [ "$installhomebrew" = true ] ; then
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+homebrewinstalled=true
+else
+homebrewinstalled=false
+fi
+
+# Offer to install Brewfile
+if [ "$homebrewinstalled" = true ] ; then
+  echo "Do you want to install from Brewfile?\nnote that the brewfile is mine lol\nyouhavebeenwarned\n\n"
+  select yn in "Yes" "No"; do
+  case $yn in
+   Yes ) brewfileinstall=true; break;;
+    No ) brewfileinstall=false; break;;
+  esac
+  done
+else
+brewfileinstall=false
+fi
+
+if [ "$brewfileinstall" = true ] ; then
+curl https://raw.githubusercontent.com/Joseos123/shell/main/macos/Brewfile --output Brewfile
+brew bundle
+else
+fi
+
+# install zsh plugins, zshrc and starship.toml
 if which curl >/dev/null; then
 else
 echo "\n\ncurl is not installed on this system and is needed for later steps."
 echo "Do you wish to install curl now?\n\n"
 select yn in "Yes" "No"; do
   case $yn in
-   Yes ) sudo apt update;sudo apt install curl -y; break;;
-    No ) break;;
+   Yes ) installcurl=true; break;;
+    No ) installcurl=false; break;;
  esac
 done
 fi
 
+if [ "$installcurl" = true ] ; then
+  if [ "$os" = Linux ] ; then
+    sudo apt update;sudo apt install curl -y
+  else
+  fi
+
+  if [ "$os" = Macos ] ; then
+    echo "why tf do u not have curl bro ur on a MAC\n\n"
+  else
+  fi
+else
+fi
+
 if which git >/dev/null; then
+gitinstalled=true
 else
 echo "git is not installed on this system and we reccomend you install it."
 echo "Do you wish to install git now?\n\n"
 select yn in "Yes" "No"; do
   case $yn in
-   Yes ) sudo apt update;sudo apt install git -y; break;;
-    No ) break;;
+   Yes ) installgit=true; break;;
+    No ) installgit=false; break;;
  esac
 done
+fi
+
+SMH () { 
+if [ "$os" = Linux ] ; then
+      sudo apt update;sudo apt install git -y
+    else
+    fi
+
+if [ "$os" = Macos ] ; then
+      echo "would you like to install macos cli tools?\n\n"
+      select yn in "Yes" "No"; do
+      case $yn in
+          Yes ) xcode-select --install; break;;
+          No ) isstupid=true;break;;
+        esac
+      done
+      
+        if [ "$isstupid" = true ] ; then
+          if [ "$homebrewinstalled" = true ] ; then
+          dumbbruh=true
+          else
+          echo "proceeding without installing git"
+          gitinstalled=false
+          fi
+        else
+        fi
+
+        if [ "$dumbbruh" = true ] ; then
+          echo "would you then perhaps to install git via brew?"
+          select yn in "Yes" "No"; do
+          case $yn in
+              Yes ) brew install git; break;;
+              No ) break;;
+            esac
+          done
+        else
+        fi
+    else
+    fi
+}
+
+if [ "$installgit" = true ] ; then
+SMH
+else
 fi
 
 echo "\n\ninstall zsh-sudo?\n\n"
@@ -73,15 +180,15 @@ if [ "$fsyn" = true ] ; then
     else
         sudo mkdir /usr/share/fast-syntax-highlighting
         
-        if which git >/dev/null; then
+        if [ "$gitinstalled" = true ] ; then
         git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git /usr/share/fast-syntax-highlighting
         else
         echo "git is not installed on this system and required to install this file.\n\n"
         echo "Do you wish to install git now?\n\n"
           select yn in "Yes" "No"; do
             case $yn in
-            Yes ) sudo apt update;sudo apt install git -y;git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git /usr/share/fast-syntax-highlighting; break;;
-            No ) echo "run:";echo "git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git /usr/share/fast-syntax-highlighting";echo "to manually install it instead\n\n";break;;
+            Yes ) SMH; break;;
+            No ) echo "run:";echo "\ngit clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git /usr/share/fast-syntax-highlighting";echo "to manually install it instead\n\n";break;;
           esac
         done
       fi
