@@ -181,6 +181,7 @@ if [ "$os" = Macos ] ; then
 
 if [ "$installgit" = true ] ; then
 SMH
+gitinstalled=true
 else
 fi
 
