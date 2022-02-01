@@ -96,7 +96,9 @@ fi
 
 # install zsh plugins, zshrc and starship.toml
 if which curl >/dev/null; then
+curlisinstalled=true
 else
+curlisinstalled=false
 echo "\n\ncurl is not installed on this system and is needed for later steps."
 echo "Do you wish to install curl now?\n\n"
 select yn in "Yes" "No"; do
@@ -107,19 +109,22 @@ select yn in "Yes" "No"; do
 done
 fi
 
-if [ "$installcurl" = true ] ; then
-  if [ "$os" = Linux ] ; then
-    sudo apt update;sudo apt install curl -y
-  else
-  fi
+if [ "$curlisinstalled" = false ] ; then
+  if [ "$installcurl" = true ] ; then
+    if [ "$os" = Linux ] ; then
+      sudo apt update;sudo apt install curl -y
+    else
+    fi
 
-  if [ "$os" = Macos ] ; then
-    echo "why tf do u not have curl bro ur on a MAC\n\n"
+    if [ "$os" = Macos ] ; then
+      echo "why tf do u not have curl bro ur on a MAC\n\n"
+    else
+    fi
   else
+    echo "curl is needed for install"
+    exit
   fi
 else
-echo "curl is needed for install"
-exit
 fi
 
 if which git >/dev/null; then
