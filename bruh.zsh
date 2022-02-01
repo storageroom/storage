@@ -1,13 +1,13 @@
-#!/usr/bin/zsh
+#!/usr/bin/bash
 
 # install apps (TBC)
-#echo "Please select the applications you would like to install."
+#printf "Please select the applications you would like to install."
 
 # check os
-echo "what operating system are on on?"
-echo "note that linux refers to a debian derivative"
-echo "arch, gentoo, red hat and other non debian derivatives"
-echo "WILL NOT WORK"
+printf "what operating system are on on?"
+printf "note that linux refers to a debian derivative"
+printf "arch, gentoo, red hat and other non debian derivatives"
+printf "WILL NOT WORK"
 select os in "Linux" "Macos"; do
   case $os in
    Linux ) os=Linux; break;;
@@ -17,7 +17,7 @@ done
 
 # offer to install homebrew if on mac
 if [ "$os" = Macos ] ; then
-  echo "would you like to install homebrew?"
+  printf "would you like to install homebrew?"
   select yn in "Yes" "No"; do
   case $yn in
    Yes ) installhomebrew=true; break;;
@@ -28,7 +28,7 @@ fi
 
 # if not on mac, offer to install standard packages
 if [ "$os" = Linux ] ; then
-  echo "would you like to install standard packages?"
+  printf "would you like to install standard packages?"
   select yn in "Yes" "No"; do
   case $yn in
    Yes ) aptinstallpackages=true; break;;
@@ -40,7 +40,7 @@ aptinstallpackages=false
 fi
 
 if [ "$aptinstallpackages" = true ] ; then
-  echo "would you like to install torrentbox/server packages or minimal?"
+  printf "would you like to install torrentbox/server packages or minimal?"
   select bruh in "Server" "Minimal"; do
   case $bruh in
    Server ) aptinstallwhatpackages=Server; break;;
@@ -53,7 +53,7 @@ if [ "$aptinstallwhatpackages" = Server ] ; then
     sudo apt update
     sudo apt dist-upgrade -y
     sudo apt upgrade -y
-    echo "deb [trusted=yes] https://deb.jesec.io/ devel main" | sudo tee /etc/apt/sources.list.d/jesec.list
+    printf "deb [trusted=yes] https://deb.jesec.io/ devel main" | sudo tee /etc/apt/sources.list.d/jesec.list
     apt update
     sudo apt install -y transmission-daemon zsh xsel xclip sshfs neofetch micro nano mc mediainfo cron coreutils python3 python3-pip python3-venv flood
     sudo systemctl stop transmission-daemon
@@ -74,7 +74,7 @@ fi
 
 # Offer to install Brewfile
 if [ "$homebrewinstalled" = true ] ; then
-  echo "Do you want to install from Brewfile?\nnote that the brewfile is mine lol\nyouhavebeenwarned\n\n"
+  printf "Do you want to install from Brewfile?\nnote that the brewfile is mine lol\nyouhavebeenwarned\n\n"
   select yn in "Yes" "No"; do
   case $yn in
    Yes ) brewfileinstall=true; break;;
@@ -95,8 +95,8 @@ if which curl >/dev/null; then
 curlisinstalled=true
 else
 curlisinstalled=false
-echo "\n\ncurl is not installed on this system and is needed for later steps."
-echo "Do you wish to install curl now?\n\n"
+printf "\n\ncurl is not installed on this system and is needed for later steps."
+printf "Do you wish to install curl now?\n\n"
 select yn in "Yes" "No"; do
   case $yn in
    Yes ) installcurl=true; break;;
@@ -112,10 +112,10 @@ if [ "$curlisinstalled" = false ] ; then
     fi
 
     if [ "$os" = Macos ] ; then
-      echo "why tf do u not have curl bro ur on a MAC\n\n"
+      printf "why tf do u not have curl bro ur on a MAC\n\n"
     fi
   else
-    echo "curl is needed for install"
+    printf "curl is needed for install"
     exit
   fi
 fi
@@ -123,8 +123,8 @@ fi
 if which git >/dev/null; then
 gitinstalled=true
 else
-echo "git is not installed on this system and we reccomend you install it."
-echo "Do you wish to install git now?\n\n"
+printf "git is not installed on this system and we reccomend you install it."
+printf "Do you wish to install git now?\n\n"
 select yn in "Yes" "No"; do
   case $yn in
    Yes ) installgit=true; break;;
@@ -139,7 +139,7 @@ if [ "$os" = Linux ] ; then
     fi
 
 if [ "$os" = Macos ] ; then
-      echo "would you like to install macos cli tools?\n\n"
+      printf "would you like to install macos cli tools?\n\n"
       select yn in "Yes" "No"; do
       case $yn in
           Yes ) xcode-select --install; break;;
@@ -151,13 +151,13 @@ if [ "$os" = Macos ] ; then
           if [ "$homebrewinstalled" = true ] ; then
           dumbbruh=true
           else
-          echo "proceeding without installing git"
+          printf "proceeding without installing git"
           gitinstalled=false
           fi
         fi
 
         if [ "$dumbbruh" = true ] ; then
-          echo "would you then perhaps to install git via brew?"
+          printf "would you then perhaps to install git via brew?"
           select yn in "Yes" "No"; do
           case $yn in
               Yes ) brew install git; break;;
@@ -173,7 +173,7 @@ SMH
 gitinstalled=true
 fi
 
-echo "\n\ninstall zsh-sudo?\n\n"
+printf "\n\ninstall zsh-sudo?\n\n"
   select yn in "Yes" "No"; do
     case $yn in
       Yes ) zsudo=true; break;;
@@ -181,7 +181,7 @@ echo "\n\ninstall zsh-sudo?\n\n"
     esac
   done
 
-echo "\n\ninstall fast-syntax-highlighting?\n\n"
+printf "\n\ninstall fast-syntax-highlighting?\n\n"
   select yn in "Yes" "No"; do
     case $yn in
       Yes ) fsyn=true; break;;
@@ -192,59 +192,57 @@ echo "\n\ninstall fast-syntax-highlighting?\n\n"
 if [ "$zsudo" = true ] ; then
     if [ -d "/usr/share/zsh-sudo" ] 
     then
-        echo "Directory zsh-sudo already exists, will not install zsh-sudo.\n\n" 
-        echo "run:"
-        echo "\ncurl https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh --output /usr/share/zsh-sudo/sudo.plugin.zsh\n"
-        echo "to manually install it instead\n\n"
+        printf "Directory zsh-sudo already exists, will not install zsh-sudo.\n\n" 
+        printf "run:"
+        printf "\ncurl https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh --output /usr/share/zsh-sudo/sudo.plugin.zsh\n"
+        printf "to manually install it instead\n\n"
     else
         sudo mkdir /usr/share/zsh-sudo
         sudo curl https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh --output /usr/share/zsh-sudo/sudo.plugin.zsh
     fi
 
-elif [ "$zsudo" = false ] ; then
 else 
-  echo "how did u break my script :/"
-  echo "\n\n"
+  printf "how did u break my script :/"
+  printf "\n\n"
 fi
 
 if [ "$fsyn" = true ] ; then
     if [ -d "/usr/share/fast-syntax-highlighting" ] 
     then
-        echo "Directory fast-syntax-highlighting already exists, will not install fast-syntax-highlighting.\n\n" 
-        echo "run:"
-        echo "git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git /usr/share/fast-syntax-highlighting"
-        echo "to manually install it instead\n\n"
+        printf "Directory fast-syntax-highlighting already exists, will not install fast-syntax-highlighting.\n\n" 
+        printf "run:"
+        printf "git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git /usr/share/fast-syntax-highlighting"
+        printf "to manually install it instead\n\n"
     else
         sudo mkdir /usr/share/fast-syntax-highlighting
         
         if [ "$gitinstalled" = true ] ; then
         sudo git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git /usr/share/fast-syntax-highlighting
         else
-        echo "git is not installed on this system and required to install this file.\n\n"
-        echo "Do you wish to install git now?\n\n"
+        printf "git is not installed on this system and required to install this file.\n\n"
+        printf "Do you wish to install git now?\n\n"
           select yn in "Yes" "No"; do
             case $yn in
             Yes ) SMH; break;;
-            No ) echo "run:";echo "\ngit clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git /usr/share/fast-syntax-highlighting";echo "to manually install it instead\n\n";break;;
+            No ) printf "run:";printf "\ngit clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git /usr/share/fast-syntax-highlighting";printf "to manually install it instead\n\n";break;;
           esac
         done
       fi
     fi
-elif [ "$fsyn" = false ] ; then
 else 
-  echo "how did u break my script :/"
-  echo "\n\n"
+  printf "how did u break my script :/"
+  printf "\n\n"
 fi
 
-echo "install zshrc. continue?\n\n"
+printf "install zshrc. continue?\n\n"
 select yn in "Yes" "No"; do
   case $yn in
     Yes ) curl https://raw.githubusercontent.com/Joseos123/shell/main/linux/zshrc --output ~/.zshrc; break;;
-    No ) echo "run:\n";echo "curl https://raw.githubusercontent.com/Joseos123/shell/main/linux/zshrc --output ~/.zshrc\n";echo "to manually install it instead\n\n";break;;
+    No ) printf "run:\n";printf "curl https://raw.githubusercontent.com/Joseos123/shell/main/linux/zshrc --output ~/.zshrc\n";printf "to manually install it instead\n\n";break;;
   esac
 done
 
-echo "install starship?/n/n"
+printf "install starship?/n/n"
   select yn in "Yes" "No"; do
     case $yn in
       Yes ) istar=true; break;;
@@ -258,17 +256,17 @@ if [ "$istar" = true ] ; then
 
 elif [ "$istar" = false ] ; then
   stari=false
-  echo "run:\n"
-  echo 'sh -c "$(curl -fsSL https://starship.rs/install.sh)"\n'
-  echo "to manually install it instead\n\n"
+  printf "run:\n"
+  echo "sh -c '$(curl -fsSL https://starship.rs/install.sh)'"
+  printf "\nto manually install it instead\n\n"
 
 else 
-  echo "how did u break my script :/"
-  echo "\n\n"
+  printf "how did u break my script :/"
+  printf "\n\n"
 fi
 
 if [ "$stari" = true ] ; then
-  echo "install starship config. continue?\n\n"
+  printf "install starship config. continue?\n\n"
     select yn in "Yes" "No"; do
       case $yn in
         Yes ) starc=true; break;;
@@ -280,7 +278,7 @@ else
 fi
 
 if [ "$starc" = true ] ; then
-    if [ -d "~/.config" ] 
+    if [ -d "$HOME/.config" ] 
     then
         curl https://raw.githubusercontent.com/Joseos123/shell/main/macos/starship.toml --output ~/.config/starship.toml
     else
@@ -289,7 +287,7 @@ if [ "$starc" = true ] ; then
     fi
 fi
 
-echo "are you on torrentbox?"
+printf "are you on torrentbox?"
 select yn in "Yes" "No"; do
   case $yn in
     Yes ) torrentbox=true; break;;
@@ -298,7 +296,7 @@ select yn in "Yes" "No"; do
 done
 
 if [ "$torrentbox" = true ] ; then
-    echo "\n\ndo you want the flexget config file?"
+    printf "\n\ndo you want the flexget config file?"
     select yn in "Yes" "No"; do
     case $yn in
       Yes ) flexgetfile=true; break;;
@@ -306,7 +304,7 @@ if [ "$torrentbox" = true ] ; then
     esac
     done
     
-    echo "\n\ndo you want the transmission config file?"
+    printf "\n\ndo you want the transmission config file?"
     select yn in "Yes" "No"; do
     case $yn in
       Yes ) transmissionfile=true; break;;
@@ -314,7 +312,7 @@ if [ "$torrentbox" = true ] ; then
     esac
      done
 
-    echo "\n\ndo you want the fstab file?"
+    printf "\n\ndo you want the fstab file?"
     select yn in "Yes" "No"; do
     case $yn in
       Yes ) fstabfile=true; break;;
@@ -324,18 +322,18 @@ if [ "$torrentbox" = true ] ; then
 fi
 
 if [ "$flexgetfile" = true ] ; then
-    echo "\n\nuse this command in the flexget server. we use /etc/flexget \n\n"
-    echo "\ncurl https://raw.githubusercontent.com/Joseos123/shell/main/linux/config.yml --output config.yml\n"
+    printf "\n\nuse this command in the flexget server. we use /etc/flexget \n\n"
+    printf "\ncurl https://raw.githubusercontent.com/Joseos123/shell/main/linux/config.yml --output config.yml\n"
 fi
 
 if [ "$transmissionfile" = true ] ; then
-    echo "\n\nuse this command in the flexget server. we use ~/.config/transmission-daemon/ \n\n"
-    echo "\ncurl https://raw.githubusercontent.com/Joseos123/shell/main/linux/transmission%20settings.json --output settings.json\n"
+    printf "\n\nuse this command in the flexget server. we use ~/.config/transmission-daemon/ \n\n"
+    printf "\ncurl https://raw.githubusercontent.com/Joseos123/shell/main/linux/settings.json --output settings.json\n"
 fi
 
 if [ "$fstabfile" = true ] ; then
-    echo "\n\nshove this into your fstab:\n\n"
+    printf "\n\nshove this into your fstab:\n\n"
     curl https://raw.githubusercontent.com/Joseos123/shell/main/linux/fstab
 fi
 
-echo "\n\nhave a nice day!"
+printf "\n\nhave a nice day!"
