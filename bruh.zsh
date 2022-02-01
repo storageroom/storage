@@ -50,19 +50,21 @@ if [ "$aptinstallpackages" = true ] ; then
 fi
 
 if [ "$aptinstallwhatpackages" = Server ] ; then
+    Server=$(curl https://raw.githubusercontent.com/Joseos123/shell/main/linux/packagelist/server)
     sudo apt update
     sudo apt dist-upgrade -y
     sudo apt upgrade -y
     printf "deb [trusted=yes] https://deb.jesec.io/ devel main" | sudo tee /etc/apt/sources.list.d/jesec.list
     apt update
-    sudo apt install -y transmission-daemon zsh xsel xclip sshfs neofetch micro nano mc mediainfo cron coreutils python3 python3-pip python3-venv flood
+    sudo apt install -y $Server
     sudo systemctl stop transmission-daemon
 
 elif [ "$aptinstallwhatpackages" = Minimal ] ; then
+    Minimal=$(curl https://raw.githubusercontent.com/Joseos123/shell/main/linux/packagelist/minimal)
     sudo apt update
     sudo apt dist-upgrade -y
     sudo apt upgrade -y
-    sudo apt install -y zsh xsel xclip neofetch micro nano mc python3 python3-pip
+    sudo apt install -y $Minimal
 fi
 
 if [ "$installhomebrew" = true ] ; then
