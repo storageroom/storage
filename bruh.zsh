@@ -41,17 +41,17 @@ aptinstallpackages=false
 fi
 
 if [ "$aptinstallpackages" = true ] ; then
-  echo "would you like to install torrentbox/server packages or standard?"
-  select bruh in "Server" "Standard"; do
+  echo "would you like to install torrentbox/server packages or minimal?"
+  select bruh in "Server" "Minimal"; do
   case $bruh in
-   Server ) aptinstallwhatpackages=server; break;;
-   Standard ) aptinstallwhatpackages=standard; break;;
+   Server ) aptinstallwhatpackages=Server; break;;
+   Minimal ) aptinstallwhatpackages=Minimal; break;;
   esac
   done
 else
 fi
 
-if [ "$aptinstallpackages" = server ] ; then
+if [ "$aptinstallwhatpackages" = Server ] ; then
     sudo apt update
     sudo apt dist-upgrade -y
     sudo apt upgrade -y
@@ -60,7 +60,7 @@ if [ "$aptinstallpackages" = server ] ; then
     sudo apt install -y transmission-daemon zsh xsel xclip sshfs neofetch micro nano mc mediainfo cron coreutils python3 python3-pip python3-venv flood linux-firmware
     sudo systemctl stop transmission-daemon
 
-elif [ "$aptinstallpackages" = standard ] ; then
+elif [ "$aptinstallwhatpackages" = Minimal ] ; then
     sudo apt update
     sudo apt dist-upgrade -y
     sudo apt upgrade -y
@@ -209,7 +209,7 @@ if [ "$zsudo" = true ] ; then
         echo "to manually install it instead\n\n"
     else
         sudo mkdir /usr/share/zsh-sudo
-        curl https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh --output /usr/share/zsh-sudo/sudo.plugin.zsh
+        sudo curl https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh --output /usr/share/zsh-sudo/sudo.plugin.zsh
     fi
 
 elif [ "$zsudo" = false ] ; then
@@ -229,7 +229,7 @@ if [ "$fsyn" = true ] ; then
         sudo mkdir /usr/share/fast-syntax-highlighting
         
         if [ "$gitinstalled" = true ] ; then
-        git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git /usr/share/fast-syntax-highlighting
+        sudo git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git /usr/share/fast-syntax-highlighting
         else
         echo "git is not installed on this system and required to install this file.\n\n"
         echo "Do you wish to install git now?\n\n"
