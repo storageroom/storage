@@ -58,8 +58,8 @@ else
     echo "Do you wish to install git now?"
       select yn in "Yes" "No"; do
         case $yn in
-         Yes ) sudo apt install git -y; break;;
-          No ) break;;
+         Yes ) sudo apt install git -y;git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git /usr/share/fast-syntax-highlighting; break;;
+          No ) echo "run:";echo "git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git /usr/share/fast-syntax-highlighting";echo "to manually install it instead";;
        esac
       done
     fi
