@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/zsh
 
 # install apps (TBC)
 #echo "Please select the applications you would like to install."
