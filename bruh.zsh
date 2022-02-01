@@ -27,6 +27,47 @@ if [ "$os" = Macos ] ; then
 else
 fi
 
+# if not on mac, offer to install standard packages
+if [ "$os" = Linux ] ; then
+  echo "would you like to install standard packages?"
+  select yn in "Yes" "No"; do
+  case $yn in
+   Yes ) aptinstallpackages=true; break;;
+    No ) aptinstallpackages=false; break;;
+  esac
+  done
+else
+aptinstallpackages=false
+fi
+
+if [ "$aptinstallpackages" = true ] ; then
+  echo "would you like to install torrentbox/server packages or standard?"
+  select bruh in "Server" "Standard"; do
+  case $bruh in
+   Server ) aptinstallwhatpackages=server; break;;
+   Standard ) aptinstallwhatpackages=standard; break;;
+  esac
+  done
+else
+fi
+
+if [ "$aptinstallpackages" = server ] ; then
+    sudo apt update
+    sudo apt dist-upgrade -y
+    sudo apt upgrade -y
+    echo "deb [trusted=yes] https://deb.jesec.io/ devel main" | sudo tee /etc/apt/sources.list.d/jesec.list
+    apt update
+    sudo apt install -y transmission-daemon zsh xsel xclip sshfs neofetch micro nano mc mediainfo cron coreutils python3 python3-pip python3-venv flood linux-firmware
+    sudo systemctl stop transmission-daemon
+
+elif [ "$aptinstallpackages" = standard ] ; then
+    sudo apt update
+    sudo apt dist-upgrade -y
+    sudo apt upgrade -y
+    sudo apt install -y zsh xsel xclip neofetch micro nano mc linux-firmware python3 python3-pip
+else
+fi
+
 if [ "$installhomebrew" = true ] ; then
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 homebrewinstalled=true
@@ -77,6 +118,8 @@ if [ "$installcurl" = true ] ; then
   else
   fi
 else
+echo "curl is needed for install"
+exit
 fi
 
 if which git >/dev/null; then
