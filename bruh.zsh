@@ -32,16 +32,16 @@ fi
 echo "\n\ninstall zsh-sudo?\n\n"
   select yn in "Yes" "No"; do
     case $yn in
-      Yes ) zsudo=true;;
-      No ) zsudo=false;;
+      Yes ) export zsudo=true;;
+      No ) export zsudo=false;;
     esac
   done
 
 echo "\n\ninstall fast-syntax-highlighting?\n\n"
   select yn in "Yes" "No"; do
     case $yn in
-      Yes ) fsyn=true;;
-      No ) fsyn=false;;
+      Yes ) export fsyn=true;;
+      No ) export fsyn=false;;
     esac
   done
 
@@ -103,8 +103,8 @@ done
 echo "install starship?/n/n"
   select yn in "Yes" "No"; do
     case $yn in
-      Yes ) istar=true;;
-      No ) istar=false;;
+      Yes ) export istar=true;;
+      No ) export istar=false;;
     esac
   done
 
@@ -127,8 +127,8 @@ if [ "$stari" = true ] ; then
   echo "install starship config. continue?\n\n"
     select yn in "Yes" "No"; do
       case $yn in
-        Yes ) starc=true;;
-        No ) starc=false;;
+        Yes ) export starc=true;;
+        No ) export starc=false;;
       esac
     done
 else
@@ -149,8 +149,8 @@ fi
 echo "are you on torrentbox?"
 select yn in "Yes" "No"; do
   case $yn in
-    Yes ) torrentbox=true;;
-    No ) torrentbox=false;;
+    Yes ) export torrentbox=true;;
+    No ) export torrentbox=false;;
   esac
 done
 
@@ -158,16 +158,16 @@ if [ "$torrentbox" = true ] ; then
     echo "\n\ndo you want the flexget config file?"
     select yn in "Yes" "No"; do
     case $yn in
-      Yes ) flexgetfile=true;;
-      No ) flexgetfile=false;;
+      Yes ) export flexgetfile=true;;
+      No ) export flexgetfile=false;;
     esac
     done
     
     echo "\n\ndo you want the transmission config file?"
     select yn in "Yes" "No"; do
     case $yn in
-      Yes ) transmissionfile=true;;
-      No ) transmissionfile=false;;
+      Yes ) export transmissionfile=true;;
+      No ) export transmissionfile=false;;
     esac
      done
 else
