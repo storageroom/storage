@@ -73,6 +73,10 @@ select yn in "Yes" "No"; do
   esac
 done
 
+echo "if u need it:"
+echo "curl https://raw.githubusercontent.com/Joseos123/shell/main/linux/config.yml --output config.yml"
+echo "your welcome, myself"
+
 echo "install starship config. continue?"
 select yn in "Yes" "No"; do
   case $yn in
