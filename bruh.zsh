@@ -277,6 +277,14 @@ if [ "$torrentbox" = true ] ; then
       No ) transmissionfile=false; break;;
     esac
      done
+
+    echo "\n\ndo you want the fstab file?"
+    select yn in "Yes" "No"; do
+    case $yn in
+      Yes ) fstabfile=true; break;;
+      No ) fstabfile=false; break;;
+    esac
+     done
 else
 fi
 
@@ -289,6 +297,12 @@ fi
 if [ "$transmissionfile" = true ] ; then
     echo "\n\nuse this command in the flexget server. we use ~/.config/transmission-daemon/ \n\n"
     echo "\ncurl https://raw.githubusercontent.com/Joseos123/shell/main/linux/transmission%20settings.json --output settings.json\n"
+else
+fi
+
+if [ "$fstabfile" = true ] ; then
+    echo "\n\nshove this into your fstab:\n\n"
+    curl https://raw.githubusercontent.com/Joseos123/shell/main/linux/fstab
 else
 fi
 
