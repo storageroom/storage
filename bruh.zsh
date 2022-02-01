@@ -24,7 +24,6 @@ if [ "$os" = Macos ] ; then
     No ) installhomebrew=false; break;;
   esac
   done
-else
 fi
 
 # if not on mac, offer to install standard packages
@@ -48,7 +47,6 @@ if [ "$aptinstallpackages" = true ] ; then
    Minimal ) aptinstallwhatpackages=Minimal; break;;
   esac
   done
-else
 fi
 
 if [ "$aptinstallwhatpackages" = Server ] ; then
@@ -65,7 +63,6 @@ elif [ "$aptinstallwhatpackages" = Minimal ] ; then
     sudo apt dist-upgrade -y
     sudo apt upgrade -y
     sudo apt install -y zsh xsel xclip neofetch micro nano mc python3 python3-pip
-else
 fi
 
 if [ "$installhomebrew" = true ] ; then
@@ -91,7 +88,6 @@ fi
 if [ "$brewfileinstall" = true ] ; then
 curl https://raw.githubusercontent.com/Joseos123/shell/main/macos/Brewfile --output Brewfile
 brew bundle
-else
 fi
 
 # install zsh plugins, zshrc and starship.toml
@@ -113,18 +109,15 @@ if [ "$curlisinstalled" = false ] ; then
   if [ "$installcurl" = true ] ; then
     if [ "$os" = Linux ] ; then
       sudo apt update;sudo apt install curl -y
-    else
     fi
 
     if [ "$os" = Macos ] ; then
       echo "why tf do u not have curl bro ur on a MAC\n\n"
-    else
     fi
   else
     echo "curl is needed for install"
     exit
   fi
-else
 fi
 
 if which git >/dev/null; then
@@ -143,7 +136,6 @@ fi
 SMH () { 
 if [ "$os" = Linux ] ; then
       sudo apt update;sudo apt install git -y
-    else
     fi
 
 if [ "$os" = Macos ] ; then
@@ -162,7 +154,6 @@ if [ "$os" = Macos ] ; then
           echo "proceeding without installing git"
           gitinstalled=false
           fi
-        else
         fi
 
         if [ "$dumbbruh" = true ] ; then
@@ -173,16 +164,13 @@ if [ "$os" = Macos ] ; then
               No ) break;;
             esac
           done
-        else
         fi
-    else
     fi
 }
 
 if [ "$installgit" = true ] ; then
 SMH
 gitinstalled=true
-else
 fi
 
 echo "\n\ninstall zsh-sudo?\n\n"
@@ -299,7 +287,6 @@ if [ "$starc" = true ] ; then
         mkdir ~/.config
         curl https://raw.githubusercontent.com/Joseos123/shell/main/macos/starship.toml --output ~/.config/starship.toml
     fi
-else
 fi
 
 echo "are you on torrentbox?"
@@ -334,25 +321,21 @@ if [ "$torrentbox" = true ] ; then
       No ) fstabfile=false; break;;
     esac
      done
-else
 fi
 
 if [ "$flexgetfile" = true ] ; then
     echo "\n\nuse this command in the flexget server. we use /etc/flexget \n\n"
     echo "\ncurl https://raw.githubusercontent.com/Joseos123/shell/main/linux/config.yml --output config.yml\n"
-else
 fi
 
 if [ "$transmissionfile" = true ] ; then
     echo "\n\nuse this command in the flexget server. we use ~/.config/transmission-daemon/ \n\n"
     echo "\ncurl https://raw.githubusercontent.com/Joseos123/shell/main/linux/transmission%20settings.json --output settings.json\n"
-else
 fi
 
 if [ "$fstabfile" = true ] ; then
     echo "\n\nshove this into your fstab:\n\n"
     curl https://raw.githubusercontent.com/Joseos123/shell/main/linux/fstab
-else
 fi
 
 echo "\n\nhave a nice day!"
