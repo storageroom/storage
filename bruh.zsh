@@ -6,7 +6,6 @@
 # install zsh plugins, zshrc and starship.toml
 
 if which curl >/dev/null; then
-break
 else
 echo "curl is not installed on this system and is needed for later steps."
 echo "Do you wish to install curl now?"
@@ -19,7 +18,6 @@ done
 fi
 
 if which git >/dev/null; then
-break
 else
 echo "git is not installed on this system and we reccomend you install it."
 echo "Do you wish to install git now?"
