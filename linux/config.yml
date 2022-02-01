@@ -1,0 +1,69 @@
+web_server:
+#  bind: 127.0.0.1
+  port: 8443
+  ssl_certificate: '/etc/flexget/bruh.pem'
+  ssl_private_key: '/etc/flexget/haha.key'
+  web_ui: yes
+
+tasks:
+  Anime:
+    rss: https://subsplease.org/rss/?r=1080
+    series:
+
+#      - X:
+#          set:
+#            path: /mnt/bruh/anime/seasonal/X
+
+#      - X:
+#          set:
+#            path: /mnt/bruh/anime/seasonal/X
+
+      - Arifureta Shokugyou de Sekai Saikyou S2:
+          set:
+            path: /mnt/bruh/anime/seasonal/Arifureta Shokugyou de Sekai Saikyou/S02
+
+      - Sabikui Bisco:
+          set:
+            path: /mnt/bruh/anime/seasonal/Sabikui Bisco
+
+      - Tensai Ouji no Akaji Kokka Saisei Jutsu:
+          set:
+            path: /mnt/bruh/anime/seasonal/Tensai Ouji no Akaji Kokka Saisei Jutsu
+
+      - Shikkakumon no Saikyou Kenja:
+          set:
+            path: /mnt/bruh/anime/seasonal/Shikkakumon no Saikyou Kenja
+
+      - Sono Bisque Doll wa Koi wo Suru:
+          set:
+            path: /mnt/bruh/anime/seasonal/Sono Bisque Doll wa Koi wo Suru
+
+      - Genjitsu Shugi Yuusha no Oukoku Saikenki:
+          set:
+            path: /mnt/bruh/anime/seasonal/Genjitsu Shugi Yuusha no Oukoku Saikenki
+
+      - Kimetsu no Yaiba – Yuukaku-hen:
+           set:
+            path: /mnt/bruh/anime/seasonal/Kimetsu no Yaiba – Yuukaku-hen
+
+      - Princess Connect! Re-Dive S2:
+           set:
+            path: /mnt/bruh/anime/seasonal/Princess Connect! Re-Dive S2
+              
+
+    transmission:
+        host: localhost
+        port: 42069
+        username: x
+        password: "x"
+
+schedules:
+  - tasks: Anime
+    schedule:
+      hour: 0-3
+      minute: "*/8"
+
+  - tasks: Anime
+    schedule:
+      hour: 21-23
+      minute: "*/8"
