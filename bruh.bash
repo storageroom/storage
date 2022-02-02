@@ -4,7 +4,7 @@
 #printf "Please select the applications you would like to install."
 
 # check os
-printf "what operating system are on on?\n"
+printf "\nwhat operating system are on on?\n"
 printf "note that linux refers to a debian derivative\n"
 printf "arch, gentoo, red hat and other non debian derivatives\n"
 printf "WILL NOT WORK\n"
@@ -49,25 +49,82 @@ if [ "$aptinstallpackages" = true ] ; then
   done
 fi
 
+if which wget >/dev/null; then
+wgetisinstalled=true
+else
+wgetisinstalled=false
+fi
+
+
 if [ "$aptinstallwhatpackages" = Server ] ; then
-    curl https://raw.githubusercontent.com/Joseos123/shell/main/linux/packagelist/server --output server.txt
+  if [ "$wgetisinstalled" = true ] ; then
+    wget https://raw.githubusercontent.com/Joseos123/shell/main/linux/packagelist/server
     sudo apt update
     sudo apt dist-upgrade -y
     sudo apt upgrade -y
     printf "deb [trusted=yes] https://deb.jesec.io/ devel main" | sudo tee /etc/apt/sources.list.d/jesec.list
     apt update
-    sudo apt install $(grep -o '^[^#]*' server.txt)
+    sudo apt install "$(grep -o '^[^#]*' server)"
     sudo systemctl stop transmission-daemon
-    rm server.txt
+    rm server
+    pleaseinstallwgetnow=false
 
+  elif [ "$wgetisinstalled" = false ] ; then
+  printf "wget is not installed on this system and needed to grab the packagelist. Install wget now?"
+  select yn in "Yes" "No"; do
+  case $yn in
+   Yes ) pleaseinstallwgetnow=true; break;;
+    No ) pleaseinstallwgetnow=false; break;;
+  esac
+  done
+  fi
 elif [ "$aptinstallwhatpackages" = Minimal ] ; then
-    curl https://raw.githubusercontent.com/Joseos123/shell/main/linux/packagelist/minimal --output minimal.txt
+  if [ "$wgetisinstalled" = true ] ; then
+    wget https://raw.githubusercontent.com/Joseos123/shell/main/linux/packagelist/minimal
     sudo apt update
     sudo apt dist-upgrade -y
     sudo apt upgrade -y
-    sudo apt install $(grep -o '^[^#]*' minimal.txt)
-    rm minimal.txt
+    sudo apt install "$(grep -o '^[^#]*' minimal)"
+    rm minimal
+    pleaseinstallwgetnow=false
+
+  elif [ "$wgetisinstalled" = false ] ; then
+  printf "wget is not installed on this system and needed to grab the packagelist. Install wget now?"
+  select yn in "Yes" "No"; do
+  case $yn in
+   Yes ) pleaseinstallwgetnow=true; break;;
+    No ) pleaseinstallwgetnow=false; break;;
+  esac
+  done
+  fi
 fi
+
+if [ "$pleaseinstallwgetnow" = true ] ; then
+  sudo apt update
+  sudo apt install wget
+  if [ "$aptinstallwhatpackages" = Server ] ; then
+      wget https://raw.githubusercontent.com/Joseos123/shell/main/linux/packagelist/server
+      sudo apt update
+      sudo apt dist-upgrade -y
+      sudo apt upgrade -y
+      printf "deb [trusted=yes] https://deb.jesec.io/ devel main" | sudo tee /etc/apt/sources.list.d/jesec.list
+      apt update
+      sudo apt install "$(grep -o '^[^#]*' server)"
+      sudo systemctl stop transmission-daemon
+      rm server
+      pleaseinstallwgetnow=false
+  elif [ "$aptinstallwhatpackages" = Minimal ] ; then
+    wget https://raw.githubusercontent.com/Joseos123/shell/main/linux/packagelist/minimal
+    sudo apt update
+    sudo apt dist-upgrade -y
+    sudo apt upgrade -y
+    sudo apt install "$(grep -o '^[^#]*' minimal)"
+    rm minimal
+    pleaseinstallwgetnow=false
+  fi
+fi
+
+
 
 if [ "$installhomebrew" = true ] ; then
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
