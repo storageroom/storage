@@ -4,9 +4,9 @@
 #printf "Please select the applications you would like to install."
 
 # check os
-printf "what operating system are on on?"
-printf "note that linux refers to a debian derivative"
-printf "arch, gentoo, red hat and other non debian derivatives"
+printf "what operating system are on on?\n"
+printf "note that linux refers to a debian derivative\n"
+printf "arch, gentoo, red hat and other non debian derivatives\n"
 printf "WILL NOT WORK\n"
 select os in "Linux" "Macos"; do
   case $os in
