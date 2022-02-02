@@ -64,7 +64,7 @@ if [ "$aptinstallwhatpackages" = Server ] ; then
     sudo apt upgrade -y
     printf "deb [trusted=yes] https://deb.jesec.io/ devel main" | sudo tee /etc/apt/sources.list.d/jesec.list
     apt update
-    sudo apt install "$(grep -o '^[^#]*' server)"
+    sudo apt install $(grep -o '^[^#]*' server)
     sudo systemctl stop transmission-daemon
     rm server
     pleaseinstallwgetnow=false
@@ -85,7 +85,7 @@ elif [ "$aptinstallwhatpackages" = Minimal ] ; then
     sudo apt update
     sudo apt dist-upgrade -y
     sudo apt upgrade -y
-    sudo apt install "$(grep -o '^[^#]*' minimal)"
+    sudo apt install $(grep -o '^[^#]*' minimal)
     rm minimal
     pleaseinstallwgetnow=false
 
