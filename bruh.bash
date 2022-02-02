@@ -7,7 +7,7 @@
 printf "what operating system are on on?"
 printf "note that linux refers to a debian derivative"
 printf "arch, gentoo, red hat and other non debian derivatives"
-printf "WILL NOT WORK"
+printf "WILL NOT WORK\n"
 select os in "Linux" "Macos"; do
   case $os in
    Linux ) os=Linux; break;;
@@ -17,7 +17,7 @@ done
 
 # offer to install homebrew if on mac
 if [ "$os" = Macos ] ; then
-  printf "would you like to install homebrew?"
+  printf "would you like to install homebrew?\n"
   select yn in "Yes" "No"; do
   case $yn in
    Yes ) installhomebrew=true; break;;
@@ -28,7 +28,7 @@ fi
 
 # if not on mac, offer to install standard packages
 if [ "$os" = Linux ] ; then
-  printf "would you like to install standard packages?"
+  printf "would you like to install standard packages?\n"
   select yn in "Yes" "No"; do
   case $yn in
    Yes ) aptinstallpackages=true; break;;
@@ -40,7 +40,7 @@ aptinstallpackages=false
 fi
 
 if [ "$aptinstallpackages" = true ] ; then
-  printf "would you like to install torrentbox/server packages or minimal?"
+  printf "would you like to install torrentbox/server packages or minimal?\n"
   select bruh in "Server" "Minimal"; do
   case $bruh in
    Server ) aptinstallwhatpackages=Server; break;;
