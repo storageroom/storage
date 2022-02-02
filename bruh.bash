@@ -50,21 +50,23 @@ if [ "$aptinstallpackages" = true ] ; then
 fi
 
 if [ "$aptinstallwhatpackages" = Server ] ; then
-    Server=$(curl https://raw.githubusercontent.com/Joseos123/shell/main/linux/packagelist/server)
+    curl https://raw.githubusercontent.com/Joseos123/shell/main/linux/packagelist/server --output server.txt
     sudo apt update
     sudo apt dist-upgrade -y
     sudo apt upgrade -y
     printf "deb [trusted=yes] https://deb.jesec.io/ devel main" | sudo tee /etc/apt/sources.list.d/jesec.list
     apt update
-    sudo apt install -y "$Server"
+    sudo apt install $(grep -o '^[^#]*' server.txt)
     sudo systemctl stop transmission-daemon
+    rm server.txt
 
 elif [ "$aptinstallwhatpackages" = Minimal ] ; then
-    Minimal=$(curl https://raw.githubusercontent.com/Joseos123/shell/main/linux/packagelist/minimal)
+    curl https://raw.githubusercontent.com/Joseos123/shell/main/linux/packagelist/minimal --output minimal.txt
     sudo apt update
     sudo apt dist-upgrade -y
     sudo apt upgrade -y
-    sudo apt install -y "$Minimal"
+    sudo apt install $(grep -o '^[^#]*' minimal.txt)
+    rm minimal.txt
 fi
 
 if [ "$installhomebrew" = true ] ; then
