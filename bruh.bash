@@ -56,7 +56,7 @@ if [ "$aptinstallwhatpackages" = Server ] ; then
     sudo apt upgrade -y
     printf "deb [trusted=yes] https://deb.jesec.io/ devel main" | sudo tee /etc/apt/sources.list.d/jesec.list
     apt update
-    sudo apt install -y $Server
+    sudo apt install -y "$Server"
     sudo systemctl stop transmission-daemon
 
 elif [ "$aptinstallwhatpackages" = Minimal ] ; then
@@ -64,7 +64,7 @@ elif [ "$aptinstallwhatpackages" = Minimal ] ; then
     sudo apt update
     sudo apt dist-upgrade -y
     sudo apt upgrade -y
-    sudo apt install -y $Minimal
+    sudo apt install -y "$Minimal"
 fi
 
 if [ "$installhomebrew" = true ] ; then
