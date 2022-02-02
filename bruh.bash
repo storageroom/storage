@@ -70,7 +70,8 @@ if [ "$aptinstallwhatpackages" = Server ] ; then
     pleaseinstallwgetnow=false
 
   elif [ "$wgetisinstalled" = false ] ; then
-  printf "wget is not installed on this system and needed to grab the packagelist. Install wget now?\n"
+  printf "wget is not installed on this system and needed to grab the packagelist. Install wget now?"
+  echo "\n"
   select yn in "Yes" "No"; do
   case $yn in
    Yes ) pleaseinstallwgetnow=true; break;;
