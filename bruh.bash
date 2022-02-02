@@ -43,8 +43,8 @@ if [ "$aptinstallpackages" = true ] ; then
   printf "would you like to install torrentbox/server packages or minimal?\n"
   select bruh in "Server" "Minimal"; do
   case $bruh in
-   Server ) aptinstallwhatpackages=Server; break;;
-   Minimal ) aptinstallwhatpackages=Minimal; break;;
+   Server ) aptinstallwhatpackages=Server; yessus=yes;break;;
+   Minimal ) aptinstallwhatpackages=Minimal; yessus=no;break;;
   esac
   done
 fi
@@ -70,7 +70,7 @@ if [ "$aptinstallwhatpackages" = Server ] ; then
     pleaseinstallwgetnow=false
 
   elif [ "$wgetisinstalled" = false ] ; then
-  printf "wget is not installed on this system and needed to grab the packagelist. Install wget now?"
+  printf "wget is not installed on this system and needed to grab the packagelist. Install wget now?\n"
   select yn in "Yes" "No"; do
   case $yn in
    Yes ) pleaseinstallwgetnow=true; break;;
@@ -395,6 +395,16 @@ fi
 if [ "$fstabfile" = true ] ; then
     printf "\n\nshove this into your fstab:\n\n"
     curl https://raw.githubusercontent.com/Joseos123/shell/main/linux/fstab
+fi
+
+if [ "$yessus" = yes ] ; then
+  printf "Would you like to make zsh the default shell?"
+  select yn in "Yes" "No"; do
+    case $yn in
+      Yes ) chsh -s $(which zsh); break;;
+      No ) break;;
+    esac
+  done
 fi
 
 printf "\n\nhave a nice day!"
