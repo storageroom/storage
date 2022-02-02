@@ -31,7 +31,7 @@ if [ "$os" = Linux ] ; then
   printf "would you like to install standard packages?\n"
   select yn in "Yes" "No"; do
   case $yn in
-   Yes ) aptinstallpackages=true; break;;
+   Yes ) aptinstallpackages=true;yessus=yes; break;;
     No ) aptinstallpackages=false; break;;
   esac
   done
@@ -43,8 +43,8 @@ if [ "$aptinstallpackages" = true ] ; then
   printf "would you like to install torrentbox/server packages or minimal?\n"
   select bruh in "Server" "Minimal"; do
   case $bruh in
-   Server ) aptinstallwhatpackages=Server; yessus=yes;break;;
-   Minimal ) aptinstallwhatpackages=Minimal; yessus=no;break;;
+   Server ) aptinstallwhatpackages=Server;break;;
+   Minimal ) aptinstallwhatpackages=Minimal;break;;
   esac
   done
 fi
@@ -71,7 +71,7 @@ if [ "$aptinstallwhatpackages" = Server ] ; then
 
   elif [ "$wgetisinstalled" = false ] ; then
   printf "wget is not installed on this system and needed to grab the packagelist. Install wget now?"
-  echo "\n"
+  printf "\n\n"
   select yn in "Yes" "No"; do
   case $yn in
    Yes ) pleaseinstallwgetnow=true; break;;
@@ -91,6 +91,7 @@ elif [ "$aptinstallwhatpackages" = Minimal ] ; then
 
   elif [ "$wgetisinstalled" = false ] ; then
   printf "wget is not installed on this system and needed to grab the packagelist. Install wget now?"
+  printf "\n\n"
   select yn in "Yes" "No"; do
   case $yn in
    Yes ) pleaseinstallwgetnow=true; break;;
@@ -342,10 +343,10 @@ fi
 if [ "$starc" = true ] ; then
     if [ -d "$HOME/.config" ] 
     then
-        curl https://raw.githubusercontent.com/Joseos123/shell/main/macos/starship.toml --output ~/.config/starship.toml
+        curl https://raw.githubusercontent.com/Joseos123/shell/main/macos/starship.toml --output $HOME/.config/starship.toml
     else
-        mkdir ~/.config
-        curl https://raw.githubusercontent.com/Joseos123/shell/main/macos/starship.toml --output ~/.config/starship.toml
+        sudo mkdir $HOME/.config
+        curl https://raw.githubusercontent.com/Joseos123/shell/main/macos/starship.toml --output $HOME/.config/starship.toml
     fi
 fi
 
