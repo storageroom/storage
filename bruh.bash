@@ -70,7 +70,8 @@ if [ "$aptinstallwhatpackages" = Server ] ; then
     pleaseinstallwgetnow=false
 
   elif [ "$wgetisinstalled" = false ] ; then
-  printf "wget is not installed on this system and needed to grab the packagelist. Install wget now?"
+  printf "wget is not installed on this system and needed to grab the packagelist."
+  printf "${GREEN}Install wget now?"
   printf "\n\n"
   select yn in "Yes" "No"; do
   case $yn in
@@ -90,7 +91,8 @@ elif [ "$aptinstallwhatpackages" = Minimal ] ; then
     pleaseinstallwgetnow=false
 
   elif [ "$wgetisinstalled" = false ] ; then
-  printf "wget is not installed on this system and needed to grab the packagelist. Install wget now?"
+  printf "${RED}wget is not installed on this system and needed to grab the packagelist."
+  printf "${GREEN}Install wget now?"
   printf "\n\n"
   select yn in "Yes" "No"; do
   case $yn in
@@ -137,7 +139,7 @@ fi
 
 # Offer to install Brewfile
 if [ "$homebrewinstalled" = true ] ; then
-  printf "Do you want to install from Brewfile?\nnote that the brewfile is mine lol\nyouhavebeenwarned\n\n"
+  printf "${GREEN}Do you want to install from Brewfile?\nnote that the brewfile is mine lol\nyouhavebeenwarned\n\n"
   select yn in "Yes" "No"; do
   case $yn in
    Yes ) brewfileinstall=true; break;;
@@ -158,8 +160,8 @@ if which curl >/dev/null; then
 curlisinstalled=true
 else
 curlisinstalled=false
-printf "\n\ncurl is not installed on this system and is needed for later steps."
-printf "Do you wish to install curl now?\n\n"
+printf "${RED}\n\ncurl is not installed on this system and is needed for later steps."
+printf "${GREEN}Do you wish to install curl now?\n\n"
 select yn in "Yes" "No"; do
   case $yn in
    Yes ) installcurl=true; break;;
@@ -175,19 +177,22 @@ if [ "$curlisinstalled" = false ] ; then
     fi
 
     if [ "$os" = Macos ] ; then
-      printf "why tf do u not have curl bro ur on a MAC\n\n"
+      printf "${RED}why tf do u not have curl bro ur on a MAC\n"
+      printf "${RED}but fr tho..."
+      exit
     fi
   else
-    printf "curl is needed for install"
+    printf "${RED}curl is needed for install"
     exit
   fi
 fi
 
+# offer to install git
 if which git >/dev/null; then
 gitinstalled=true
 else
-printf "git is not installed on this system and we reccomend you install it."
-printf "Do you wish to install git now?\n\n"
+printf "${RED}git is not installed on this system and we reccomend you install it."
+printf "${GREEN}Do you wish to install git now?\n\n"
 select yn in "Yes" "No"; do
   case $yn in
    Yes ) installgit=true; break;;
@@ -202,14 +207,22 @@ if [ "$os" = Linux ] ; then
     fi
 
 if [ "$os" = Macos ] ; then
+      # contrary to the step at the end, if the user does not have git,
+      # we offer to install via brew or macos cli tools
+      # however in this case brew is unfavorable as
+      # git should have already been installed via
+      # the brewfile install above
+      # the lack of git indicates user either
+      # did not install brew or brew install errored
       printf "would you like to install macos cli tools?\n\n"
       select yn in "Yes" "No"; do
       case $yn in
-          Yes ) xcode-select --install; break;;
-          No ) isstupid=true;break;;
+          Yes ) clitoolsinstalled=true;xcode-select --install; break;;
+          No ) clitoolsinstalled=false;isstupid=true;break;;
         esac
       done
       
+        # however we still offer to install via brew if the user so desires
         if [ "$isstupid" = true ] ; then
           if [ "$homebrewinstalled" = true ] ; then
           dumbbruh=true
@@ -234,6 +247,54 @@ if [ "$os" = Macos ] ; then
 if [ "$installgit" = true ] ; then
 SMH
 gitinstalled=true
+fi
+
+# offer to install hr
+# on mac systems, hr will be installed through brewfile
+HRINSTALL () {
+if which make >/dev/null; then
+makeisinstalled=true
+else
+makeisinstalled=false
+printf "${RED}\n\nmake is not installed on this system and is needed for this step"
+printf "${GREEN}Do you wish to install make now?\n\n"
+select yn in "Yes" "No"; do
+  case $yn in
+   Yes ) sudo apt update;sudo apt install -y build-essential;makeisinstalled=true; break;;
+    No ) break;;
+ esac
+done
+fi
+
+if [ "$makeisinstalled" = true ] ; then
+  git clone https://github.com/LuRsT/hr.git
+  cd hr
+  lmaolmaolmao="PREFIX=/usr/share"
+  sed -i "4s/.*/$lmaolmaolmao/" Makefile
+  sudo make install
+  printf "${GREEN}Install of hf done"
+  printf "${GREEN}removing source files"
+  sleep 5
+  sudo rm -R hr
+fi
+
+}
+
+if [ "$os" = Linux ] ; then
+  if which hr >/dev/null; then
+  printf "${RED}hr is already installed on this system,\n"
+  printf "${RED}or there is a conflict with the command hr\n"
+  printf "${RED}aborting install of hr \n\n"
+  sleep 5
+  else
+  printf "${GREEN}install hr?"
+  select yn in "Yes" "No"; do
+    case $yn in
+    Yes ) HRINSTALL; break;;
+      No ) break;;
+  esac
+  done
+  fi
 fi
 
 printf "\n\ninstall zsh-sudo?\n\n"
@@ -432,4 +493,26 @@ if [ "$yessus" = yes ] ; then
   done
 fi
 
-printf "\n\nhave a nice day!"
+# offer to install iterm2 shell integration
+if [ "$os" = Macos ] ; then
+  printf "Would you like to install iterm2 shell integration?"
+  select yn in "Yes" "No"; do
+    case $yn in
+      Yes ) curl -L https://iterm2.com/shell_integration/install_shell_integration.sh | bash; break;;
+      No ) break;;
+    esac
+  done
+fi
+
+# offer to install cli tools as last step
+# this is as cli tools take awhile to install and often requires the user to restart their system
+if [ "$os" = Macos ] ; then
+  if [ "$clitoolsinstalled" = false ] ; then
+    xcode-select --install
+    printf "\n\nhave a nice day!"
+  else
+  printf "\n\nhave a nice day!"
+  fi
+else
+  printf "\n\nhave a nice day!"
+fi
