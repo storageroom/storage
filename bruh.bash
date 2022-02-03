@@ -350,6 +350,29 @@ if [ "$starc" = true ] ; then
     fi
 fi
 
+if [ "$os" = Macos ] ; then
+  printf "would you like to install hr?\n"
+  select yn in "Yes" "No"; do
+  case $yn in
+   Yes ) installhr=true; break;;
+    No ) installhr=false; break;;
+  esac
+  done
+fi
+
+if [ "$installhr" = true ] ; then
+  if [ -d "/usr/share/fast-syntax-highlighting" ] 
+  then
+     printf "Directory fast-syntax-highlighting already exists, will not install fast-syntax-highlighting.\n\n" 
+     printf "run:"
+     printf "git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git /usr/share/fast-syntax-highlighting"
+    printf "to manually install it instead\n\n"
+  else
+    sudo mkdir /usr/share/hr
+    sudo curl https://raw.githubusercontent.com/LuRsT/hr/master/hr --output /usr/share/hr/hr
+  fi
+fi
+
 printf "are you on torrentbox?"
 select yn in "Yes" "No"; do
   case $yn in
