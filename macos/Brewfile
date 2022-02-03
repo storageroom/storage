@@ -50,6 +50,7 @@ brew "ssh-copy-id"
 brew "wget"
 brew "imagemagick"
 brew "sox"
+brew "boom-completion"
 
 # Fonts
 cask "font-jetbrains-mono"
