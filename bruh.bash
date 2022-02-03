@@ -498,7 +498,7 @@ if [ "$os" = Macos ] ; then
   printf "Would you like to install iterm2 shell integration?"
   select yn in "Yes" "No"; do
     case $yn in
-      Yes ) curl -L https://iterm2.com/shell_integration/install_shell_integration.sh | bash; break;;
+      Yes ) curl -L https://iterm2.com/shell_integration/install_shell_integration.sh | zsh; break;;
       No ) break;;
     esac
   done
