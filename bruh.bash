@@ -51,6 +51,7 @@ fi
 if [ "$aptinstallpackages" = true ] ; then
   printf "would you like to install torrentbox/server packages or minimal?\n"
   select bruh in "Server" "Minimal"; do
+  # trunk-ignore(shellcheck/SC2249)
   case $bruh in
    Server ) aptinstallwhatpackages=Server;break;;
    Minimal ) aptinstallwhatpackages=Minimal;break;;
