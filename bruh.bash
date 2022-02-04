@@ -9,6 +9,8 @@ printf "note that linux refers to a debian derivative\n"
 printf "arch, gentoo, red hat and other non debian derivatives\n"
 printf "WILL NOT WORK\n"
 select os in "Linux" "Macos"; do
+  # trunk-ignore(shellcheck/SC2249)
+  # trunk-ignore(shellcheck/SC2250)
   case $os in
    Linux ) os=Linux; break;;
    Macos ) os=Macos; break;;
@@ -16,9 +18,12 @@ select os in "Linux" "Macos"; do
 done
 
 # offer to install homebrew if on mac
+# trunk-ignore(shellcheck/SC2250)
 if [ "$os" = Macos ] ; then
   printf "would you like to install homebrew?\n"
   select yn in "Yes" "No"; do
+  # trunk-ignore(shellcheck/SC2249)
+  # trunk-ignore(shellcheck/SC2250)
   case $yn in
    Yes ) installhomebrew=true; break;;
     No ) installhomebrew=false; break;;
@@ -27,9 +32,12 @@ if [ "$os" = Macos ] ; then
 fi
 
 # if not on mac, offer to install standard packages
+# trunk-ignore(shellcheck/SC2250)
 if [ "$os" = Linux ] ; then
   printf "would you like to install standard packages?\n"
   select yn in "Yes" "No"; do
+  # trunk-ignore(shellcheck/SC2249)
+  # trunk-ignore(shellcheck/SC2250)
   case $yn in
    Yes ) aptinstallpackages=true;yessus=yes; break;;
     No ) aptinstallpackages=false; break;;
@@ -39,6 +47,7 @@ else
 aptinstallpackages=false
 fi
 
+# trunk-ignore(shellcheck/SC2250)
 if [ "$aptinstallpackages" = true ] ; then
   printf "would you like to install torrentbox/server packages or minimal?\n"
   select bruh in "Server" "Minimal"; do
@@ -64,6 +73,7 @@ if [ "$aptinstallwhatpackages" = Server ] ; then
     sudo apt upgrade -y
     printf "deb [trusted=yes] https://deb.jesec.io/ devel main" | sudo tee /etc/apt/sources.list.d/jesec.list
     apt update
+    # trunk-ignore(shellcheck/SC2046)
     sudo apt install $(grep -o '^[^#]*' server)
     sudo systemctl stop transmission-daemon
     rm server
@@ -86,6 +96,7 @@ elif [ "$aptinstallwhatpackages" = Minimal ] ; then
     sudo apt update
     sudo apt dist-upgrade -y
     sudo apt upgrade -y
+    # trunk-ignore(shellcheck/SC2046)
     sudo apt install $(grep -o '^[^#]*' minimal)
     rm minimal
     pleaseinstallwgetnow=false
@@ -268,7 +279,7 @@ fi
 
 if [ "$makeisinstalled" = true ] ; then
   git clone https://github.com/LuRsT/hr.git
-  cd hr
+  cd hr || exit
   lmaolmaolmao="PREFIX=/usr/share"
   sed -i "4s/.*/$lmaolmaolmao/" Makefile
   sudo make install
@@ -487,6 +498,7 @@ if [ "$yessus" = yes ] ; then
   printf "Would you like to make zsh the default shell?"
   select yn in "Yes" "No"; do
     case $yn in
+      # trunk-ignore(shellcheck/SC2046)
       Yes ) chsh -s $(which zsh); break;;
       No ) break;;
     esac
