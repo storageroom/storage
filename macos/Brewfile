@@ -51,6 +51,7 @@ brew "wget"
 brew "imagemagick"
 brew "sox"
 brew "hr"
+brew "asciinema"
 
 # Fonts
 cask "font-jetbrains-mono"

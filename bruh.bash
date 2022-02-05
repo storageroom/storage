@@ -1,16 +1,19 @@
-#!/usr/bin/bash
+#!/bin/bash
 
-# install apps (TBC)
-#printf "Please select the applications you would like to install."
+# Colour Definitions
+RED="\e[1;31m"
+REDU="\e[1;31;4m"
+GREEN="\e[1;32m"
+PINK="\e[1;35m"
+CYAN="\e[1;36m"
+NC='\033[0m'
 
 # check os
-printf "\nwhat operating system are on on?\n"
-printf "note that linux refers to a debian derivative\n"
-printf "arch, gentoo, red hat and other non debian derivatives\n"
-printf "WILL NOT WORK\n"
+printf "\n${GREEN}what operating system are on on?${NC}\n"
+printf "${CYAN}note that linux refers to a debian derivative${NC}\n"
+printf "${RED}arch, gentoo, red hat and other non debian derivatives${NC}\n"
+printf "${REDU}WILL NOT WORK${NC}\n"
 select os in "Linux" "Macos"; do
-	# trunk-ignore(shellcheck/SC2249)
-	# trunk-ignore(shellcheck/SC2250)
 	case $os in
 	Linux)
 		os=Linux
@@ -24,12 +27,9 @@ select os in "Linux" "Macos"; do
 done
 
 # offer to install homebrew if on mac
-# trunk-ignore(shellcheck/SC2250)
 if [ "$os" = Macos ]; then
-	printf "would you like to install homebrew?\n"
+	printf "${GREEN}would you like to install homebrew?${NC}\n"
 	select yn in "Yes" "No"; do
-		# trunk-ignore(shellcheck/SC2249)
-		# trunk-ignore(shellcheck/SC2250)
 		case $yn in
 		Yes)
 			installhomebrew=true
@@ -44,12 +44,9 @@ if [ "$os" = Macos ]; then
 fi
 
 # if not on mac, offer to install standard packages
-# trunk-ignore(shellcheck/SC2250)
 if [ "$os" = Linux ]; then
-	printf "would you like to install standard packages?\n"
+	printf "${GREEN}would you like to install standard packages?${NC}\n"
 	select yn in "Yes" "No"; do
-		# trunk-ignore(shellcheck/SC2249)
-		# trunk-ignore(shellcheck/SC2250)
 		case $yn in
 		Yes)
 			aptinstallpackages=true
@@ -66,11 +63,9 @@ else
 	aptinstallpackages=false
 fi
 
-# trunk-ignore(shellcheck/SC2250)
 if [ "$aptinstallpackages" = true ]; then
-	printf "would you like to install torrentbox/server packages or minimal?\n"
+	printf "${GREEN}would you like to install server packages or minimal?${NC}\n"
 	select bruh in "Server" "Minimal"; do
-		# trunk-ignore(shellcheck/SC2249)
 		case $bruh in
 		Server)
 			aptinstallwhatpackages=Server
@@ -96,17 +91,16 @@ if [ "$aptinstallwhatpackages" = Server ]; then
 		sudo apt update
 		sudo apt dist-upgrade -y
 		sudo apt upgrade -y
-		printf "deb [trusted=yes] https://deb.jesec.io/ devel main" | sudo tee /etc/apt/sources.list.d/jesec.list
+		echo "deb [trusted=yes] https://deb.jesec.io/ devel main" | sudo tee /etc/apt/sources.list.d/jesec.list
 		apt update
-		# trunk-ignore(shellcheck/SC2046)
 		sudo apt install $(grep -o '^[^#]*' server)
 		sudo systemctl stop transmission-daemon
 		rm server
 		pleaseinstallwgetnow=false
 
 	elif [ "$wgetisinstalled" = false ]; then
-		printf "wget is not installed on this system and needed to grab the packagelist."
-		printf "${GREEN}Install wget now?"
+		printf "${RED}wget is not installed on this system and needed to grab the packagelist.${NC}"
+		printf "${GREEN}Install wget now?${NC}"
 		printf "\n\n"
 		select yn in "Yes" "No"; do
 			case $yn in
@@ -127,14 +121,13 @@ elif [ "$aptinstallwhatpackages" = Minimal ]; then
 		sudo apt update
 		sudo apt dist-upgrade -y
 		sudo apt upgrade -y
-		# trunk-ignore(shellcheck/SC2046)
 		sudo apt install $(grep -o '^[^#]*' minimal)
 		rm minimal
 		pleaseinstallwgetnow=false
 
 	elif [ "$wgetisinstalled" = false ]; then
-		printf "${RED}wget is not installed on this system and needed to grab the packagelist."
-		printf "${GREEN}Install wget now?"
+		printf "${RED}wget is not installed on this system and needed to grab the packagelist.${NC}"
+		printf "${GREEN}Install wget now?${NC}"
 		printf "\n\n"
 		select yn in "Yes" "No"; do
 			case $yn in
@@ -159,7 +152,7 @@ if [ "$pleaseinstallwgetnow" = true ]; then
 		sudo apt update
 		sudo apt dist-upgrade -y
 		sudo apt upgrade -y
-		printf "deb [trusted=yes] https://deb.jesec.io/ devel main" | sudo tee /etc/apt/sources.list.d/jesec.list
+		echo "deb [trusted=yes] https://deb.jesec.io/ devel main" | sudo tee /etc/apt/sources.list.d/jesec.list
 		apt update
 		sudo apt install "$(grep -o '^[^#]*' server)"
 		sudo systemctl stop transmission-daemon
@@ -185,7 +178,7 @@ fi
 
 # Offer to install Brewfile
 if [ "$homebrewinstalled" = true ]; then
-	printf "${GREEN}Do you want to install from Brewfile?\nnote that the brewfile is mine lol\nyouhavebeenwarned\n\n"
+	printf "${GREEN}Do you want to install from Brewfile?${NC}\n\n"
 	select yn in "Yes" "No"; do
 		case $yn in
 		Yes)
@@ -212,8 +205,8 @@ if which curl >/dev/null; then
 	curlisinstalled=true
 else
 	curlisinstalled=false
-	printf "${RED}\n\ncurl is not installed on this system and is needed for later steps."
-	printf "${GREEN}Do you wish to install curl now?\n\n"
+	printf "${RED}\n\ncurl is not installed on this system and is needed for later steps.${NC}"
+	printf "${GREEN}Do you wish to install curl now?${NC}\n\n"
 	select yn in "Yes" "No"; do
 		case $yn in
 		Yes)
@@ -236,12 +229,12 @@ if [ "$curlisinstalled" = false ]; then
 		fi
 
 		if [ "$os" = Macos ]; then
-			printf "${RED}why tf do u not have curl bro ur on a MAC\n"
-			printf "${RED}but fr tho..."
+			printf "${RED}why tf do u not have curl bro ur on a MAC${NC}\n"
+			printf "${RED}but fr tho...${NC}"
 			exit
 		fi
 	else
-		printf "${RED}curl is needed for install"
+		printf "${RED}curl is needed for install${NC}"
 		exit
 	fi
 fi
@@ -250,8 +243,8 @@ fi
 if which git >/dev/null; then
 	gitinstalled=true
 else
-	printf "${RED}git is not installed on this system and we reccomend you install it."
-	printf "${GREEN}Do you wish to install git now?\n\n"
+	printf "${RED}git is not installed on this system and we reccomend you install it.${NC}"
+	printf "${GREEN}Do you wish to install git now?${NC}\n\n"
 	select yn in "Yes" "No"; do
 		case $yn in
 		Yes)
@@ -273,14 +266,7 @@ SMH() {
 	fi
 
 	if [ "$os" = Macos ]; then
-		# contrary to the step at the end, if the user does not have git,
-		# we offer to install via brew or macos cli tools
-		# however in this case brew is unfavorable as
-		# git should have already been installed via
-		# the brewfile install above
-		# the lack of git indicates user either
-		# did not install brew or brew install errored
-		printf "would you like to install macos cli tools?\n\n"
+		printf "${GREEN}would you like to install macos cli tools?${NC}\n\n"
 		select yn in "Yes" "No"; do
 			case $yn in
 			Yes)
@@ -296,7 +282,6 @@ SMH() {
 			esac
 		done
 
-		# however we still offer to install via brew if the user so desires
 		if [ "$isstupid" = true ]; then
 			if [ "$homebrewinstalled" = true ]; then
 				dumbbruh=true
@@ -307,7 +292,7 @@ SMH() {
 		fi
 
 		if [ "$dumbbruh" = true ]; then
-			printf "would you then perhaps to install git via brew?"
+			printf "${GREEN}would you then perhaps to install git via brew?${NC}"
 			select yn in "Yes" "No"; do
 				case $yn in
 				Yes)
@@ -333,8 +318,8 @@ HRINSTALL() {
 		makeisinstalled=true
 	else
 		makeisinstalled=false
-		printf "${RED}\n\nmake is not installed on this system and is needed for this step"
-		printf "${GREEN}Do you wish to install make now?\n\n"
+		printf "${RED}\n\nmake is not installed on this system and is needed for this step${NC}"
+		printf "${GREEN}Do you wish to install make now?${NC}\n\n"
 		select yn in "Yes" "No"; do
 			case $yn in
 			Yes)
@@ -354,8 +339,8 @@ HRINSTALL() {
 		lmaolmaolmao="PREFIX=/usr/share"
 		sed -i "4s/.*/$lmaolmaolmao/" Makefile
 		sudo make install
-		printf "${GREEN}Install of hf done"
-		printf "${GREEN}removing source files"
+		printf "${GREEN}Install of hr done${NC}"
+		printf "${GREEN}removing source files${NC}"
 		sleep 5
 		sudo rm -R hr
 	fi
@@ -364,12 +349,12 @@ HRINSTALL() {
 
 if [ "$os" = Linux ]; then
 	if which hr >/dev/null; then
-		printf "${RED}hr is already installed on this system,\n"
-		printf "${RED}or there is a conflict with the command hr\n"
+		printf "${RED}hr is already installed on this system,${NC}\n"
+		printf "${RED}or there is a conflict with the command hr${NC}\n"
 		printf "${RED}aborting install of hr \n\n"
 		sleep 5
 	else
-		printf "${GREEN}install hr?"
+		printf "${GREEN}install hr?${NC}"
 		select yn in "Yes" "No"; do
 			case $yn in
 			Yes)
@@ -382,7 +367,7 @@ if [ "$os" = Linux ]; then
 	fi
 fi
 
-printf "\n\ninstall zsh-sudo?\n\n"
+printf "\n\n${GREEN}install zsh-sudo?${NC}\n\n"
 select yn in "Yes" "No"; do
 	case $yn in
 	Yes)
@@ -396,7 +381,7 @@ select yn in "Yes" "No"; do
 	esac
 done
 
-printf "\n\ninstall fast-syntax-highlighting?\n\n"
+printf "\n\n${GREEN}install fast-syntax-highlighting?${NC}\n\n"
 select yn in "Yes" "No"; do
 	case $yn in
 	Yes)
@@ -412,34 +397,30 @@ done
 
 if [ "$zsudo" = true ]; then
 	if [ -d "/usr/share/zsh-sudo" ]; then
-		printf "Directory zsh-sudo already exists, will not install zsh-sudo.\n\n"
-		printf "run:"
+		printf "${RED}Directory zsh-sudo already exists, will not install zsh-sudo.${NC}\n\n"
+		printf "${REDU}run:${NC}"
 		printf "\ncurl https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh --output /usr/share/zsh-sudo/sudo.plugin.zsh\n"
-		printf "to manually install it instead\n\n"
+		printf "${REDU}to manually install it instead${NC}\n\n"
 	else
 		sudo mkdir /usr/share/zsh-sudo
 		sudo curl https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh --output /usr/share/zsh-sudo/sudo.plugin.zsh
 	fi
-
-else
-	printf "how did u break my script :/"
-	printf "\n\n"
 fi
 
 if [ "$fsyn" = true ]; then
 	if [ -d "/usr/share/fast-syntax-highlighting" ]; then
-		printf "Directory fast-syntax-highlighting already exists, will not install fast-syntax-highlighting.\n\n"
-		printf "run:"
+		printf "${RED}Directory fast-syntax-highlighting already exists, will not install fast-syntax-highlighting.${NC}\n\n"
+		printf "${REDU}run:${NC}"
 		printf "git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git /usr/share/fast-syntax-highlighting"
-		printf "to manually install it instead\n\n"
+		printf "${REDU}to manually install it instead${NC}\n\n"
 	else
 		sudo mkdir /usr/share/fast-syntax-highlighting
 
 		if [ "$gitinstalled" = true ]; then
 			sudo git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git /usr/share/fast-syntax-highlighting
 		else
-			printf "git is not installed on this system and required to install this file.\n\n"
-			printf "Do you wish to install git now?\n\n"
+			printf "${RED}git is not installed on this system and required to install this file.${NC}\n\n"
+			printf "${GREEN}Do you wish to install git now?${NC}\n\n"
 			select yn in "Yes" "No"; do
 				case $yn in
 				Yes)
@@ -447,21 +428,18 @@ if [ "$fsyn" = true ]; then
 					break
 					;;
 				No)
-					printf "run:"
+					printf "${REDU}run:${NC}"
 					printf "\ngit clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git /usr/share/fast-syntax-highlighting"
-					printf "to manually install it instead\n\n"
+					printf "${REDU}to manually install it instead${NC}\n\n"
 					break
 					;;
 				esac
 			done
 		fi
 	fi
-else
-	printf "how did u break my script :/"
-	printf "\n\n"
 fi
 
-printf "install zshrc. continue?\n\n"
+printf "${GREEN}install zshrc. continue?${NC}\n\n"
 select yn in "Yes" "No"; do
 	case $yn in
 	Yes)
@@ -469,15 +447,15 @@ select yn in "Yes" "No"; do
 		break
 		;;
 	No)
-		printf "run:\n"
+		printf "${REDU}run:${NC}\n"
 		printf "curl https://raw.githubusercontent.com/Joseos123/shell/main/linux/zshrc --output ~/.zshrc\n"
-		printf "to manually install it instead\n\n"
+		printf "${REDU}to manually install it instead${NC}\n\n"
 		break
 		;;
 	esac
 done
 
-printf "install starship?/n/n"
+printf "${GREEN}install starship?${NC}\n\n"
 select yn in "Yes" "No"; do
 	case $yn in
 	Yes)
@@ -497,17 +475,13 @@ if [ "$istar" = true ]; then
 
 elif [ "$istar" = false ]; then
 	stari=false
-	printf "run:\n"
+	printf "${REDU}run:${NC}\n"
 	echo "sh -c '$(curl -fsSL https://starship.rs/install.sh)'"
-	printf "\nto manually install it instead\n\n"
-
-else
-	printf "how did u break my script :/"
-	printf "\n\n"
+	printf "\n${REDU}to manually install it instead${NC}\n\n"
 fi
 
 if [ "$stari" = true ]; then
-	printf "install starship config. continue?\n\n"
+	printf "${GREEN}install starship config. continue?${NC}\n\n"
 	select yn in "Yes" "No"; do
 		case $yn in
 		Yes)
@@ -533,35 +507,7 @@ if [ "$starc" = true ]; then
 	fi
 fi
 
-if [ "$os" = Macos ]; then
-	printf "would you like to install hr?\n"
-	select yn in "Yes" "No"; do
-		case $yn in
-		Yes)
-			installhr=true
-			break
-			;;
-		No)
-			installhr=false
-			break
-			;;
-		esac
-	done
-fi
-
-if [ "$installhr" = true ]; then
-	if [ -d "/usr/share/fast-syntax-highlighting" ]; then
-		printf "Directory fast-syntax-highlighting already exists, will not install fast-syntax-highlighting.\n\n"
-		printf "run:"
-		printf "git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git /usr/share/fast-syntax-highlighting"
-		printf "to manually install it instead\n\n"
-	else
-		sudo mkdir /usr/share/hr
-		sudo curl https://raw.githubusercontent.com/LuRsT/hr/master/hr --output /usr/share/hr/hr
-	fi
-fi
-
-printf "are you on torrentbox?"
+printf "${PINK}are you on torrentbox?${NC}"
 select yn in "Yes" "No"; do
 	case $yn in
 	Yes)
@@ -576,7 +522,7 @@ select yn in "Yes" "No"; do
 done
 
 if [ "$torrentbox" = true ]; then
-	printf "\n\ndo you want the flexget config file?"
+	printf "\n\n${GREEN}do you want the flexget config file?${NC}"
 	select yn in "Yes" "No"; do
 		case $yn in
 		Yes)
@@ -590,7 +536,7 @@ if [ "$torrentbox" = true ]; then
 		esac
 	done
 
-	printf "\n\ndo you want the transmission config file?"
+	printf "\n\n${GREEN}do you want the transmission config file?${NC}"
 	select yn in "Yes" "No"; do
 		case $yn in
 		Yes)
@@ -604,7 +550,7 @@ if [ "$torrentbox" = true ]; then
 		esac
 	done
 
-	printf "\n\ndo you want the fstab file?"
+	printf "\n\n${GREEN}do you want the fstab file?${NC}"
 	select yn in "Yes" "No"; do
 		case $yn in
 		Yes)
@@ -620,26 +566,25 @@ if [ "$torrentbox" = true ]; then
 fi
 
 if [ "$flexgetfile" = true ]; then
-	printf "\n\nuse this command in the flexget server. we use /etc/flexget \n\n"
+	printf "\n\n${GREEN}use this command in the flexget server.${NC} ${REDU}we use /etc/flexget${NC}\n\n"
 	printf "\ncurl https://raw.githubusercontent.com/Joseos123/shell/main/linux/config.yml --output config.yml\n"
 fi
 
 if [ "$transmissionfile" = true ]; then
-	printf "\n\nuse this command in the flexget server. we use ~/.config/transmission-daemon/ \n\n"
+	printf "\n\n${GREEN}use this command in the flexget server.${NC} ${REDU}we use ~/.config/transmission-daemon/${NC}\n\n"
 	printf "\ncurl https://raw.githubusercontent.com/Joseos123/shell/main/linux/settings.json --output settings.json\n"
 fi
 
 if [ "$fstabfile" = true ]; then
-	printf "\n\nshove this into your fstab:\n\n"
-	curl https://raw.githubusercontent.com/Joseos123/shell/main/linux/fstab
+	printf "\n\n${GREEN}shove this into your fstab:${NC}\n\n"
+	printf "\ncurl https://raw.githubusercontent.com/Joseos123/shell/main/linux/fstab\n"
 fi
 
 if [ "$yessus" = yes ]; then
-	printf "Would you like to make zsh the default shell?"
+	printf "${GREEN}Would you like to make zsh the default shell?${NC}"
 	select yn in "Yes" "No"; do
 		case $yn in
 		Yes)
-			# trunk-ignore(shellcheck/SC2046)
 			chsh -s $(which zsh)
 			break
 			;;
@@ -650,7 +595,7 @@ fi
 
 # offer to install iterm2 shell integration
 if [ "$os" = Macos ]; then
-	printf "Would you like to install iterm2 shell integration?"
+	printf "${GREEN}Would you like to install iterm2 shell integration?${NC}"
 	select yn in "Yes" "No"; do
 		case $yn in
 		Yes)
@@ -664,13 +609,9 @@ fi
 
 # offer to install cli tools as last step
 # this is as cli tools take awhile to install and often requires the user to restart their system
-if [ "$os" = Macos ]; then
-	if [ "$clitoolsinstalled" = false ]; then
-		xcode-select --install
-		printf "\n\nhave a nice day!"
-	else
-		printf "\n\nhave a nice day!"
-	fi
+if [ "$os" = Macos ] && [ "$clitoolsinstalled" = false ]; then
+	xcode-select --install
+	printf "\n\nhave a nice day!"
 else
 	printf "\n\nhave a nice day!"
 fi

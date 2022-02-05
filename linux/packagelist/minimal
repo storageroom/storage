@@ -8,3 +8,4 @@ mc
 python3
 python3-pip
 build-essential
+asciinema
