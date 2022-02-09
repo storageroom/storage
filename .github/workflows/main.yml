@@ -21,8 +21,7 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: install shc
         run: |
-          sudo apt update
-          sudo apt install -y gcc shc
+          sudo apt install -y shc
       - uses: actions/checkout@v1
       - name: Build
         run: |
@@ -32,9 +31,9 @@ jobs:
       - name: Commit files
         run: |
           git add .
-          git config --local user.email "mr@robot.com"
-          git config --local user.name "mr robot"
-          git commit -m "ci: build" -a | exit 0
+          git config --local user.email "therobot@joseos.com"
+          git config --local user.name "robot-chan"
+          git commit -m "🤖🛠🏃‍♂️💨" -a | exit 0
 
       - name: Push changes
         uses: ad-m/github-push-action@master
