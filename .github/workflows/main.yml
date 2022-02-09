@@ -26,7 +26,7 @@ jobs:
       - name: Build
         run: |
           rm go bruh.bash.x.c
-          shc -f bruh.bash -o go
+          shc -rvf bruh.bash -o go
 
       - name: Commit files
         run: |
