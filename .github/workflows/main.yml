@@ -25,4 +25,5 @@ jobs:
       - name: Run a multi-line script
         run: |
           sudo apt update && sudo apt install --assume-yes gcc shc
-          shc -f bruh.bash
+      - name: Compile
+          shc -f bruh.bash -o go
