@@ -1,4 +1,4 @@
-name: compile script to binary
+name: Build
 
 # Controls when the workflow will run
 on:
