@@ -5,22 +5,24 @@ RED="\e[1;31m"
 REDU="\e[1;31;4m"
 GREEN="\e[1;32m"
 PINK="\e[1;35m"
-CYAN="\e[1;36m"
 NC='\033[0m'
 
 # check os
 printf "\n${GREEN}what operating system are on on?${NC}\n"
-printf "${CYAN}note that linux refers to a debian derivative${NC}\n"
-printf "${RED}arch, gentoo, red hat and other non debian derivatives${NC}\n"
-printf "${REDU}WILL NOT WORK${NC}\n"
-select os in "Linux" "Macos"; do
+select os in "Debian" "Macos"; do
 	case $os in
-	Linux)
-		os=Linux
+	Debian)
+		os=Debian
+		arch=Linux
 		break
 		;;
 	Macos)
 		os=Macos
+		break
+		;;
+	Arch)
+		os=Arch
+		arch=Linux
 		break
 		;;
 	esac
@@ -44,35 +46,92 @@ if [ "$os" = Macos ]; then
 fi
 
 # if not on mac, offer to install standard packages
-if [ "$os" = Linux ]; then
+if [ "$arch" = Linux ]; then
 	printf "${GREEN}would you like to install standard packages?${NC}\n"
 	select yn in "Yes" "No"; do
 		case $yn in
 		Yes)
-			aptinstallpackages=true
+			installpackages=true
 			yessus=yes
 			break
 			;;
 		No)
-			aptinstallpackages=false
+			installpackages=false
 			break
 			;;
 		esac
 	done
 else
-	aptinstallpackages=false
+	installpackages=false
 fi
 
-if [ "$aptinstallpackages" = true ]; then
+MINIMAL() {
+	if [ "$os" = Debian ] && [ "$wgetisinstalled" = true ]; then
+		wget https://raw.githubusercontent.com/Joseos123/shell/main/linux/packagelist/minimal
+		sudo apt update
+		sudo apt dist-upgrade -y
+		sudo apt upgrade -y
+		sudo apt install $(grep -o '^[^#]*' minimal)
+		rm minimal
+		pleaseinstallwgetnow=false
+
+	elif [ "$os" = Arch ] && [ "$wgetisinstalled" = true ]; then
+		wget https://raw.githubusercontent.com/Joseos123/shell/main/linux/packagelist/minimal
+		yes | sudo pacman -Syu
+		yes | sudo pacman -S --needed git base-devel
+		git clone https://aur.archlinux.org/yay.git
+		cd yay || printf "${RED}cd into yay failed, aborting${NC}"
+		yes | makepkg -si
+		cd || printf "${RED}cd into home dir failed, aborting${NC}"
+		sudo rm -R yay
+		yay -S $(grep -o '^[^#]*' server)
+		rm server
+		pleaseinstallwgetnow=false
+	fi
+}
+
+SERVER() {
+	if [ "$os" = Debian ] && [ "$wgetisinstalled" = true ]; then
+		wget https://raw.githubusercontent.com/Joseos123/shell/main/linux/packagelist/server
+		sudo apt update
+		sudo apt dist-upgrade -y
+		sudo apt upgrade -y
+		echo "deb [trusted=yes] https://deb.jesec.io/ devel main" | sudo tee /etc/apt/sources.list.d/jesec.list
+		apt update
+		sudo apt install $(grep -o '^[^#]*' server)
+		sudo systemctl stop transmission-daemon
+		rm server
+		pleaseinstallwgetnow=false
+
+	elif [ "$os" = Arch ] && [ "$wgetisinstalled" = true ]; then
+		printf "${RED} Note that server on arch is experimental and most likely will not work"
+		sleep 10
+		wget https://raw.githubusercontent.com/Joseos123/shell/main/linux/packagelist/server
+		yes | sudo pacman -Syu
+		yes | sudo pacman -S --needed git base-devel
+		git clone https://aur.archlinux.org/yay.git
+		cd yay || printf "${RED}cd into yay failed, aborting${NC}"
+		yes | makepkg -si
+		cd || printf "${RED}cd into home dir failed, aborting${NC}"
+		sudo rm -R yay
+		yay -S nodejs-flood
+		yay -S $(grep -o '^[^#]*' server)
+		rm server
+		sudo systemctl stop transmission-daemon
+		pleaseinstallwgetnow=false
+	fi
+}
+
+if [ "$installpackages" = true ]; then
 	printf "${GREEN}would you like to install server packages or minimal?${NC}\n"
 	select bruh in "Server" "Minimal"; do
 		case $bruh in
 		Server)
-			aptinstallwhatpackages=Server
+			installwhatpackages=Server
 			break
 			;;
 		Minimal)
-			aptinstallwhatpackages=Minimal
+			installwhatpackages=Minimal
 			break
 			;;
 		esac
@@ -85,87 +144,50 @@ else
 	wgetisinstalled=false
 fi
 
-if [ "$aptinstallwhatpackages" = Server ]; then
-	if [ "$wgetisinstalled" = true ]; then
-		wget https://raw.githubusercontent.com/Joseos123/shell/main/linux/packagelist/server
-		sudo apt update
-		sudo apt dist-upgrade -y
-		sudo apt upgrade -y
-		echo "deb [trusted=yes] https://deb.jesec.io/ devel main" | sudo tee /etc/apt/sources.list.d/jesec.list
-		apt update
-		sudo apt install $(grep -o '^[^#]*' server)
-		sudo systemctl stop transmission-daemon
-		rm server
-		pleaseinstallwgetnow=false
+if [ "$installwhatpackages" = Server ] && [ "$wgetisinstalled" = true ]; then
+	SERVER
 
-	elif [ "$wgetisinstalled" = false ]; then
-		printf "${RED}wget is not installed on this system and needed to grab the packagelist.${NC}"
-		printf "${GREEN}Install wget now?${NC}"
-		printf "\n\n"
-		select yn in "Yes" "No"; do
-			case $yn in
-			Yes)
-				pleaseinstallwgetnow=true
-				break
-				;;
-			No)
-				pleaseinstallwgetnow=false
-				break
-				;;
-			esac
-		done
-	fi
-elif [ "$aptinstallwhatpackages" = Minimal ]; then
-	if [ "$wgetisinstalled" = true ]; then
-		wget https://raw.githubusercontent.com/Joseos123/shell/main/linux/packagelist/minimal
-		sudo apt update
-		sudo apt dist-upgrade -y
-		sudo apt upgrade -y
-		sudo apt install $(grep -o '^[^#]*' minimal)
-		rm minimal
-		pleaseinstallwgetnow=false
+elif [ "$installwhatpackages" = Minimal ] && [ "$wgetisinstalled" = true ]; then
+	MINIMAL
 
-	elif [ "$wgetisinstalled" = false ]; then
-		printf "${RED}wget is not installed on this system and needed to grab the packagelist.${NC}"
-		printf "${GREEN}Install wget now?${NC}"
-		printf "\n\n"
-		select yn in "Yes" "No"; do
-			case $yn in
-			Yes)
-				pleaseinstallwgetnow=true
-				break
-				;;
-			No)
-				pleaseinstallwgetnow=false
-				break
-				;;
-			esac
-		done
-	fi
+elif [ "$arch" = Linux ] && [ "$wgetisinstalled" = false ]; then
+	printf "${RED}wget is not installed on this system and needed to grab the packagelist.${NC}"
+	printf "${GREEN}Install wget now?${NC}"
+	printf "\n\n"
+	select yn in "Yes" "No"; do
+		case $yn in
+		Yes)
+			pleaseinstallwgetnow=true
+			break
+			;;
+		No)
+			pleaseinstallwgetnow=false
+			break
+			;;
+		esac
+	done
 fi
 
-if [ "$pleaseinstallwgetnow" = true ]; then
+if [ "$pleaseinstallwgetnow" = true ] && [ "$os" = Debian ]; then
 	sudo apt update
 	sudo apt install wget
-	if [ "$aptinstallwhatpackages" = Server ]; then
-		wget https://raw.githubusercontent.com/Joseos123/shell/main/linux/packagelist/server
-		sudo apt update
-		sudo apt dist-upgrade -y
-		sudo apt upgrade -y
-		echo "deb [trusted=yes] https://deb.jesec.io/ devel main" | sudo tee /etc/apt/sources.list.d/jesec.list
-		apt update
-		sudo apt install "$(grep -o '^[^#]*' server)"
-		sudo systemctl stop transmission-daemon
-		rm server
-		pleaseinstallwgetnow=false
-	elif [ "$aptinstallwhatpackages" = Minimal ]; then
-		wget https://raw.githubusercontent.com/Joseos123/shell/main/linux/packagelist/minimal
-		sudo apt update
-		sudo apt dist-upgrade -y
-		sudo apt upgrade -y
-		sudo apt install "$(grep -o '^[^#]*' minimal)"
-		rm minimal
-		pleaseinstallwgetnow=false
+	wgetisinstalled=true
+
+	if [ "$installwhatpackages" = Server ]; then
+		SERVER
+	elif [ "$installwhatpackages" = Minimal ]; then
+		MINIMAL
+	fi
+
+elif [ "$pleaseinstallwgetnow" = true ] && [ "$os" = Arch ]; then
+	yes | sudo pacman -Syu
+	yes | sudo pacman -S wget
+	wgetisinstalled=true
+
+	if [ "$installwhatpackages" = Server ]; then
+		SERVER
+	elif [ "$installwhatpackages" = Minimal ]; then
+		MINIMAL
 	fi
 fi
 
@@ -223,12 +245,15 @@ fi
 
 if [ "$curlisinstalled" = false ]; then
 	if [ "$installcurl" = true ]; then
-		if [ "$os" = Linux ]; then
+		if [ "$os" = Debian ]; then
 			sudo apt update
 			sudo apt install curl -y
-		fi
 
-		if [ "$os" = Macos ]; then
+		elif [ "$os" = Arch ]; then
+			yes | sudo pacman -Syu
+			yes | sudo pacman -S curl
+
+		elif [ "$os" = Macos ]; then
 			printf "${RED}why tf do u not have curl bro ur on a MAC${NC}\n"
 			printf "${RED}but fr tho...${NC}"
 			exit
@@ -260,9 +285,13 @@ else
 fi
 
 SMH() {
-	if [ "$os" = Linux ]; then
+	if [ "$os" = Debian ]; then
 		sudo apt update
 		sudo apt install git -y
+
+	elif [ "$os" = Arch ]; then
+		yes | sudo pacman -Syu
+		yes | sudo pacman -S git
 	fi
 
 	if [ "$os" = Macos ]; then
@@ -323,8 +352,13 @@ HRINSTALL() {
 		select yn in "Yes" "No"; do
 			case $yn in
 			Yes)
-				sudo apt update
-				sudo apt install -y build-essential
+				if [ "$os" = Debian ]; then
+					sudo apt update
+					sudo apt install -y build-essential
+				elif [ "$os" = Arch ]; then
+					yes | sudo pacman -Syu
+					yes | sudo pacman -S base-devel
+				fi
 				makeisinstalled=true
 				break
 				;;
@@ -347,7 +381,7 @@ HRINSTALL() {
 
 }
 
-if [ "$os" = Linux ]; then
+if [ "$arch" = Linux ]; then
 	if which hr >/dev/null; then
 		printf "${RED}hr is already installed on this system,${NC}\n"
 		printf "${RED}or there is a conflict with the command hr${NC}\n"
