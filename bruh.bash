@@ -209,7 +209,7 @@ if [ "$installwhich" = true ]; then
 		sudo apt install which
 	elif [ "$os" = Arch ]; then
 		sudo pacman -Sy
-		sudo pacman -S which
+		sudo pacman -S --noconfirm which
 	elif [ "$os" = Macos ]; then
 		brew update
 		brew install gnu-which
