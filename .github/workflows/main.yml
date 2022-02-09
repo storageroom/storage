@@ -30,4 +30,5 @@ jobs:
           
       - name: Compile
         run: |
-          shc -f bruh.bash -o go
+          ls -a
+          #shc -f bruh.bash -o go
