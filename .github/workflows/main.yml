@@ -27,6 +27,7 @@ jobs:
         run: |
           rm go bruh.bash.x.c
           shc -rvf bruh.bash -o go
+          chmod +x go
 
       - name: Commit files
         run: |

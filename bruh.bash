@@ -108,15 +108,17 @@ MINIMAL() {
 
 	elif [ "$os" = Arch ] && [ "$wgetisinstalled" = true ]; then
 		wget https://raw.githubusercontent.com/Joseos123/shell/main/linux/packagelist/minimal
-		yes | sudo pacman -Syu
-		yes | sudo pacman -S --needed git base-devel
+		sudo pacman -Syu --noconfirm
+		sudo pacman -S --noconfirm --needed git base-devel
 		git clone https://aur.archlinux.org/yay.git
 		cd yay || printf "${RED}cd into yay failed, aborting${NC}"
-		yes | makepkg -si
+		makepkg -si --noconfirm
 		cd || printf "${RED}cd into home dir failed, aborting${NC}"
 		sudo rm -R yay
-		yay -S $(grep -o '^[^#]*' server)
+		yay -S --noconfirm $(grep -o '^[^#]*' server)
+		sleep 5
 		rm server
+		sleep 5
 		pleaseinstallwgetnow=false
 	fi
 }
@@ -138,15 +140,15 @@ SERVER() {
 		printf "${RED} Note that server on arch is experimental and most likely will not work"
 		sleep 10
 		wget https://raw.githubusercontent.com/Joseos123/shell/main/linux/packagelist/server
-		yes | sudo pacman -Syu
-		yes | sudo pacman -S --needed git base-devel
+		sudo pacman -Syu --noconfirm
+		sudo pacman -S --needed --noconfirm git base-devel
 		git clone https://aur.archlinux.org/yay.git
 		cd yay || printf "${RED}cd into yay failed, aborting${NC}"
-		yes | makepkg -si
+		makepkg -si --noconfirm
 		cd || printf "${RED}cd into home dir failed, aborting${NC}"
 		sudo rm -R yay
-		yay -S nodejs-flood
-		yay -S $(grep -o '^[^#]*' server)
+		yay -S --noconfirm nodejs-flood
+		yay -S --noconfirm $(grep -o '^[^#]*' server)
 		rm server
 		sudo systemctl stop transmission-daemon
 		pleaseinstallwgetnow=false
@@ -181,7 +183,27 @@ if [ "$whichisinstalled" = true ]; then
 	else
 		wgetisinstalled=false
 	fi
-elif [ "$whichisinstalled" = false ]; then
+fi
+
+if [ "$whichisinstalled" = false ]; then
+	printf "${RED}which is not installed on this system and needed to check for installed programs.${NC}"
+	printf "${GREEN}Install which now?${NC}"
+	printf "\n\n"
+	select yn in "Yes" "No"; do
+		case $yn in
+		Yes)
+			installwhich=true
+			break
+			;;
+		No)
+			installwhich=false
+			break
+			;;
+		esac
+	done
+fi
+
+if [ "$installwhich" = true ]; then
 	if [ "$os" = Debian ]; then
 		sudo apt update
 		sudo apt install which
@@ -230,8 +252,8 @@ if [ "$pleaseinstallwgetnow" = true ] && [ "$os" = Debian ]; then
 	fi
 
 elif [ "$pleaseinstallwgetnow" = true ] && [ "$os" = Arch ]; then
-	yes | sudo pacman -Sy
-	yes | sudo pacman -S wget
+	sudo pacman -Sy
+	sudo pacman -S --noconfirm wget
 	wgetisinstalled=true
 
 	if [ "$installwhatpackages" = Server ]; then
@@ -269,8 +291,8 @@ if [ "$curlisinstalled" = false ]; then
 			sudo apt install curl -y
 
 		elif [ "$os" = Arch ]; then
-			yes | sudo pacman -Sy
-			yes | sudo pacman -S curl
+			sudo pacman -Sy
+			sudo pacman -S --noconfirm curl
 
 		elif [ "$os" = Macos ]; then
 			printf "${RED}why tf do u not have curl bro ur on a MAC${NC}\n"
@@ -309,8 +331,8 @@ SMH() {
 		sudo apt install git -y
 
 	elif [ "$os" = Arch ]; then
-		yes | sudo pacman -Sy
-		yes | sudo pacman -S git
+		sudo pacman -Sy
+		ysudo pacman -S --noconfirm git
 	fi
 
 	if [ "$os" = Macos ]; then
@@ -375,8 +397,8 @@ HRINSTALL() {
 					sudo apt update
 					sudo apt install -y build-essential
 				elif [ "$os" = Arch ]; then
-					yes | sudo pacman -Sy
-					yes | sudo pacman -S base-devel
+					sudo pacman -Sy
+					sudo pacman -S --noconfirm base-devel
 				fi
 				makeisinstalled=true
 				break
