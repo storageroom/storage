@@ -28,7 +28,9 @@ jobs:
         run: |
           rm go bruh.bash.x.c
           shc -f bruh.bash -o go
-
+          touch lmao.bait
+          touch hahah
+          
       - name: Commit files
         run: |
           git add .
