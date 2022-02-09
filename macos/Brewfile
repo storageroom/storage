@@ -52,6 +52,7 @@ brew "imagemagick"
 brew "sox"
 brew "hr"
 brew "asciinema"
+brew "shc"
 
 # Fonts
 cask "font-jetbrains-mono"
