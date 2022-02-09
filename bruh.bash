@@ -9,7 +9,7 @@ NC='\033[0m'
 
 # check os
 printf "\n${GREEN}what operating system are on on?${NC}\n"
-select os in "Debian" "Macos"; do
+select os in "Debian" "Macos" "Arch Linux"; do
 	case $os in
 	Debian)
 		os=Debian
