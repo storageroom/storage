@@ -332,7 +332,7 @@ SMH() {
 
 	elif [ "$os" = Arch ]; then
 		sudo pacman -Sy
-		ysudo pacman -S --noconfirm git
+		sudo pacman -S --noconfirm git
 	fi
 
 	if [ "$os" = Macos ]; then
