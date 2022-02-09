@@ -45,6 +45,37 @@ if [ "$os" = Macos ]; then
 	done
 fi
 
+if [ "$installhomebrew" = true ]; then
+	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+	homebrewinstalled=true
+else
+	homebrewinstalled=false
+fi
+
+# Offer to install Brewfile
+if [ "$homebrewinstalled" = true ]; then
+	printf "${GREEN}Do you want to install from Brewfile?${NC}\n\n"
+	select yn in "Yes" "No"; do
+		case $yn in
+		Yes)
+			brewfileinstall=true
+			break
+			;;
+		No)
+			brewfileinstall=false
+			break
+			;;
+		esac
+	done
+else
+	brewfileinstall=false
+fi
+
+if [ "$brewfileinstall" = true ]; then
+	curl https://raw.githubusercontent.com/Joseos123/shell/main/macos/Brewfile --output Brewfile
+	brew bundle
+fi
+
 # if not on mac, offer to install standard packages
 if [ "$arch" = Linux ]; then
 	printf "${GREEN}would you like to install standard packages?${NC}\n"
@@ -138,10 +169,29 @@ if [ "$installpackages" = true ]; then
 	done
 fi
 
-if which wget >/dev/null; then
-	wgetisinstalled=true
+if which which >/dev/null; then
+	whichisinstalled=true
 else
-	wgetisinstalled=false
+	whichisinstalled=false
+fi
+
+if [ "$whichisinstalled" = true ]; then
+	if which wget >/dev/null; then
+		wgetisinstalled=true
+	else
+		wgetisinstalled=false
+	fi
+elif [ "$whichisinstalled" = false ]; then
+	if [ "$os" = Debian ]; then
+		sudo apt update
+		sudo apt install which
+	elif [ "$os" = Arch ]; then
+		sudo pacman -Sy
+		sudo pacman -S which
+	elif [ "$os" = Macos ]; then
+		brew update
+		brew install gnu-which
+	fi
 fi
 
 if [ "$installwhatpackages" = Server ] && [ "$wgetisinstalled" = true ]; then
@@ -180,7 +230,7 @@ if [ "$pleaseinstallwgetnow" = true ] && [ "$os" = Debian ]; then
 	fi
 
 elif [ "$pleaseinstallwgetnow" = true ] && [ "$os" = Arch ]; then
-	yes | sudo pacman -Syu
+	yes | sudo pacman -Sy
 	yes | sudo pacman -S wget
 	wgetisinstalled=true
 
@@ -189,37 +239,6 @@ elif [ "$pleaseinstallwgetnow" = true ] && [ "$os" = Arch ]; then
 	elif [ "$installwhatpackages" = Minimal ]; then
 		MINIMAL
 	fi
-fi
-
-if [ "$installhomebrew" = true ]; then
-	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-	homebrewinstalled=true
-else
-	homebrewinstalled=false
-fi
-
-# Offer to install Brewfile
-if [ "$homebrewinstalled" = true ]; then
-	printf "${GREEN}Do you want to install from Brewfile?${NC}\n\n"
-	select yn in "Yes" "No"; do
-		case $yn in
-		Yes)
-			brewfileinstall=true
-			break
-			;;
-		No)
-			brewfileinstall=false
-			break
-			;;
-		esac
-	done
-else
-	brewfileinstall=false
-fi
-
-if [ "$brewfileinstall" = true ]; then
-	curl https://raw.githubusercontent.com/Joseos123/shell/main/macos/Brewfile --output Brewfile
-	brew bundle
 fi
 
 # install zsh plugins, zshrc and starship.toml
@@ -250,7 +269,7 @@ if [ "$curlisinstalled" = false ]; then
 			sudo apt install curl -y
 
 		elif [ "$os" = Arch ]; then
-			yes | sudo pacman -Syu
+			yes | sudo pacman -Sy
 			yes | sudo pacman -S curl
 
 		elif [ "$os" = Macos ]; then
@@ -290,7 +309,7 @@ SMH() {
 		sudo apt install git -y
 
 	elif [ "$os" = Arch ]; then
-		yes | sudo pacman -Syu
+		yes | sudo pacman -Sy
 		yes | sudo pacman -S git
 	fi
 
@@ -356,7 +375,7 @@ HRINSTALL() {
 					sudo apt update
 					sudo apt install -y build-essential
 				elif [ "$os" = Arch ]; then
-					yes | sudo pacman -Syu
+					yes | sudo pacman -Sy
 					yes | sudo pacman -S base-devel
 				fi
 				makeisinstalled=true
