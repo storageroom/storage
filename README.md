@@ -1,3 +1,0 @@
-# shell
-
-file deposit repo
