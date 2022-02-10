@@ -186,7 +186,7 @@ if [ "$whichisinstalled" = true ]; then
 fi
 
 if [ "$whichisinstalled" = false ]; then
-	printf "${RED}which is not installed on this system and needed to check for installed programs.${NC}"
+	printf "${RED}\nwhich is not installed on this system and needed to check for installed programs.\n${NC}"
 	printf "${GREEN}Install which now?${NC}"
 	printf "\n\n"
 	select yn in "Yes" "No"; do
@@ -223,7 +223,7 @@ elif [ "$installwhatpackages" = Minimal ] && [ "$wgetisinstalled" = true ]; then
 	MINIMAL
 
 elif [ "$arch" = Linux ] && [ "$wgetisinstalled" = false ]; then
-	printf "${RED}wget is not installed on this system and needed to grab the packagelist.${NC}"
+	printf "${RED}\nwget is not installed on this system and needed to grab the packagelist.\n${NC}"
 	printf "${GREEN}Install wget now?${NC}"
 	printf "\n\n"
 	select yn in "Yes" "No"; do
@@ -309,7 +309,7 @@ fi
 if which git >/dev/null; then
 	gitinstalled=true
 else
-	printf "${RED}git is not installed on this system and we reccomend you install it.${NC}"
+	printf "${RED}\ngit is not installed on this system and we reccomend you install it.\n${NC}"
 	printf "${GREEN}Do you wish to install git now?${NC}\n\n"
 	select yn in "Yes" "No"; do
 		case $yn in
@@ -389,7 +389,7 @@ HRINSTALL() {
 	else
 		makeisinstalled=false
 		printf "${RED}\n\nmake is not installed on this system and is needed for this step${NC}"
-		printf "${GREEN}Do you wish to install make now?${NC}\n\n"
+		printf "${GREEN}\nDo you wish to install make now?${NC}\n\n"
 		select yn in "Yes" "No"; do
 			case $yn in
 			Yes)
@@ -414,8 +414,8 @@ HRINSTALL() {
 		lmaolmaolmao="PREFIX=/usr/share"
 		sed -i "4s/.*/$lmaolmaolmao/" Makefile
 		sudo make install
-		printf "${GREEN}Install of hr done${NC}"
-		printf "${GREEN}removing source files${NC}"
+		printf "${GREEN}\nInstall of hr done${NC}"
+		printf "${GREEN}\nremoving source files${NC}"
 		sleep 5
 		sudo rm -R hr
 	fi
@@ -424,12 +424,12 @@ HRINSTALL() {
 
 if [ "$arch" = Linux ]; then
 	if which hr >/dev/null; then
-		printf "${RED}hr is already installed on this system,${NC}\n"
-		printf "${RED}or there is a conflict with the command hr${NC}\n"
+		printf "${RED}\nhr is already installed on this system,\n${NC}\n"
+		printf "${RED}or there is a conflict with the command hr\n${NC}\n"
 		printf "${RED}aborting install of hr \n\n"
 		sleep 5
 	else
-		printf "${GREEN}install hr?${NC}"
+		printf "${GREEN}\ninstall hr?\n${NC}"
 		select yn in "Yes" "No"; do
 			case $yn in
 			Yes)
@@ -574,11 +574,11 @@ else
 fi
 
 if [ "$starc" = true ]; then
-	if [ -d "$HOME/.config" ]; then
+	if [ -d ".config" ]; then
 		curl https://raw.githubusercontent.com/Joseos123/shell/main/macos/starship.toml --output $HOME/.config/starship.toml
 	else
-		sudo mkdir $HOME/.config
-		curl https://raw.githubusercontent.com/Joseos123/shell/main/macos/starship.toml --output $HOME/.config/starship.toml
+		sudo mkdir .config
+		curl https://raw.githubusercontent.com/Joseos123/shell/main/macos/starship.toml --output .config/starship.toml
 	fi
 fi
 
@@ -660,7 +660,26 @@ if [ "$yessus" = yes ]; then
 	select yn in "Yes" "No"; do
 		case $yn in
 		Yes)
-			chsh -s $(which zsh)
+			if [ "$(which zsh)" = "/bin/zsh" ]; then
+				chsh -s /bin/zsh
+			elif [ "$(which zsh)" = "/usr/bin/zsh" ]; then
+				chsh -s /usr/bin/zsh
+			else
+				printf "\n\n${RED}zsh could not be found"
+				printf "\ncontinue anyway with path of zsh as${NC}"
+				printf "\N${REDU}/bin/zsh?${NC}"
+				select yn in "Yes" "No"; do
+					case $yn in
+					Yes)
+						chsh -s /bin/zsh
+						break
+						;;
+					No)
+						break
+						;;
+					esac
+				done
+			fi
 			break
 			;;
 		No) break ;;
