@@ -5,6 +5,9 @@ on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches: [main]
+    tags:
+      - "v*.*.*"
+      - "beta"
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -28,6 +31,5 @@ jobs:
           shc -rvf bruh.bash -o go
       - name: Release
         uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
         with:
           files: go
