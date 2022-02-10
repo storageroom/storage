@@ -7,8 +7,7 @@ on:
     branches: [main]
     tags:
       - "v*.*.*"
-      - "beta"
-
+      
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -29,7 +28,18 @@ jobs:
       - name: Build
         run: |
           shc -rvf bruh.bash -o go
+          rm bruh.bash.x.c
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           files: go
+      - name: Commit files
+        run: |
+          git add .
+          git config --local user.email "joshua@joseos.com"
+          git config --local user.name "joshybot🤖"
+          git commit -m "🤖" -a | exit 0
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
