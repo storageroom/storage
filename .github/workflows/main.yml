@@ -1,14 +1,11 @@
 name: Build
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches: [main]
     tags:
       - "v*.*.*"
-      - "beta"
-
+      
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -22,14 +19,29 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Runs a set of commands using the runners shell
+      - uses: actions/checkout@v2
       - name: install shc
         run: |
           sudo apt install -y shc
-      - uses: actions/checkout@v2
+      - name: Pre-Cleanup
+        run: |
+          rm sh
       - name: Build
         run: |
-          shc -rvf bruh.bash -o go
+          shc -rvf bruh.bash -o sh
+      - name: Post-Cleanup
+          rm bruh.bash.x.c
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           files: go
+      - name: Commit
+        run: |
+          git add .
+          git config --local user.email "joshua@joseos.com"
+          git config --local user.name "joshybot🤖"
+          git commit -m "🤖" -a | exit 0
+      - name: Push
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
