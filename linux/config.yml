@@ -1,22 +1,21 @@
 web_server:
-#  bind: 127.0.0.1
+  #  bind: 127.0.0.1
   port: 8443
-  ssl_certificate: '/etc/flexget/bruh.pem'
-  ssl_private_key: '/etc/flexget/haha.key'
+  ssl_certificate: "/etc/flexget/bruh.pem"
+  ssl_private_key: "/etc/flexget/haha.key"
   web_ui: yes
 
 tasks:
   Anime:
     rss: https://subsplease.org/rss/?r=1080
     series:
+      #      - X:
+      #          set:
+      #            path: /mnt/bruh/anime/seasonal/X
 
-#      - X:
-#          set:
-#            path: /mnt/bruh/anime/seasonal/X
-
-#      - X:
-#          set:
-#            path: /mnt/bruh/anime/seasonal/X
+      #      - X:
+      #          set:
+      #            path: /mnt/bruh/anime/seasonal/X
 
       - Arifureta Shokugyou de Sekai Saikyou S2:
           set:
@@ -43,19 +42,18 @@ tasks:
             path: /mnt/bruh/anime/seasonal/Genjitsu Shugi Yuusha no Oukoku Saikenki
 
       - Kimetsu no Yaiba – Yuukaku-hen:
-           set:
+          set:
             path: /mnt/bruh/anime/seasonal/Kimetsu no Yaiba – Yuukaku-hen
 
       - Princess Connect! Re-Dive S2:
-           set:
+          set:
             path: /mnt/bruh/anime/seasonal/Princess Connect! Re-Dive S2
-              
 
     transmission:
-        host: localhost
-        port: 42069
-        username: x
-        password: "x"
+      host: localhost
+      port: 42069
+      username: x
+      password: "x"
 
 schedules:
   - tasks: Anime
