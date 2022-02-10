@@ -216,95 +216,6 @@ if [ "$installwhich" = true ]; then
 	fi
 fi
 
-if [ "$installwhatpackages" = Server ] && [ "$wgetisinstalled" = true ]; then
-	SERVER
-
-elif [ "$installwhatpackages" = Minimal ] && [ "$wgetisinstalled" = true ]; then
-	MINIMAL
-
-elif [ "$arch" = Linux ] && [ "$wgetisinstalled" = false ]; then
-	printf "${RED}\nwget is not installed on this system and needed to grab the packagelist.\n${NC}"
-	printf "${GREEN}Install wget now?${NC}"
-	printf "\n\n"
-	select yn in "Yes" "No"; do
-		case $yn in
-		Yes)
-			pleaseinstallwgetnow=true
-			break
-			;;
-		No)
-			pleaseinstallwgetnow=false
-			break
-			;;
-		esac
-	done
-fi
-
-if [ "$pleaseinstallwgetnow" = true ] && [ "$os" = Debian ]; then
-	sudo apt update
-	sudo apt install wget
-	wgetisinstalled=true
-
-	if [ "$installwhatpackages" = Server ]; then
-		SERVER
-	elif [ "$installwhatpackages" = Minimal ]; then
-		MINIMAL
-	fi
-
-elif [ "$pleaseinstallwgetnow" = true ] && [ "$os" = Arch ]; then
-	sudo pacman -Sy
-	sudo pacman -S --noconfirm wget
-	wgetisinstalled=true
-
-	if [ "$installwhatpackages" = Server ]; then
-		SERVER
-	elif [ "$installwhatpackages" = Minimal ]; then
-		MINIMAL
-	fi
-fi
-
-# install zsh plugins, zshrc and starship.toml
-if which curl >/dev/null; then
-	curlisinstalled=true
-else
-	curlisinstalled=false
-	printf "${RED}\n\ncurl is not installed on this system and is needed for later steps.${NC}"
-	printf "${GREEN}Do you wish to install curl now?${NC}\n\n"
-	select yn in "Yes" "No"; do
-		case $yn in
-		Yes)
-			installcurl=true
-			break
-			;;
-		No)
-			installcurl=false
-			break
-			;;
-		esac
-	done
-fi
-
-if [ "$curlisinstalled" = false ]; then
-	if [ "$installcurl" = true ]; then
-		if [ "$os" = Debian ]; then
-			sudo apt update
-			sudo apt install curl -y
-
-		elif [ "$os" = Arch ]; then
-			sudo pacman -Sy
-			sudo pacman -S --noconfirm curl
-
-		elif [ "$os" = Macos ]; then
-			printf "${RED}why tf do u not have curl bro ur on a MAC${NC}\n"
-			printf "${RED}but fr tho...${NC}"
-			exit
-		fi
-	else
-		printf "${RED}curl is needed for install${NC}"
-		exit
-	fi
-fi
-
 # offer to install git
 if which git >/dev/null; then
 	gitinstalled=true
@@ -381,6 +292,98 @@ if [ "$installgit" = true ]; then
 	gitinstalled=true
 fi
 
+if [ "$installwhatpackages" = Server ] && [ "$wgetisinstalled" = true ]; then
+	SERVER
+
+elif [ "$installwhatpackages" = Minimal ] && [ "$wgetisinstalled" = true ]; then
+	MINIMAL
+
+elif [ "$arch" = Linux ] && [ "$wgetisinstalled" = false ]; then
+	printf "${RED}\nwget is not installed on this system and needed to grab the packagelist.\n${NC}"
+	printf "${GREEN}Install wget now?${NC}"
+	printf "\n\n"
+	select yn in "Yes" "No"; do
+		case $yn in
+		Yes)
+			pleaseinstallwgetnow=true
+			break
+			;;
+		No)
+			pleaseinstallwgetnow=false
+			break
+			;;
+		esac
+	done
+fi
+
+if [ "$pleaseinstallwgetnow" = true ] && [ "$os" = Debian ]; then
+	sudo apt update
+	sudo apt install wget
+	wgetisinstalled=true
+
+	if [ "$installwhatpackages" = Server ]; then
+		SERVER
+	elif [ "$installwhatpackages" = Minimal ]; then
+		MINIMAL
+	fi
+
+elif [ "$pleaseinstallwgetnow" = true ] && [ "$os" = Arch ]; then
+	sudo pacman -Sy
+	sudo pacman -S --noconfirm wget
+	wgetisinstalled=true
+
+	if [ "$installwhatpackages" = Server ]; then
+		SERVER
+	elif [ "$installwhatpackages" = Minimal ]; then
+		MINIMAL
+	fi
+fi
+
+# install zsh plugins, zshrc and starship.toml
+# install curl
+if which curl >/dev/null; then
+	curlisinstalled=true
+else
+	curlisinstalled=false
+	printf "${RED}\n\ncurl is not installed on this system and is needed for later steps.${NC}"
+	printf "${GREEN}Do you wish to install curl now?${NC}\n\n"
+	select yn in "Yes" "No"; do
+		case $yn in
+		Yes)
+			installcurl=true
+			break
+			;;
+		No)
+			installcurl=false
+			break
+			;;
+		esac
+	done
+fi
+
+if [ "$curlisinstalled" = false ]; then
+	if [ "$installcurl" = true ]; then
+		if [ "$os" = Debian ]; then
+			sudo apt update
+			sudo apt install curl -y
+
+		elif [ "$os" = Arch ]; then
+			sudo pacman -Sy
+			sudo pacman -S --noconfirm curl
+
+		elif [ "$os" = Macos ]; then
+			printf "${RED}why tf do u not have curl bro ur on a MAC${NC}\n"
+			printf "${RED}but fr tho...${NC}"
+			exit
+		fi
+	else
+		printf "${RED}curl is needed for install${NC}"
+		exit
+	fi
+fi
+
+# inst
+
 # offer to install hr
 # on mac systems, hr will be installed through brewfile
 HRINSTALL() {
@@ -417,7 +420,7 @@ HRINSTALL() {
 		printf "${GREEN}\nInstall of hr done${NC}"
 		printf "${GREEN}\nremoving source files${NC}"
 		sleep 5
-		sudo rm -R hr
+		rm -rf hr
 	fi
 
 }
@@ -667,7 +670,7 @@ if [ "$yessus" = yes ]; then
 			else
 				printf "\n\n${RED}zsh could not be found"
 				printf "\ncontinue anyway with path of zsh as${NC}"
-				printf "\N${REDU}/bin/zsh?${NC}"
+				printf "\n${REDU}/bin/zsh?\n${NC}"
 				select yn in "Yes" "No"; do
 					case $yn in
 					Yes)
