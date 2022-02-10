@@ -32,10 +32,6 @@ jobs:
       - name: Post-Cleanup
         run: |
           rm bruh.bash.x.c
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: sh
       - name: Commit
         run: |
           git add .
@@ -46,4 +42,7 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: sh
