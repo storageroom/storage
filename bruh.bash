@@ -74,7 +74,7 @@ else
 fi
 
 if [ "$brewfileinstall" = true ]; then
-	curl https://raw.githubusercontent.com/Joseos123/shell/main/macos/Brewfile --output Brewfile
+	curl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/macos/Brewfile --output Brewfile
 	brew bundle
 fi
 
@@ -100,7 +100,7 @@ fi
 
 MINIMAL() {
 	if [ "$os" = Debian ] && [ "$wgetisinstalled" = true ]; then
-		wget https://raw.githubusercontent.com/Joseos123/shell/main/linux/packagelist/minimal
+		wget https://raw.githubusercontent.com/joshhhhyyyy/shell/main/linux/packagelist/minimal
 		sudo apt update
 		sudo apt dist-upgrade -y
 		sudo apt upgrade -y
@@ -109,7 +109,7 @@ MINIMAL() {
 		pleaseinstallwgetnow=false
 
 	elif [ "$os" = Arch ] && [ "$wgetisinstalled" = true ]; then
-		wget https://raw.githubusercontent.com/Joseos123/shell/main/linux/packagelist/minimal
+		wget https://raw.githubusercontent.com/joshhhhyyyy/shell/main/linux/packagelist/minimal
 		sudo pacman -Syu --noconfirm
 		sudo pacman -S --noconfirm --needed git base-devel
 		git clone https://aur.archlinux.org/yay.git
@@ -127,7 +127,7 @@ MINIMAL() {
 
 SERVER() {
 	if [ "$os" = Debian ] && [ "$wgetisinstalled" = true ]; then
-		wget https://raw.githubusercontent.com/Joseos123/shell/main/linux/packagelist/server
+		wget https://raw.githubusercontent.com/joshhhhyyyy/shell/main/linux/packagelist/server
 		sudo apt update
 		sudo apt dist-upgrade -y
 		sudo apt upgrade -y
@@ -141,7 +141,7 @@ SERVER() {
 	elif [ "$os" = Arch ] && [ "$wgetisinstalled" = true ]; then
 		printf "${RED} Note that server on arch is experimental and most likely will not work"
 		sleep 10
-		wget https://raw.githubusercontent.com/Joseos123/shell/main/linux/packagelist/server
+		wget https://raw.githubusercontent.com/joshhhhyyyy/shell/main/linux/packagelist/server
 		sudo pacman -Syu --noconfirm
 		sudo pacman -S --needed --noconfirm git base-devel
 		git clone https://aur.archlinux.org/yay.git
@@ -523,12 +523,12 @@ printf "${GREEN}install zshrc. continue?${NC}\n\n"
 select yn in "Yes" "No"; do
 	case $yn in
 	Yes)
-		curl https://raw.githubusercontent.com/Joseos123/shell/main/linux/zshrc --output ~/.zshrc
+		curl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/linux/zshrc --output ~/.zshrc
 		break
 		;;
 	No)
 		printf "${REDU}run:${NC}\n"
-		printf "curl https://raw.githubusercontent.com/Joseos123/shell/main/linux/zshrc --output ~/.zshrc\n"
+		printf "curl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/linux/zshrc --output ~/.zshrc\n"
 		printf "${REDU}to manually install it instead${NC}\n\n"
 		break
 		;;
@@ -580,10 +580,10 @@ fi
 
 if [ "$starc" = true ]; then
 	if [ -d ".config" ]; then
-		curl https://raw.githubusercontent.com/Joseos123/shell/main/macos/starship.toml --output $HOME/.config/starship.toml
+		curl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/macos/starship.toml --output $HOME/.config/starship.toml
 	else
 		sudo mkdir .config
-		curl https://raw.githubusercontent.com/Joseos123/shell/main/macos/starship.toml --output .config/starship.toml
+		curl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/macos/starship.toml --output .config/starship.toml
 	fi
 fi
 
@@ -647,17 +647,17 @@ fi
 
 if [ "$flexgetfile" = true ]; then
 	printf "\n\n${GREEN}use this command in the flexget server.${NC} ${REDU}we use /etc/flexget${NC}\n\n"
-	printf "\ncurl https://raw.githubusercontent.com/Joseos123/shell/main/linux/config.yml --output config.yml\n"
+	printf "\ncurl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/linux/config.yml --output config.yml\n"
 fi
 
 if [ "$transmissionfile" = true ]; then
 	printf "\n\n${GREEN}use this command in the flexget server.${NC} ${REDU}we use ~/.config/transmission-daemon/${NC}\n\n"
-	printf "\ncurl https://raw.githubusercontent.com/Joseos123/shell/main/linux/settings.json --output settings.json\n"
+	printf "\ncurl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/linux/settings.json --output settings.json\n"
 fi
 
 if [ "$fstabfile" = true ]; then
 	printf "\n\n${GREEN}shove this into your fstab:${NC}\n\n"
-	printf "\ncurl https://raw.githubusercontent.com/Joseos123/shell/main/linux/fstab\n"
+	printf "\ncurl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/linux/fstab\n"
 fi
 
 if [ "$yessus" = yes ]; then
