@@ -6,7 +6,7 @@ RED="\e[1;31m"
 REDU="\e[1;31;4m"
 GREEN="\e[1;32m"
 PINK="\e[1;35m"
-CYAN="\e[1;36m"    # Cyan
+CYAN="\e[1;36m" # Cyan
 NC='\033[0m'
 
 # check os
