@@ -35,7 +35,7 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          files: go
+          files: sh
       - name: Commit
         run: |
           git add .
