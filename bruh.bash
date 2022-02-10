@@ -1,4 +1,5 @@
 #!/bin/bash
+# v1.0.0
 
 # Colour Definitions
 RED="\e[1;31m"
