@@ -46,12 +46,4 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Sync to gist
-        uses: popsiclestick/gist-sync-action@v1.2.0
-        id: sync
-        with:
-          auth: ${{ secrets.GIST_TOKEN }}
-          gist_url: https://gist.github.com/joshhhhyyyy/92ba395fd9caf8ef75c69951f916874a
-          gist_title: bruh.bash
-          gist_description: shell script to make my life easier
-          github_file: bruh.bash
+
