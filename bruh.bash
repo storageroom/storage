@@ -709,7 +709,7 @@ fi
 # this is as cli tools take awhile to install and often requires the user to restart their system
 if [ "$os" = Macos ] && [ "$clitoolsinstalled" = false ]; then
 	xcode-select --install
-	printf "\n\nhave a nice day!"
+	printf "\n\n${PINK}have a nice day!${NC}"
 else
-	printf "\n\nhave a nice day!"
+	printf "\n\n${PINK}have a nice day!${NC}"
 fi
