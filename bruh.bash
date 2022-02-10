@@ -6,6 +6,7 @@ RED="\e[1;31m"
 REDU="\e[1;31;4m"
 GREEN="\e[1;32m"
 PINK="\e[1;35m"
+CYAN="\e[1;36m"    # Cyan
 NC='\033[0m'
 
 # check os
@@ -709,7 +710,7 @@ fi
 # this is as cli tools take awhile to install and often requires the user to restart their system
 if [ "$os" = Macos ] && [ "$clitoolsinstalled" = false ]; then
 	xcode-select --install
-	printf "\n\n${PINK}have a nice day!${NC}"
+	printf "\n\n${PINK}have${GREEN} a ${RED}nice${CYAN} day!${NC}"
 else
-	printf "\n\n${PINK}have a nice day!${NC}"
+	printf "\n\n${PINK}have${GREEN} a ${RED}nice${CYAN} day!${NC}"
 fi
