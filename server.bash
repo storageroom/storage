@@ -1,129 +1,39 @@
-#!/bin/bash
-# v1.0.0
-
 # Colour Definitions
 RED="\e[1;31m"
 REDU="\e[1;31;4m"
 GREEN="\e[1;32m"
 PINK="\e[1;35m"
-CYAN="\e[1;36m" # Cyan
+CYAN="\e[1;36m"
 NC='\033[0m'
 
-# check os
-printf "\n${GREEN}what operating system are on on?${NC}\n"
-select os in "Debian" "Macos" "Arch"; do
+# check dist
+printf "\n${GREEN}what distribution are on on?${NC}\n"
+select os in "Debian" "Arch"; do
 	case $os in
 	Debian)
 		os=Debian
-		arch=Linux
-		break
-		;;
-	Macos)
-		os=Macos
 		break
 		;;
 	Arch)
 		os=Arch
-		arch=Linux
 		break
 		;;
 	esac
 done
 
-# offer to install homebrew if on mac
-if [ "$os" = Macos ]; then
-	printf "${GREEN}would you like to install homebrew?${NC}\n"
-	select yn in "Yes" "No"; do
-		case $yn in
-		Yes)
-			installhomebrew=true
-			break
-			;;
-		No)
-			installhomebrew=false
-			break
-			;;
-		esac
-	done
-fi
-
-if [ "$installhomebrew" = true ]; then
-	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-	homebrewinstalled=true
-else
-	homebrewinstalled=false
-fi
-
-# Offer to install Brewfile
-if [ "$homebrewinstalled" = true ]; then
-	printf "${GREEN}Do you want to install from Brewfile?${NC}\n\n"
-	select yn in "Yes" "No"; do
-		case $yn in
-		Yes)
-			brewfileinstall=true
-			break
-			;;
-		No)
-			brewfileinstall=false
-			break
-			;;
-		esac
-	done
-else
-	brewfileinstall=false
-fi
-
-if [ "$brewfileinstall" = true ]; then
-	curl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/macos/Brewfile --output Brewfile
-	brew bundle
-fi
-
-# if not on mac, offer to install standard packages
-if [ "$arch" = Linux ]; then
-	printf "${GREEN}would you like to install standard packages?${NC}\n"
-	select yn in "Yes" "No"; do
-		case $yn in
-		Yes)
-			installpackages=true
-			yessus=yes
-			break
-			;;
-		No)
-			installpackages=false
-			break
-			;;
-		esac
-	done
-else
-	installpackages=false
-fi
-
-MINIMAL() {
-	if [ "$os" = Debian ] && [ "$wgetisinstalled" = true ]; then
-		wget https://raw.githubusercontent.com/joshhhhyyyy/shell/main/linux/packagelist/minimal
-		sudo apt update
-		sudo apt dist-upgrade -y
-		sudo apt upgrade -y
-		sudo apt install $(grep -o '^[^#]*' minimal)
-		rm minimal
-		pleaseinstallwgetnow=false
-
-	elif [ "$os" = Arch ] && [ "$wgetisinstalled" = true ]; then
-		wget https://raw.githubusercontent.com/joshhhhyyyy/shell/main/linux/packagelist/minimal
-		sudo pacman -Syu --noconfirm
-		sudo pacman -S --noconfirm --needed git base-devel
-		git clone https://aur.archlinux.org/yay.git
-		cd yay || printf "${RED}cd into yay failed, aborting${NC}"
-		makepkg -si --noconfirm
-		cd || printf "${RED}cd into home dir failed, aborting${NC}"
-		sudo rm -R yay
-		yay -S --noconfirm $(grep -o '^[^#]*' server)
-		sleep 5
-		rm server
-		sleep 5
-		pleaseinstallwgetnow=false
-	fi
-}
+printf "${GREEN}would you like to install standard packages?${NC}\n"
+select yn in "Yes" "No"; do
+	case $yn in
+	Yes)
+		installwhatpackages=Server
+		yessus=yes
+		break
+		;;
+	No)
+		break
+		;;
+	esac
+done
 
 SERVER() {
 	if [ "$os" = Debian ] && [ "$wgetisinstalled" = true ]; then
@@ -133,7 +43,7 @@ SERVER() {
 		sudo apt upgrade -y
 		echo "deb [trusted=yes] https://deb.jesec.io/ devel main" | sudo tee /etc/apt/sources.list.d/jesec.list
 		apt update
-		sudo apt install $(grep -o '^[^#]*' server)
+		sudo apt install -y $(grep -o '^[^#]*' server)
 		sudo systemctl stop transmission-daemon
 		rm server
 		pleaseinstallwgetnow=false
@@ -156,22 +66,6 @@ SERVER() {
 		pleaseinstallwgetnow=false
 	fi
 }
-
-if [ "$installpackages" = true ]; then
-	printf "${GREEN}would you like to install server packages or minimal?${NC}\n"
-	select bruh in "Server" "Minimal"; do
-		case $bruh in
-		Server)
-			installwhatpackages=Server
-			break
-			;;
-		Minimal)
-			installwhatpackages=Minimal
-			break
-			;;
-		esac
-	done
-fi
 
 if which which >/dev/null; then
 	whichisinstalled=true
@@ -208,13 +102,10 @@ fi
 if [ "$installwhich" = true ]; then
 	if [ "$os" = Debian ]; then
 		sudo apt update
-		sudo apt install which
+		sudo apt install -y which
 	elif [ "$os" = Arch ]; then
 		sudo pacman -Sy
 		sudo pacman -S --noconfirm which
-	elif [ "$os" = Macos ]; then
-		brew update
-		brew install gnu-which
 	fi
 fi
 
@@ -247,46 +138,6 @@ SMH() {
 		sudo pacman -Sy
 		sudo pacman -S --noconfirm git
 	fi
-
-	if [ "$os" = Macos ]; then
-		printf "${GREEN}would you like to install macos cli tools?${NC}\n\n"
-		select yn in "Yes" "No"; do
-			case $yn in
-			Yes)
-				clitoolsinstalled=true
-				xcode-select --install
-				break
-				;;
-			No)
-				clitoolsinstalled=false
-				isstupid=true
-				break
-				;;
-			esac
-		done
-
-		if [ "$isstupid" = true ]; then
-			if [ "$homebrewinstalled" = true ]; then
-				dumbbruh=true
-			else
-				printf "proceeding without installing git"
-				gitinstalled=false
-			fi
-		fi
-
-		if [ "$dumbbruh" = true ]; then
-			printf "${GREEN}would you then perhaps to install git via brew?${NC}"
-			select yn in "Yes" "No"; do
-				case $yn in
-				Yes)
-					brew install git
-					break
-					;;
-				No) break ;;
-				esac
-			done
-		fi
-	fi
 }
 
 if [ "$installgit" = true ]; then
@@ -296,9 +147,6 @@ fi
 
 if [ "$installwhatpackages" = Server ] && [ "$wgetisinstalled" = true ]; then
 	SERVER
-
-elif [ "$installwhatpackages" = Minimal ] && [ "$wgetisinstalled" = true ]; then
-	MINIMAL
 
 elif [ "$arch" = Linux ] && [ "$wgetisinstalled" = false ]; then
 	printf "${RED}\nwget is not installed on this system and needed to grab the packagelist.\n${NC}"
@@ -320,13 +168,11 @@ fi
 
 if [ "$pleaseinstallwgetnow" = true ] && [ "$os" = Debian ]; then
 	sudo apt update
-	sudo apt install wget
+	sudo apt install -y wget
 	wgetisinstalled=true
 
 	if [ "$installwhatpackages" = Server ]; then
 		SERVER
-	elif [ "$installwhatpackages" = Minimal ]; then
-		MINIMAL
 	fi
 
 elif [ "$pleaseinstallwgetnow" = true ] && [ "$os" = Arch ]; then
@@ -336,8 +182,6 @@ elif [ "$pleaseinstallwgetnow" = true ] && [ "$os" = Arch ]; then
 
 	if [ "$installwhatpackages" = Server ]; then
 		SERVER
-	elif [ "$installwhatpackages" = Minimal ]; then
-		MINIMAL
 	fi
 fi
 
@@ -367,16 +211,11 @@ if [ "$curlisinstalled" = false ]; then
 	if [ "$installcurl" = true ]; then
 		if [ "$os" = Debian ]; then
 			sudo apt update
-			sudo apt install curl -y
+			sudo apt install -y curl
 
 		elif [ "$os" = Arch ]; then
 			sudo pacman -Sy
 			sudo pacman -S --noconfirm curl
-
-		elif [ "$os" = Macos ]; then
-			printf "${RED}why tf do u not have curl bro ur on a MAC${NC}\n"
-			printf "${RED}but fr tho...${NC}"
-			exit
 		fi
 	else
 		printf "${RED}curl is needed for install${NC}"
@@ -384,10 +223,7 @@ if [ "$curlisinstalled" = false ]; then
 	fi
 fi
 
-# inst
-
 # offer to install hr
-# on mac systems, hr will be installed through brewfile
 HRINSTALL() {
 	if which make >/dev/null; then
 		makeisinstalled=true
@@ -427,24 +263,22 @@ HRINSTALL() {
 
 }
 
-if [ "$arch" = Linux ]; then
-	if which hr >/dev/null; then
-		printf "${RED}\nhr is already installed on this system,\n${NC}\n"
-		printf "${RED}or there is a conflict with the command hr\n${NC}\n"
-		printf "${RED}aborting install of hr \n\n"
-		sleep 5
-	else
-		printf "${GREEN}\ninstall hr?\n${NC}"
-		select yn in "Yes" "No"; do
-			case $yn in
-			Yes)
-				HRINSTALL
-				break
-				;;
-			No) break ;;
-			esac
-		done
-	fi
+if which hr >/dev/null; then
+	printf "${RED}\nhr is already installed on this system,\n${NC}\n"
+	printf "${RED}or there is a conflict with the command hr\n${NC}\n"
+	printf "${RED}aborting install of hr \n\n"
+	sleep 5
+else
+	printf "${GREEN}\ninstall hr?\n${NC}"
+	select yn in "Yes" "No"; do
+		case $yn in
+		Yes)
+			HRINSTALL
+			break
+			;;
+		No) break ;;
+		esac
+	done
 fi
 
 printf "\n\n${GREEN}install zsh-sudo?${NC}\n\n"
@@ -523,12 +357,12 @@ printf "${GREEN}install zshrc. continue?${NC}\n\n"
 select yn in "Yes" "No"; do
 	case $yn in
 	Yes)
-		curl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/linux/zshrc --output ~/.zshrc
+		curl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/universal/zshrc --output ~/.zshrc
 		break
 		;;
 	No)
 		printf "${REDU}run:${NC}\n"
-		printf "curl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/linux/zshrc --output ~/.zshrc\n"
+		printf "curl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/universal/zshrc --output ~/.zshrc\n"
 		printf "${REDU}to manually install it instead${NC}\n\n"
 		break
 		;;
@@ -580,79 +414,99 @@ fi
 
 if [ "$starc" = true ]; then
 	if [ -d ".config" ]; then
-		curl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/macos/starship.toml --output $HOME/.config/starship.toml
+		curl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/universal/starship.toml --output $HOME/.config/starship.toml
 	else
 		sudo mkdir .config
-		curl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/macos/starship.toml --output .config/starship.toml
+		curl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/universal/starship.toml --output .config/starship.toml
 	fi
 fi
 
-printf "${PINK}are you on torrentbox?${NC}"
+printf "\n\n${GREEN}do you want the flexget config file?${NC}"
 select yn in "Yes" "No"; do
 	case $yn in
 	Yes)
-		torrentbox=true
+		flexgetfile=true
 		break
 		;;
 	No)
-		torrentbox=false
+		flexgetfile=false
 		break
 		;;
 	esac
 done
 
-if [ "$torrentbox" = true ]; then
-	printf "\n\n${GREEN}do you want the flexget config file?${NC}"
-	select yn in "Yes" "No"; do
-		case $yn in
-		Yes)
-			flexgetfile=true
-			break
-			;;
-		No)
-			flexgetfile=false
-			break
-			;;
-		esac
-	done
+printf "\n\n${GREEN}do you want the transmission config file?${NC}"
+select yn in "Yes" "No"; do
+	case $yn in
+	Yes)
+		transmissionfile=true
+		break
+		;;
+	No)
+		transmissionfile=false
+		break
+		;;
+	esac
+done
 
-	printf "\n\n${GREEN}do you want the transmission config file?${NC}"
-	select yn in "Yes" "No"; do
-		case $yn in
-		Yes)
-			transmissionfile=true
-			break
-			;;
-		No)
-			transmissionfile=false
-			break
-			;;
-		esac
-	done
-
-	printf "\n\n${GREEN}do you want the fstab file?${NC}"
-	select yn in "Yes" "No"; do
-		case $yn in
-		Yes)
-			fstabfile=true
-			break
-			;;
-		No)
-			fstabfile=false
-			break
-			;;
-		esac
-	done
-fi
+printf "\n\n${GREEN}do you want the fstab file?${NC}"
+select yn in "Yes" "No"; do
+	case $yn in
+	Yes)
+		fstabfile=true
+		break
+		;;
+	No)
+		fstabfile=false
+		break
+		;;
+	esac
+done
 
 if [ "$flexgetfile" = true ]; then
-	printf "\n\n${GREEN}use this command in the flexget server.${NC} ${REDU}we use /etc/flexget${NC}\n\n"
-	printf "\ncurl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/linux/config.yml --output config.yml\n"
+	printf "${GREEN} Would you like to automate install?"
+	select yn in "Yes" "No"; do
+		case $yn in
+		Yes)
+			sudo mkdir /etc/flexget
+			sudo curl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/linux/config.yml --output /etc/flexget/config.yml
+			break
+			;;
+		No)
+			printf "\n\n${GREEN}use this command in the flexget server.${NC} ${REDU}we use /etc/flexget${NC}\n\n"
+			printf "\ncurl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/linux/config.yml --output config.yml\n"
+			break
+			;;
+		esac
+	done
 fi
 
 if [ "$transmissionfile" = true ]; then
-	printf "\n\n${GREEN}use this command in the flexget server.${NC} ${REDU}we use ~/.config/transmission-daemon/${NC}\n\n"
-	printf "\ncurl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/linux/settings.json --output settings.json\n"
+	printf "${GREEN} Would you like to automate install?"
+	select yn in "Yes" "No"; do
+		case $yn in
+		Yes)
+			if [ -d ".config" ]; then
+				if [ -d "config/transmission-daemon" ]; then
+					curl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/linux/settings.json --output .config/transmission-daemon/settings.json
+				else
+					sudo mkdir .config/transmission-daemon
+					curl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/linux/settings.json --output .config/transmission-daemon/settings.json
+				fi
+			else
+				sudo mkdir .config
+				sudo mkdir .config/transmission-daemon
+				curl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/linux/settings.json --output .config/transmission-daemon/settings.json
+			fi
+			break
+			;;
+		No)
+			printf "\n\n${GREEN}use this command in the transmission server.${NC} ${REDU}we use ~/.config/transmission-daemon/${NC}\n\n"
+			printf "\ncurl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/linux/settings.json --output settings.json\n"
+			break
+			;;
+		esac
+	done
 fi
 
 if [ "$fstabfile" = true ]; then
@@ -692,25 +546,4 @@ if [ "$yessus" = yes ]; then
 	done
 fi
 
-# offer to install iterm2 shell integration
-if [ "$os" = Macos ]; then
-	printf "${GREEN}Would you like to install iterm2 shell integration?${NC}"
-	select yn in "Yes" "No"; do
-		case $yn in
-		Yes)
-			curl -L https://iterm2.com/shell_integration/install_shell_integration.sh | zsh
-			break
-			;;
-		No) break ;;
-		esac
-	done
-fi
-
-# offer to install cli tools as last step
-# this is as cli tools take awhile to install and often requires the user to restart their system
-if [ "$os" = Macos ] && [ "$clitoolsinstalled" = false ]; then
-	xcode-select --install
-	printf "\n\n${PINK}have${GREEN} a ${RED}nice${CYAN} day!${NC}"
-else
-	printf "\n\n${PINK}have${GREEN} a ${RED}nice${CYAN} day!${NC}"
-fi
+printf "\n\n${PINK}have${GREEN} a ${RED}nice${CYAN} day!${NC}"

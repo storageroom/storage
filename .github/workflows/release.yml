@@ -1,0 +1,25 @@
+name: Release
+
+on:
+  push:
+    paths:
+      - "!mac.bash"
+      - "!linux.bash"
+      - "!server.bash"
+      - "sh"
+      - "mac"
+    tags:
+      - v*
+  workflow_dispatch:
+
+jobs:
+  build for linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            mac
+            sh
+            server

@@ -1,0 +1,71 @@
+name: Build for macos
+
+on:
+  push:
+    paths:
+      - "linux.bash"
+      - "server.bash"
+      - "!mac.bash"
+      - "!sh"
+      - "!mac"
+  workflow_dispatch:
+
+jobs:
+  build for linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: install shc
+        run: |
+          sudo apt install -y shc
+      - name: Pre-Cleanup
+        run: |
+          rm sh
+          rm server
+      - name: Build
+        run: |
+          shc -rvf linux.bash -o sh
+          shc -rvf server.bash -o server
+      - name: Post-Cleanup
+        run: |
+          rm linux.bash.x.c
+          rm server.bash.x.c
+      - name: increment version
+        run: |
+          TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
+          TAGY="${TAG:5:2}
+          TAGX=$(($TAGY+1))
+          TAGA="${TAG:0:5}"
+          TAGF="$TAGA$TAGX"
+      - name: set up git
+          gpg --import "${{ secrets.SUPERKEY }}"
+          git config --global user.signingkey 6372B76B1D9482B2
+          git config --global commit.gpgsign true
+          git config --local user.email "joshua@joseos.com"
+          git config --local user.name "joshybot 🤖"
+      - name: Commit
+        run: |
+          git add .
+          git commit -m "🤖"
+          git tag "$TAGF"
+          git push origin main
+          git push origin "$TAGF"
+
+      - name: Sync linux to gist
+        uses: popsiclestick/gist-sync-action@v1.2.0
+        id: sync
+        with:
+          auth: ${{ secrets.GIST_TOKEN }}
+          gist_url: https://gist.github.com/joshhhhyyyy/92ba395fd9caf8ef75c69951f916874a
+          gist_title: linux.bash
+          gist_description: [Linux] system install + setup script
+          github_file: linux.bash
+      - name: Sync server to gist
+        uses: popsiclestick/gist-sync-action@v1.2.0
+        id: sync
+        with:
+          auth: ${{ secrets.GIST_TOKEN }}
+          gist_url: https://gist.github.com/joshhhhyyyy/c9fc172bf6a788b43f65a2950f76376c
+          gist_title: server.bash
+          gist_description: [Server] system install + setup script
+          github_file: server.bash
