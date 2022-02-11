@@ -50,7 +50,6 @@ jobs:
           git tag "$TAGF"
           git push origin main
           git push origin "$TAGF"
-
       - name: Sync linux to gist
         uses: popsiclestick/gist-sync-action@v1.2.0
         id: sync
@@ -60,8 +59,7 @@ jobs:
           gist_title: linux.bash
           gist_description: [Linux] system install + setup script
           github_file: linux.bash
-      - name: Sync server to gist
-        uses: popsiclestick/gist-sync-action@v1.2.0
+      - uses: popsiclestick/gist-sync-action@v1.2.0
         id: sync
         with:
           auth: ${{ secrets.GIST_TOKEN }}

@@ -47,9 +47,7 @@ jobs:
           git tag "$TAGF"
           git push origin main
           git push origin "$TAGF"
-
-      - name: Sync macos to gist
-        uses: popsiclestick/gist-sync-action@v1.2.0
+      - uses: popsiclestick/gist-sync-action@v1.2.0
         id: sync
         with:
           auth: ${{ secrets.GIST_TOKEN }}
