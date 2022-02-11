@@ -5,13 +5,14 @@ on:
     paths:
       - "linux.bash"
       - "server.bash"
-      - "!mac.bash"
+      - "mac.bash"
       - "!sh"
       - "!mac"
   workflow_dispatch:
 
 jobs:
-  build for linux:
+  buildl:
+    name: Build for Linux
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -48,22 +49,38 @@ jobs:
           git add .
           git commit -m "🤖"
           git tag "$TAGF"
-          git push origin main
           git push origin "$TAGF"
-      - name: Sync linux to gist
-        uses: popsiclestick/gist-sync-action@v1.2.0
-        id: sync
-        with:
-          auth: ${{ secrets.GIST_TOKEN }}
-          gist_url: https://gist.github.com/joshhhhyyyy/92ba395fd9caf8ef75c69951f916874a
-          gist_title: linux.bash
-          gist_description: [Linux] system install + setup script
-          github_file: linux.bash
-      - uses: popsiclestick/gist-sync-action@v1.2.0
-        id: sync
-        with:
-          auth: ${{ secrets.GIST_TOKEN }}
-          gist_url: https://gist.github.com/joshhhhyyyy/c9fc172bf6a788b43f65a2950f76376c
-          gist_title: server.bash
-          gist_description: [Server] system install + setup script
-          github_file: server.bash
+          git push origin main
+  buildm:
+    name: Build for MacOS
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: install shc
+        run: |
+          brew install shc
+      - name: Pre-Cleanup
+        run: |
+          rm mac
+      - name: Build
+        run: |
+          shc -rvf mac.bash -o mac
+      - name: Post-Cleanup
+        run: |
+          rm mac.bash.x.c
+      - name: increment version
+        run: |
+          TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
+      - name: set up git
+          gpg --import "${{ secrets.SUPERKEY }}"
+          git config --global user.signingkey 6372B76B1D9482B2
+          git config --global commit.gpgsign true
+          git config --local user.email "joshua@joseos.com"
+          git config --local user.name "joshybot 🤖"
+      - name: Commit
+        run: |
+          git add .
+          git commit -m "🤖"
+          git tag "$TAG"
+          git push origin "$TAG"
+          git push origin main
