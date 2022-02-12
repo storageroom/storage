@@ -6,8 +6,9 @@ on:
       - "!mac.bash"
       - "!linux.bash"
       - "!server.bash"
-      - "sh"
-      - "mac"
+      - "!sh"
+      - "!mac"
+      - "flag"
     tags:
       - v*
   workflow_dispatch:

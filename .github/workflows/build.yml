@@ -1,4 +1,4 @@
-name: Build for macos
+name: Build
 
 on:
   push:
@@ -21,6 +21,7 @@ jobs:
           sudo apt install -y shc
       - name: Pre-Cleanup
         run: |
+          rm flag
           rm sh
           rm server
       - name: Build
@@ -39,6 +40,7 @@ jobs:
           TAGA="${TAG:0:5}"
           TAGF="$TAGA$TAGX"
       - name: set up git
+        run: |
           gpg --import "${{ secrets.SUPERKEY }}"
           git config --global user.signingkey 6372B76B1D9482B2
           git config --global commit.gpgsign true
@@ -68,10 +70,12 @@ jobs:
       - name: Post-Cleanup
         run: |
           rm mac.bash.x.c
+          touch flag
       - name: increment version
         run: |
           TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
       - name: set up git
+        run: |
           gpg --import "${{ secrets.SUPERKEY }}"
           git config --global user.signingkey 6372B76B1D9482B2
           git config --global commit.gpgsign true
@@ -81,6 +85,5 @@ jobs:
         run: |
           git add .
           git commit -m "🤖"
-          git tag "$TAG"
           git push origin "$TAG"
           git push origin main
