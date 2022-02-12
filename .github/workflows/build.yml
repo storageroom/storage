@@ -21,7 +21,6 @@ jobs:
           sudo apt install -y shc
       - name: Pre-Cleanup
         run: |
-          rm flag
           rm sh
           rm server
       - name: Build
@@ -54,6 +53,7 @@ jobs:
           git push origin "$TAGF"
           git push origin main
   buildm:
+    needs: buildl
     name: Build for MacOS
     runs-on: macos-latest
     steps:
@@ -70,7 +70,6 @@ jobs:
       - name: Post-Cleanup
         run: |
           rm mac.bash.x.c
-          touch flag
       - name: increment version
         run: |
           TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
@@ -87,3 +86,10 @@ jobs:
           git commit -m "🤖"
           git push origin "$TAG"
           git push origin main
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            mac
+            sh
+            server
