@@ -1,8 +1,8 @@
 #!/bin/bash
 #   ______________
-#  / hello world! |
-# /  :DDDDDDDDDD  |
-#<________________|
+#  / hello world! /
+# /  :DDDDDDDDDD /
+#<______________/
 
 # Colour Definitions
 RED="\e[1;31m"

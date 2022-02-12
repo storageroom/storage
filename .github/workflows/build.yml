@@ -81,7 +81,7 @@ jobs:
           git commit -m "🤖"
       - name: Push changes
         uses: ad-m/github-push-action@master
-        with: |
+        with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           tags: true
   release:
