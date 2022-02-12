@@ -37,8 +37,7 @@ jobs:
           git config --local user.name "joshybot 🤖"
       - name: Commit
         run: |
-          git add .
-          git commit -m "🤖" -a | exit 0
+          git commit -am "🤖" | exit 0
           git push origin main
       - name: Push changes
         uses: ad-m/github-push-action@master
@@ -75,14 +74,11 @@ jobs:
           TAGX=$(($TAGY+1))
           TAGA="${TAG:0:5}"
           TAGF="$TAGA$TAGX"
-          git add .
-          git commit -m "🤖"
+          git commit -am "🤖"
           git tag "$TAGF"
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          tags: true
+          git push origin main
+          git push origin "$TAGF"
+
   release:
     needs: [buildl, buildm]
     name: release
