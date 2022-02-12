@@ -1,8 +1,8 @@
 #!/bin/bash
-# world!
-# to
-# github
-# ¯\_(ツ)_/¯
+#   ______________
+#  / hello world! |
+# /  :DDDDDDDDDD  |
+#<________________|
 
 # Colour Definitions
 RED="\e[1;31m"

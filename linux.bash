@@ -1,8 +1,8 @@
 #!/bin/bash
-# hello
-# welcome
-# my
-# profile!
+#	   #         #
+#	  #  ########  #
+#	 #   ^    ^     #
+#	#       ▾        #
 
 # Colour Definitions
 RED="\e[1;31m"
