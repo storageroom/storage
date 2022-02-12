@@ -68,15 +68,13 @@ jobs:
         run: |
           git config --local user.email "joshua@joseos.com"
           git config --local user.name "joshybot 🤖"
-      - name: increment version
+      - name: Commit
         run: |
           TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
           TAGY="${TAG:5:2}"
           TAGX=$(($TAGY+1))
           TAGA="${TAG:0:5}"
           TAGF="$TAGA$TAGX"
-      - name: Commit
-        run: |
           git add .
           git commit -m "🤖"
           git tag "$TAGF"
