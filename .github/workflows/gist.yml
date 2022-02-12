@@ -16,8 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Sync linux to gist
-        uses: popsiclestick/gist-sync-action@v1.2.0
+      - uses: popsiclestick/gist-sync-action@v1.2.0
         id: sync
         with:
           auth: ${{ secrets.GIST_TOKEN }}
@@ -25,8 +24,7 @@ jobs:
           gist_title: linux.bash
           gist_description: [Linux] system install + setup script
           github_file: linux.bash
-      - name: Sync server to gist
-        uses: popsiclestick/gist-sync-action@v1.2.0
+      - uses: popsiclestick/gist-sync-action@v1.2.0
         id: sync
         with:
           auth: ${{ secrets.GIST_TOKEN }}
@@ -34,8 +32,7 @@ jobs:
           gist_title: server.bash
           gist_description: [Server] system install + setup script
           github_file: server.bash
-      - name: Sync macos to gist
-        uses: popsiclestick/gist-sync-action@v1.2.0
+      - uses: popsiclestick/gist-sync-action@v1.2.0
         id: sync
         with:
           auth: ${{ secrets.GIST_TOKEN }}
