@@ -16,6 +16,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.PAT }}
       - name: install shc
         run: |
           sudo apt install -y shc
@@ -50,6 +52,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
+          token: ${{ secrets.PAT }}
+        with:
           fetch-depth: 0
       - name: install shc
         run: |
@@ -74,10 +78,12 @@ jobs:
           TAGX=$(($TAGY+1))
           TAGA="${TAG:0:5}"
           TAGF="$TAGA$TAGX"
-          git commit -am "🤖"
+          printf "TAGF"
+          git add .
+          git commit -m "🤖"
           git tag "$TAGF"
-          git push origin main
           git push origin "$TAGF"
+          git push origin main
 
   release:
     needs: [buildl, buildm]
@@ -85,6 +91,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.PAT }}
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
