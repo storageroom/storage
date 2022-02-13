@@ -1,7 +1,7 @@
 #!/bin/bash
 #   ______________
 #  / hello world! /
-# /  UwU         /
+# /  oWo         /
 #<______________/
 
 # Colour Definitions

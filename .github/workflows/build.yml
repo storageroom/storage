@@ -16,6 +16,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        persist-credentials: false
+        fetch-depth: 0
+        token: ${{ secrets.PAT }}
       - name: install shc
         run: |
           sudo apt install -y shc
@@ -34,12 +37,11 @@ jobs:
       - name: set up git
         run: |
           git config --local user.email "joshua@joseos.com"
-          git config --local user.name "joshybot 🤖"
+          git config --local user.name "joshy[bot]"
       - name: Commit
         run: |
           git add .
-          git commit -m "🤖" | exit 0
-          git push origin main
+          git commit -m "🤖"
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
@@ -57,8 +59,10 @@ jobs:
           sleep 5
       - uses: actions/checkout@v2
         with:
+          persist-credentials: false
           token: ${{ secrets.PAT }}
           fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
       - name: sleep
         run: |
           sleep 5
@@ -74,7 +78,7 @@ jobs:
       - name: set up git
         run: |
           git config --local user.email "joshua@joseos.com"
-          git config --local user.name "joshybot 🤖"
+          git config --local user.name "joshy[bot]"
       - name: Commit
         run: |
           TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
@@ -86,8 +90,14 @@ jobs:
           git add .
           git commit -m "🤖"
           git tag "$TAGF"
-          git push origin "$TAGF"
-          git push origin main
+      - name: Push changes to release
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.PAT }}
+          branch: $TAGF
+      - name: Push to main
+        uses: ad-m/github-push-action@master
+
 
   release:
     needs: [buildl, buildm]
