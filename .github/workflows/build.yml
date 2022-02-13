@@ -16,8 +16,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        with:
-          token: ${{ secrets.PAT }}
       - name: install shc
         run: |
           sudo apt install -y shc
@@ -39,7 +37,8 @@ jobs:
           git config --local user.name "joshybot 🤖"
       - name: Commit
         run: |
-          git commit -am "🤖" | exit 0
+          git add .
+          git commit -m "🤖" | exit 0
           git push origin main
       - name: Push changes
         uses: ad-m/github-push-action@master
@@ -90,8 +89,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        with:
-          token: ${{ secrets.PAT }}
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
