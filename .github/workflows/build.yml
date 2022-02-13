@@ -98,7 +98,9 @@ jobs:
           branch: $TAGF
       - name: Push to main
         uses: ad-m/github-push-action@master
-
+        with:
+          github_token: ${{ secrets.PAT }}
+          branch: main
 
   release:
     needs: [buildl, buildm]
