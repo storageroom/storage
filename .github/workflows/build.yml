@@ -16,9 +16,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        persist-credentials: false
-        fetch-depth: 0
-        token: ${{ secrets.PAT }}
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+          token: ${{ secrets.PAT }}
       - name: install shc
         run: |
           sudo apt install -y shc
