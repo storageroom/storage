@@ -49,13 +49,19 @@ jobs:
     name: Build for MacOS
     runs-on: macos-latest
     steps:
+      - name: install shc
+        run: |
+          brew install shc
+      - name: sleep
+        run: |
+          sleep 5
       - uses: actions/checkout@v2
         with:
           token: ${{ secrets.PAT }}
           fetch-depth: 0
-      - name: install shc
+      - name: sleep
         run: |
-          brew install shc
+          sleep 5
       - name: Pre-Cleanup
         run: |
           rm mac
