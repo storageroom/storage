@@ -1,8 +1,4 @@
 #!/bin/bash
-#   ______________
-#  / hello world! /
-# /  UwU         /
-#<______________/
 
 # Colour Definitions
 RED="\e[1;31m"
