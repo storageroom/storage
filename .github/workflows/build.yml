@@ -31,20 +31,23 @@ jobs:
         run: |
           rm linux.bash.x.c
           rm server.bash.x.c
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v4
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+          git_tag_gpgsign: true
+          git_push_gpgsign: true
+          git_committer_name: "joshy 🤖"
       - name: set up git
         run: |
-          echo -n "${{ secrets.SUPERKEY }}" | base64 --decode > private.key
-          gpg2 --no-tty --allow-secret-key-import --import private.key
-          git config --global user.signingkey 6372B76B1D9482B2
           git config --global gpg.program gpg2
-          git config --global commit.gpgsign true
-          git config --local user.email "joshua@joseos.com"
-          git config --local user.name "joshy 🤖"
-          rm private.key
       - name: Commit
         run: |
           git add .
-          echo -n "${{ secrets.GPG }}" | git commit -m "🤖✨"
+          git commit -m "🤖✨"
           git push origin main
   buildm:
     needs: buildl
@@ -74,15 +77,19 @@ jobs:
       - name: Post-Cleanup
         run: |
           rm mac.bash.x.c
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v4
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+          git_tag_gpgsign: true
+          git_push_gpgsign: true
+          git_committer_name: "joshy 🤖"
       - name: set up git
         run: |
-          echo -n "${{ secrets.SUPERKEY }}" | base64 --decode > private.key
-          gpg2 --no-tty --allow-secret-key-import --import private.key
-          git config --global user.signingkey 6372B76B1D9482B2
           git config --global gpg.program gpg2
-          git config --global commit.gpgsign true
-          git config --local user.email "joshua@joseos.com"
-          git config --local user.name "joshy 🤖"
       - name: Commit
         run: |
           TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
@@ -94,20 +101,11 @@ jobs:
           TAGF="$TAGA$TAGX"
           if [ "$TAGY" = 9 ];then;TAGX="0";if [ "$TAGL" = 9 ];then;TAGL=0;TAGO=$(($TAGO+1));else;TAGL=$(($TAGL+1));fi;TAGF="v$TAGO.$TAGL.$TAGX";fi
           printf "\n\n\n$TAGF\n\n\n\n"
-          rm private.key
           git add .
-          echo -n "${{ secrets.GPG }}" | git commit -m "🤖⚡️"
-          echo -n "${{ secrets.GPG }}" | git tag -s "$TAGF"
+          git commit -m "🤖⚡️"
+          git tag "$TAGF"
           git push origin "$TAGF"
-      - name: sleep
-        run: |
-          sleep 5
-      - name: Push to main
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.PAT }}
-          branch: main
-
+          gut push origin main
   release:
     needs: [buildl, buildm]
     name: release
