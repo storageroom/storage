@@ -110,3 +110,27 @@ jobs:
             mac
             sh
             server
+      - name: linux
+        uses: exuanbo/actions-deploy-gist@v1
+        with:
+          token: ${{ secrets.GIST_TOKEN }}
+          gist_id: 92ba395fd9caf8ef75c69951f916874a
+          gist_description: "[Linux] system install + setup script"
+          gist_file_name: linux.bash
+          file_path: linux.bash
+      - name: mac
+        uses: exuanbo/actions-deploy-gist@v1
+        with:
+          token: ${{ secrets.GIST_TOKEN }}
+          gist_id: 5a303840db0ab88febbb95d360a45d48
+          gist_description: "[MacOS] system install + setup script"
+          gist_file_name: mac.bash
+          file_path: mac.bash
+      - name: mac
+        uses: exuanbo/actions-deploy-gist@v1
+        with:
+          token: ${{ secrets.GIST_TOKEN }}
+          gist_id: c9fc172bf6a788b43f65a2950f76376c
+          gist_description: "[Server] system install + setup script"
+          gist_file_name: server.bash
+          file_path: server.bash
