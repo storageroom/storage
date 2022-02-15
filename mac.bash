@@ -8,21 +8,19 @@ PINK="\e[1;35m"
 CYAN="\e[1;36m"
 NC='\033[0m'
 
-if [ "$os" = Macos ]; then
-	printf "${GREEN}would you like to install homebrew?${NC}\n"
-	select yn in "Yes" "No"; do
-		case $yn in
-		Yes)
-			installhomebrew=true
-			break
-			;;
-		No)
-			installhomebrew=false
-			break
-			;;
-		esac
-	done
-fi
+printf "${GREEN}would you like to install homebrew?${NC}\n"
+select yn in "Yes" "No"; do
+	case $yn in
+	Yes)
+		installhomebrew=true
+		break
+		;;
+	No)
+		installhomebrew=false
+		break
+		;;
+	esac
+done
 
 if [ "$installhomebrew" = true ]; then
 	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"

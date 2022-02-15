@@ -92,7 +92,7 @@ jobs:
           printf "\n\n\n$TAGF\n\n\n\n"
           git add .
           git commit -m "🤖⚡️"
-          git tag "$TAGF"
+          git tag -a "$TAGF" -m "its $TAGF time!!"
           git push origin "$TAGF"
           gut push origin main
   release:
