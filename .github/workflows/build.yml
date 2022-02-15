@@ -34,12 +34,17 @@ jobs:
           rm server.bash.x.c
       - name: set up git
         run: |
+          echo -n "${{ secrets.SUPERKEY }}" | base64 --decode --output private.key
+          gpg --allow-secret-key-import private.key
+          git config --global user.signingkey 6372B76B1D9482B2
+          git config --global commit.gpgsign true
           git config --local user.email "joshua@joseos.com"
-          git config --local user.name "joshy[bot]"
+          git config --local user.name "joshy 🤖"
+          rm private.key
       - name: Commit
         run: |
           git add .
-          git commit -m "🤖"
+          git commit -m "🤖✨"
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
@@ -74,18 +79,26 @@ jobs:
           rm mac.bash.x.c
       - name: set up git
         run: |
+          echo -n "${{ secrets.SUPERKEY }}" | base64 --decode --output private.key
+          gpg --allow-secret-key-import private.key
+          git config --global user.signingkey 6372B76B1D9482B2
+          git config --global commit.gpgsign true
           git config --local user.email "joshua@joseos.com"
-          git config --local user.name "joshy[bot]"
+          git config --local user.name "joshy 🤖"
       - name: Commit
         run: |
           TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
           TAGY="${TAG:5:2}"
           TAGX=$(($TAGY+1))
           TAGA="${TAG:0:5}"
+          TAGL="${TAG:3:1}"
+          TAGO="${TAG:1:1}"
           TAGF="$TAGA$TAGX"
-          printf "TAGF"
+          if [ "$TAGY" = 9 ];then;TAGX="0";if [ "$TAGL" = 9 ];then;TAGL=0;TAGO=$(($TAGO+1));else;TAGL=$(($TAGL+1));fi;TAGF="v$TAGO.$TAGL.$TAGX";fi
+          printf "\n\n\n$TAGF\n\n\n\n"
+          rm private.key
           git add .
-          git commit -m "🤖"
+          git commit -m "🤖⚡️"
           git tag "$TAGF"
           git push origin "$TAGF"
       - name: sleep
@@ -96,19 +109,17 @@ jobs:
         with:
           github_token: ${{ secrets.PAT }}
           branch: main
-      - name: sleep
-        run: |
-          sleep 3
 
   release:
     needs: [buildl, buildm]
     name: release
     runs-on: ubuntu-latest
     steps:
-      - name: sleep
-        run: |
-          sleep 10
       - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.PAT }}
+          fetch-depth: 0
+          ref: main
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
