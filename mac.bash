@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This script is intended for use on MacOS systems running the darwin kernel
+# This script is intended for use on MacOS systems
 
 # ASCII Colors
 RED="\e[1;31m"

@@ -34,6 +34,7 @@ jobs:
       - name: set up git
         run: |
           echo -n "${{ secrets.SUPERKEY }}" | base64 --decode > private.key
+          export GPG_TTY=$(tty)
           gpg2 --allow-secret-key-import --import private.key
           git config --global user.signingkey 6372B76B1D9482B2
           git config --global gpg.program gpg2
@@ -77,6 +78,7 @@ jobs:
       - name: set up git
         run: |
           echo -n "${{ secrets.SUPERKEY }}" | base64 --decode > private.key
+          export GPG_TTY=$(tty)
           gpg2 --allow-secret-key-import --import private.key
           git config --global user.signingkey 6372B76B1D9482B2
           git config --global gpg.program gpg2
