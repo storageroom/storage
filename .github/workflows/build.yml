@@ -15,7 +15,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          persist-credentials: false
           token: ${{ secrets.PAT }}
       - name: install shc
         run: |
@@ -35,7 +34,7 @@ jobs:
       - name: set up git
         run: |
           echo -n "${{ secrets.SUPERKEY }}" | base64 --decode > private.key
-          gpg2 --allow-secret-key-import private.key
+          gpg2 --allow-secret-key-import --import private.key
           git config --global user.signingkey 6372B76B1D9482B2
           git config --global gpg.program gpg2
           git config --global commit.gpgsign true
@@ -45,11 +44,8 @@ jobs:
       - name: Commit
         run: |
           git add .
-          git commit -m "🤖✨"
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.PAT }}
+          echo -n "${{ secrets.GPG }}" | git commit -m "🤖✨"
+          git push origin main
   buildm:
     needs: buildl
     name: Build for MacOS
@@ -81,7 +77,7 @@ jobs:
       - name: set up git
         run: |
           echo -n "${{ secrets.SUPERKEY }}" | base64 --decode > private.key
-          gpg2 --allow-secret-key-import private.key
+          gpg2 --allow-secret-key-import --import private.key
           git config --global user.signingkey 6372B76B1D9482B2
           git config --global gpg.program gpg2
           git config --global commit.gpgsign true
@@ -100,8 +96,8 @@ jobs:
           printf "\n\n\n$TAGF\n\n\n\n"
           rm private.key
           git add .
-          git commit -m "🤖⚡️"
-          git tag "$TAGF"
+          echo -n "${{ secrets.GPG }}" | git commit -m "🤖⚡️"
+          echo -n "${{ secrets.GPG }}" | git tag -s "$TAGF"
           git push origin "$TAGF"
       - name: sleep
         run: |

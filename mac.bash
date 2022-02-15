@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# This script is intended for use on MacOS systems running the darwin kernel
+
 # ASCII Colors
 RED="\e[1;31m"
 REDU="\e[1;31;4m"
