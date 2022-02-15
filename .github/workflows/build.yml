@@ -59,7 +59,6 @@ jobs:
           sleep 5
       - uses: actions/checkout@v2
         with:
-          persist-credentials: false
           token: ${{ secrets.PAT }}
           fetch-depth: 0
           ref: main
