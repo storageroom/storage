@@ -8,7 +8,7 @@ PINK="\e[1;35m"
 CYAN="\e[1;36m"
 NC='\033[0m'
 
-# check dist
+# check distro
 printf "\n${GREEN}what distribution are on on?${NC}\n"
 select os in "Debian" "Arch Linux"; do
 	case $os in
