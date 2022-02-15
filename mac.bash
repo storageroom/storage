@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This script is intended for use on MacOS systems
+# This script is intended to run on MacOS systems only
 
 # ASCII Colors
 RED="\e[1;31m"
