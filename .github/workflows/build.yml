@@ -2,12 +2,10 @@ name: Build
 
 on:
   push:
+    branches:
+      - main
     paths:
-      - "linux.bash"
-      - "server.bash"
-      - "mac.bash"
-      - "!sh"
-      - "!mac"
+      - "**.bash"
   workflow_dispatch:
 
 jobs:
