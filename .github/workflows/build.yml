@@ -97,7 +97,7 @@ jobs:
           TAGL="${TAG:3:1}"
           TAGO="${TAG:1:1}"
           TAGF="$TAGA$TAGX"
-          if [ "$TAGY" = 9 ];then;TAGX="0";if [ "$TAGL" = 9 ];then;TAGL=0;TAGO=$(($TAGO+1));else;TAGL=$(($TAGL+1));fi;TAGF="v$TAGO.$TAGL.$TAGX";fi
+          if [ "$TAGY" = 9 ]; then TAGX="0";if [ "$TAGL" = 9 ]; then TAGL=0;TAGO=$((TAGO+1));else TAGL=$((TAGL+1));fi;TAGF="v$TAGO.$TAGL.$TAGX";fi
           printf "\n\n\n$TAGF\n\n\n\n"
           git add .
           git commit -m "🤖⚡️"
