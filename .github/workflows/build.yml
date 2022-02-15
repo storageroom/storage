@@ -35,8 +35,9 @@ jobs:
       - name: set up git
         run: |
           echo -n "${{ secrets.SUPERKEY }}" | base64 --decode > private.key
-          gpg --allow-secret-key-import private.key
+          gpg2 --allow-secret-key-import private.key
           git config --global user.signingkey 6372B76B1D9482B2
+          git config --global gpg.program gpg2
           git config --global commit.gpgsign true
           git config --local user.email "joshua@joseos.com"
           git config --local user.name "joshy 🤖"
@@ -80,8 +81,9 @@ jobs:
       - name: set up git
         run: |
           echo -n "${{ secrets.SUPERKEY }}" | base64 --decode > private.key
-          gpg --allow-secret-key-import private.key
+          gpg2 --allow-secret-key-import private.key
           git config --global user.signingkey 6372B76B1D9482B2
+          git config --global gpg.program gpg2
           git config --global commit.gpgsign true
           git config --local user.email "joshua@joseos.com"
           git config --local user.name "joshy 🤖"

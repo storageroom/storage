@@ -10,13 +10,13 @@ NC='\033[0m'
 
 # check dist
 printf "\n${GREEN}what distribution are on on?${NC}\n"
-select os in "Debian" "Arch"; do
+select os in "Debian" "Arch Linux"; do
 	case $os in
 	Debian)
 		os=Debian
 		break
 		;;
-	Arch)
+	Arch Linux)
 		os=Arch
 		break
 		;;
