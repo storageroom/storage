@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Colorss
+# Colors
 RED="\e[1;31m"
 REDU="\e[1;31;4m"
 GREEN="\e[1;32m"
