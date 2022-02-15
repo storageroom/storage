@@ -1,0 +1,23 @@
+name: Build
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+jobs:
+  release:
+    name: release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.PAT }}
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            mac
+            sh
+            server

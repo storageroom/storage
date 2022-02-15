@@ -98,21 +98,3 @@ jobs:
           git tag -a "$FINALTAG" -m "its $FINALTAG time!!"
           git push origin "$FINALTAG"
           git push origin main
-  release:
-    needs: [buildl, buildm]
-    name: release
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          token: ${{ secrets.PAT }}
-          fetch-depth: 0
-          ref: main
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: $(git describe --tags $(git rev-list --tags --max-count=1))
-          files: |
-            mac
-            sh
-            server
