@@ -8,7 +8,7 @@ PINK="\e[1;35m"
 CYAN="\e[1;36m"
 NC='\033[0m'
 
-printf "${GREEN}would you like to install homebrew?${NC}\n"
+printf "${GREEN}install homebrew?${NC}\n"
 select yn in "Yes" "No"; do
 	case $yn in
 	Yes)

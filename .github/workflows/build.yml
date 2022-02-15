@@ -39,6 +39,7 @@ jobs:
           git_user_signingkey: true
           git_commit_gpgsign: true
           git_tag_gpgsign: true
+          git_push_gpgsign: false
           git_committer_name: "joshy 🤖"
       - name: set up git
         run: |
@@ -78,23 +79,25 @@ jobs:
           git_user_signingkey: true
           git_commit_gpgsign: true
           git_tag_gpgsign: true
+          git_push_gpgsign: false
           git_committer_name: "joshy 🤖"
       - name: Commit
         run: |
           TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
           TAGY="${TAG:5:2}"
-          TAGX=$(($TAGY+1))
+          TAGX=$((TAGY+1))
           TAGA="${TAG:0:5}"
           TAGL="${TAG:3:1}"
           TAGO="${TAG:1:1}"
           TAGF="$TAGA$TAGX"
           if [ "$TAGY" = 9 ]; then TAGX="0";if [ "$TAGL" = 9 ]; then TAGL=0;TAGO=$((TAGO+1));else TAGL=$((TAGL+1));fi;TAGF="v$TAGO.$TAGL.$TAGX";fi
-          printf "\n\n\n$TAGF\n\n\n\n"
+          TAGLENGTH=${#TAGF}
+          if [ "$TAGLENGTH" -gt 6 ]; then printf "the length of the version number is over 6, will trim";printf "$TAGF";printf "tag length: $TAGLENGTH";FINALTAG="${TAGF:0:6}"; else FINALTAG=TAGF;fi
           git add .
           git commit -m "🤖⚡️"
-          git tag -a "$TAGF" -m "its $TAGF time!!"
-          git push origin "$TAGF"
-          gut push origin main
+          git tag -a "$FINALTAG" -m "its $FINALTAG time!!"
+          git push origin "$FINALTAG"
+          git push origin main
   release:
     needs: [buildl, buildm]
     name: release
