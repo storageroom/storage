@@ -75,7 +75,7 @@ else
 fi
 
 SMH() {
-	printf "${GREEN}would you like to install macos cli tools?${NC}\n\n"
+	printf "${GREEN}Would you like to install macos cli tools?${NC}\n\n"
 	select yn in "Yes" "No"; do
 		case $yn in
 		Yes)

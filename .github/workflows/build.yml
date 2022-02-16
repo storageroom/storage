@@ -47,7 +47,7 @@ jobs:
           git config --global gpg.program gpg2
       - name: Commit
         run: |
-          git add sh server
+          git add ./dist/sh ./dist/server
           git commit -m "🤖✨"
       - name: Push changes
         uses: ad-m/github-push-action@master
