@@ -1,4 +1,4 @@
-name: Build
+name: 📌
 
 on:
   push:
@@ -21,10 +21,14 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
+          token: ${{ secrets.PAT }}
           files: |
-            mac
-            sh
-            server
+            ./dist/mac
+            ./dist/sh
+            ./dist/server
+      - name: changedir
+        run: |
+          cd ..
       - uses: actions/checkout@v2
         with:
           repository: joshhhhyyyy/dl
@@ -32,7 +36,7 @@ jobs:
           path: dl
       - name: changedir
         run: |
-          cd ../dl
+          cd dl
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v4
         with:
@@ -48,9 +52,9 @@ jobs:
       - name: commit
         run: |
           rm mac sh server
-          mv ../main/sh .
-          mv ../main/mac .
-          mv ../main/server .
-          git add mac sh server
+          mv ../main/dist/sh .
+          mv ../main/dist/mac .
+          mv ../main/dist/server .
+          git add .
           git commit -m "⚡️"
           git push origin main

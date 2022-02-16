@@ -1,4 +1,4 @@
-name: Build
+name: 🛠
 
 on:
   push:
@@ -26,6 +26,11 @@ jobs:
           shc -rvf server.bash -o server
       - name: Post-Cleanup
         run: |
+          rm ./dist/server
+          rm ./dist/sh
+          rm ./dist/mac
+          mv sh ./dist
+          mv server ./dist
           rm linux.bash.x.c
           rm server.bash.x.c
       - name: Import GPG key
@@ -46,8 +51,6 @@ jobs:
           git commit -m "🤖✨"
       - name: Push changes
         uses: ad-m/github-push-action@master
-        with:
-          branch: build
   buildm:
     needs: buildl
     name: Build for MacOS
@@ -60,15 +63,13 @@ jobs:
         with:
           token: ${{ secrets.PAT }}
           fetch-depth: 0
-          ref: build
-      - name: Pre-Cleanup
-        run: |
-          rm mac
+          ref: main
       - name: Build
         run: |
           shc -rvf mac.bash -o mac
       - name: Post-Cleanup
         run: |
+          mv mac ./dist
           rm mac.bash.x.c
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v4
@@ -95,4 +96,4 @@ jobs:
           git commit -m "🤖⚡️"
           git tag -a "$FINALTAG" -m "its $FINALTAG time!!"
           git push origin "$FINALTAG"
-          git push origin build
+          git push origin main
