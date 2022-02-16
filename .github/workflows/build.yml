@@ -48,7 +48,7 @@ jobs:
       - name: Commit
         run: |
           git add ./dist/sh ./dist/server
-          git commit -m "🤖✨"
+          git commit -m "✨"
       - name: Push changes
         uses: ad-m/github-push-action@master
   buildm:
@@ -93,7 +93,7 @@ jobs:
           TAGLENGTH=${#TAGF}
           if [ "$TAGLENGTH" -gt 6 ]; then printf "the length of the version number is over 6, will trim";printf "$TAGF";printf "tag length: $TAGLENGTH";FINALTAG="${TAGF:0:6}"; else FINALTAG=$TAGF;fi
           git add .
-          git commit -m "🤖⚡️"
+          git commit -m "🧏‍♀️"
           git tag -a "$FINALTAG" -m "its $FINALTAG time!!"
           git push origin "$FINALTAG"
           git push origin main
