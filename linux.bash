@@ -16,7 +16,7 @@ select os in "Debian" "Arch Linux"; do
 		os=Debian
 		break
 		;;
-	Arch Linux)
+	"Arch Linux")
 		os=Arch
 		break
 		;;
