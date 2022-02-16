@@ -28,15 +28,16 @@ jobs:
             ./dist/server
       - name: changedir
         run: |
-          cd ..
+          cd $GITHUB_WORKSPACE
       - uses: actions/checkout@v2
         with:
           repository: joshhhhyyyy/dl
           token: ${{ secrets.PAT }}
+          ref: main
           path: dl
       - name: changedir
         run: |
-          cd dl
+          cd $GITHUB_WORKSPACE/dl
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v4
         with:
