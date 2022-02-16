@@ -13,11 +13,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          token: ${{ secrets.PAT }}
+          token: ${{ secrets.PATH }}
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          token: ${{ secrets.PAT }}
+          token: ${{ secrets.PATH }}
           files: |
             ./dist/mac
             ./dist/sh
@@ -29,7 +29,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           repository: joshhhhyyyy/dl
-          token: ${{ secrets.PAT }}
+          token: ${{ secrets.PATS }}
           ref: main
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v4
