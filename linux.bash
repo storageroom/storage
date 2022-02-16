@@ -263,7 +263,7 @@ HRINSTALL() {
 if which hr >/dev/null; then
 	printf "${RED}\nhr is already installed on this system,\n${NC}\n"
 	printf "${RED}or there is a conflict with the command hr\n${NC}\n"
-	printf "${RED}aborting install of hr \n\n"
+	printf "${RED}aborting install of hr\n\n"
 	sleep 5
 else
 	printf "${GREEN}\ninstall hr?\n${NC}"
