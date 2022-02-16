@@ -512,7 +512,7 @@ if [ "$transmissionfile" = true ]; then
 fi
 
 if [ "$fstabfile" = true ]; then
-	printf "\n\n${GREEN}shove this into your fstab:${NC}\n\n"
+	printf "\n\n${GREEN}Shove this into your fstab:${NC}\n\n"
 	printf "\ncurl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/linux/fstab\n"
 fi
 
