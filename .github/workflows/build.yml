@@ -26,9 +26,9 @@ jobs:
           shc -rvf server.bash -o server
       - name: Post-Cleanup
         run: |
-          rm dist/server
-          rm dist/sh
-          rm dist/mac
+          rm ./dist/server
+          rm ./dist/sh
+          rm ./dist/mac
           mv sh ./dist
           mv server ./dist
           rm linux.bash.x.c

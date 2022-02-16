@@ -58,7 +58,7 @@ fi
 if which git >/dev/null; then
 	gitinstalled=true
 else
-	printf "${RED}\ngit is not installed on this system and we reccomend you install it.\n${NC}"
+	printf "${RED}\nGit is not installed on this system and we reccomend you install it.\n${NC}"
 	printf "${GREEN}Do you wish to install git now?${NC}\n\n"
 	select yn in "Yes" "No"; do
 		case $yn in
