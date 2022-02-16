@@ -9,7 +9,7 @@ CYAN="\e[1;36m"
 NC='\033[0m'
 
 # check dist
-printf "\n${GREEN}select distro${NC}\n"
+printf "\n${GREEN}Select distro${NC}\n"
 select os in "Debian/Ubuntu" "Arch Linux"; do
 	case $os in
 	Debian/Ubuntu)
