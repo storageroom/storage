@@ -49,7 +49,7 @@ else
 fi
 
 if [ "$brewfileinstall" = true ]; then
-	curl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/macos/Brewfile --output Brewfile
+	curl https://raw.githubusercontent.com/joseoscom/shell/main/macos/Brewfile --output Brewfile
 	brew bundle
 	yessus=yes
 fi
@@ -196,12 +196,12 @@ printf "${GREEN}install zshrc. continue?${NC}\n\n"
 select yn in "Yes" "No"; do
 	case $yn in
 	Yes)
-		curl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/universal/zshrc --output ~/.zshrc
+		curl https://raw.githubusercontent.com/joseoscom/shell/main/universal/zshrc --output ~/.zshrc
 		break
 		;;
 	No)
 		printf "${REDU}run:${NC}\n"
-		printf "curl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/universal/zshrc --output ~/.zshrc\n"
+		printf "curl https://raw.githubusercontent.com/joseoscom/shell/main/universal/zshrc --output ~/.zshrc\n"
 		printf "${REDU}to manually install it instead${NC}\n\n"
 		break
 		;;
@@ -253,10 +253,10 @@ fi
 
 if [ "$starc" = true ]; then
 	if [ -d ".config" ]; then
-		curl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/universal/starship.toml --output $HOME/.config/starship.toml
+		curl https://raw.githubusercontent.com/joseoscom/shell/main/universal/starship.toml --output $HOME/.config/starship.toml
 	else
 		sudo mkdir .config
-		curl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/universal/starship.toml --output .config/starship.toml
+		curl https://raw.githubusercontent.com/joseoscom/shell/main/universal/starship.toml --output .config/starship.toml
 	fi
 fi
 

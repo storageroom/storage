@@ -39,7 +39,7 @@ done
 
 SERVER() {
 	if [ "$os" = Debian ] && [ "$wgetisinstalled" = true ]; then
-		wget https://raw.githubusercontent.com/joshhhhyyyy/shell/main/linux/packagelist/server
+		wget https://raw.githubusercontent.com/joseoscom/shell/main/linux/packagelist/server
 		sudo apt update
 		sudo apt dist-upgrade -y
 		sudo apt upgrade -y
@@ -53,7 +53,7 @@ SERVER() {
 	elif [ "$os" = Arch ] && [ "$wgetisinstalled" = true ]; then
 		printf "${RED} Note that server on arch is experimental and most likely will not work"
 		sleep 10
-		wget https://raw.githubusercontent.com/joshhhhyyyy/shell/main/linux/packagelist/server
+		wget https://raw.githubusercontent.com/joseoscom/shell/main/linux/packagelist/server
 		sudo pacman -Syu --noconfirm
 		sudo pacman -S --needed --noconfirm git base-devel
 		git clone https://aur.archlinux.org/yay.git
@@ -359,12 +359,12 @@ printf "${GREEN}install zshrc. continue?${NC}\n\n"
 select yn in "Yes" "No"; do
 	case $yn in
 	Yes)
-		curl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/universal/zshrc --output ~/.zshrc
+		curl https://raw.githubusercontent.com/joseoscom/shell/main/universal/zshrc --output ~/.zshrc
 		break
 		;;
 	No)
 		printf "${REDU}run:${NC}\n"
-		printf "curl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/universal/zshrc --output ~/.zshrc\n"
+		printf "curl https://raw.githubusercontent.com/joseoscom/shell/main/universal/zshrc --output ~/.zshrc\n"
 		printf "${REDU}to manually install it instead${NC}\n\n"
 		break
 		;;
@@ -416,10 +416,10 @@ fi
 
 if [ "$starc" = true ]; then
 	if [ -d ".config" ]; then
-		curl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/universal/starship.toml --output $HOME/.config/starship.toml
+		curl https://raw.githubusercontent.com/joseoscom/shell/main/universal/starship.toml --output $HOME/.config/starship.toml
 	else
 		sudo mkdir .config
-		curl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/universal/starship.toml --output .config/starship.toml
+		curl https://raw.githubusercontent.com/joseoscom/shell/main/universal/starship.toml --output .config/starship.toml
 	fi
 fi
 
@@ -471,12 +471,12 @@ if [ "$flexgetfile" = true ]; then
 		case $yn in
 		Yes)
 			sudo mkdir /etc/flexget
-			sudo curl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/linux/config.yml --output /etc/flexget/config.yml
+			sudo curl https://raw.githubusercontent.com/joseoscom/shell/main/linux/config.yml --output /etc/flexget/config.yml
 			break
 			;;
 		No)
 			printf "\n\n${GREEN}use this command in the flexget server.${NC} ${REDU}we use /etc/flexget${NC}\n\n"
-			printf "\ncurl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/linux/config.yml --output config.yml\n"
+			printf "\ncurl https://raw.githubusercontent.com/joseoscom/shell/main/linux/config.yml --output config.yml\n"
 			break
 			;;
 		esac
@@ -490,21 +490,21 @@ if [ "$transmissionfile" = true ]; then
 		Yes)
 			if [ -d ".config" ]; then
 				if [ -d "config/transmission-daemon" ]; then
-					curl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/linux/settings.json --output .config/transmission-daemon/settings.json
+					curl https://raw.githubusercontent.com/joseoscom/shell/main/linux/settings.json --output .config/transmission-daemon/settings.json
 				else
 					sudo mkdir .config/transmission-daemon
-					curl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/linux/settings.json --output .config/transmission-daemon/settings.json
+					curl https://raw.githubusercontent.com/joseoscom/shell/main/linux/settings.json --output .config/transmission-daemon/settings.json
 				fi
 			else
 				sudo mkdir .config
 				sudo mkdir .config/transmission-daemon
-				curl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/linux/settings.json --output .config/transmission-daemon/settings.json
+				curl https://raw.githubusercontent.com/joseoscom/shell/main/linux/settings.json --output .config/transmission-daemon/settings.json
 			fi
 			break
 			;;
 		No)
 			printf "\n\n${GREEN}use this command in the transmission server.${NC} ${REDU}we use ~/.config/transmission-daemon/${NC}\n\n"
-			printf "\ncurl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/linux/settings.json --output settings.json\n"
+			printf "\ncurl https://raw.githubusercontent.com/joseoscom/shell/main/linux/settings.json --output settings.json\n"
 			break
 			;;
 		esac
@@ -513,7 +513,7 @@ fi
 
 if [ "$fstabfile" = true ]; then
 	printf "\n\n${GREEN}Shove this into your fstab:${NC}\n\n"
-	printf "\ncurl https://raw.githubusercontent.com/joshhhhyyyy/shell/main/linux/fstab\n"
+	printf "\ncurl https://raw.githubusercontent.com/joseoscom/shell/main/linux/fstab\n"
 fi
 
 if [ "$yessus" = yes ]; then
