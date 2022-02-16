@@ -31,7 +31,7 @@ fi
 
 # Offer to install Brewfile
 if [ "$homebrewinstalled" = true ]; then
-	printf "${GREEN}Do you want to install from Brewfile?${NC}\n\n"
+	printf "${GREEN}Install from Brewfile?${NC}\n\n"
 	select yn in "Yes" "No"; do
 		case $yn in
 		Yes)
