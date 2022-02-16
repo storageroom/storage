@@ -14,6 +14,10 @@ jobs:
       - uses: actions/checkout@v2
         with:
           token: ${{ secrets.PAT }}
+          path: main
+      - name: changedir
+        run: |
+          cd main
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
@@ -21,3 +25,32 @@ jobs:
             mac
             sh
             server
+      - uses: actions/checkout@v2
+        with:
+          repository: joshhhhyyyy/dl
+          token: ${{ secrets.PAT }}
+          path: dl
+      - name: changedir
+        run: |
+          cd ../dl
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v4
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+          git_tag_gpgsign: true
+          git_push_gpgsign: false
+      - name: set up git
+        run: |
+          git config --global gpg.program gpg2
+      - name: commit
+        run: |
+          rm mac sh server
+          mv ../main/sh .
+          mv ../main/mac .
+          mv ../main/server .
+          git add mac sh server
+          git commit -m "⚡️"
+          git push origin main

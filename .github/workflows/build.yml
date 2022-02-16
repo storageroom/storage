@@ -19,10 +19,6 @@ jobs:
       - name: install shc
         run: |
           sudo apt install -y shc
-      - name: Pre-Cleanup
-        run: |
-          rm sh
-          rm server
       - name: Build
         run: |
           shc -rvf linux.bash -o sh
@@ -40,15 +36,14 @@ jobs:
           git_commit_gpgsign: true
           git_tag_gpgsign: true
           git_push_gpgsign: false
-          git_committer_name: "joshy 🤖"
       - name: set up git
         run: |
           git config --global gpg.program gpg2
       - name: Commit
         run: |
-          git add .
+          git add sh server
           git commit -m "🤖✨"
-          git push origin main
+          git push origin build
   buildm:
     needs: buildl
     name: Build for MacOS
@@ -61,7 +56,7 @@ jobs:
         with:
           token: ${{ secrets.PAT }}
           fetch-depth: 0
-          ref: main
+          ref: build
       - name: Pre-Cleanup
         run: |
           rm mac
@@ -80,7 +75,6 @@ jobs:
           git_commit_gpgsign: true
           git_tag_gpgsign: true
           git_push_gpgsign: false
-          git_committer_name: "joshy 🤖"
       - name: Commit
         run: |
           TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
@@ -97,4 +91,4 @@ jobs:
           git commit -m "🤖⚡️"
           git tag -a "$FINALTAG" -m "its $FINALTAG time!!"
           git push origin "$FINALTAG"
-          git push origin main
+          git push origin build
