@@ -10,9 +10,9 @@ NC='\033[0m'
 
 # check distro
 printf "\n${GREEN}select distro${NC}\n"
-select os in "Debian" "Arch Linux"; do
+select os in "Debian/Ubuntu" "Arch Linux"; do
 	case $os in
-	Debian)
+	Debian/Ubuntu)
 		os=Debian
 		break
 		;;
