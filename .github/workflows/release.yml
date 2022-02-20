@@ -58,9 +58,9 @@ jobs:
       - name: get files
         run: |
           rm mac sh server
-          curl https://raw.githubusercontent.com/joseoscom/shell/main/dist/mac --output mac
-          curl https://raw.githubusercontent.com/joseoscom/shell/main/dist/sh --output sh
-          curl https://raw.githubusercontent.com/joseoscom/shell/main/dist/server --output server
+          wget https://raw.githubusercontent.com/joseoscom/shell/main/dist/mac
+          wget https://raw.githubusercontent.com/joseoscom/shell/main/dist/sh
+          wget https://raw.githubusercontent.com/joseoscom/shell/main/dist/server
       - name: commit
         run: |
           git add .

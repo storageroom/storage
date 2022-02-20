@@ -465,6 +465,20 @@ select yn in "Yes" "No"; do
 	esac
 done
 
+printf "\n\n${GREEN}do you want systemd service files?${NC}"
+select yn in "Yes" "No"; do
+	case $yn in
+	Yes)
+		systemdfiles=true
+		break
+		;;
+	No)
+		systemdfiles=false
+		break
+		;;
+	esac
+done
+
 if [ "$flexgetfile" = true ]; then
 	printf "${GREEN} Would you like to automate install?"
 	select yn in "Yes" "No"; do
@@ -514,6 +528,29 @@ fi
 if [ "$fstabfile" = true ]; then
 	printf "\n\n${GREEN}Shove this into your fstab:${NC}\n\n"
 	printf "\ncurl https://raw.githubusercontent.com/joseoscom/shell/main/linux/fstab\n"
+fi
+
+if [ "$systemdfiles" = true ]; then
+	printf "${GREEN} Would you like to automate install?"
+	select yn in "Yes" "No"; do
+		case $yn in
+		Yes)
+			printf "\n\n${GREEN}Putting calibre service file into:${NC} ${REDU}/etc/systemd/system/calibre.service${NC}\n\n"
+			sudo curl https://raw.githubusercontent.com/joseoscom/shell/main/linux/systemd/calibre.service --output /etc/systemd/system/calibre.service
+			printf "\n\n${GREEN}Putting flood service file into:${NC} ${REDU}/etc/systemd/system/flood.service${NC}\n\n"
+			sudo curl https://raw.githubusercontent.com/joseoscom/shell/main/linux/systemd/flood.service --output /etc/systemd/system/flood.service
+			break
+			;;
+		No)
+			printf "\n\n${GREEN}Shove this into${NC} ${REDU}/etc/systemd/system/calibre.service${NC}\n\n"
+			printf "\ncurl https://raw.githubusercontent.com/joseoscom/shell/main/linux/systemd/calibre.service\n"
+			sleep 3
+			printf "\n\n${GREEN}Shove this into${NC} ${REDU}/etc/systemd/system/flood.service${NC}\n\n"
+			printf "\ncurl https://raw.githubusercontent.com/joseoscom/shell/main/linux/systemd/flood.service\n"
+			break
+			;;
+		esac
+	done
 fi
 
 if [ "$yessus" = yes ]; then
