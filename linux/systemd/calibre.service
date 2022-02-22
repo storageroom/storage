@@ -6,7 +6,7 @@ After=network.target
 User=root
 Group=root
 Type=simple
-ExecStart=/usr/bin/calibre-server --log /mnt/bruh/books/lmao.txt --enable-auth --ssl-certfile /mnt/bruh/books/key.pem --ssl-keyfile /mnt/bruh/books/key.key --port 2096 "/mnt/bruh/books/Calibre Library"
+ExecStart=/usr/bin/calibre-server --log /mnt/bruh/books/lmao.txt --enable-auth --ssl-certfile /mnt/bruh/books/key.pem --ssl-keyfile /mnt/bruh/books/key.key --port 2096 --enable-local-write "/mnt/bruh/books/Calibre Library"
 Restart=on-failure
 RestartSec=3
 
