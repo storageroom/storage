@@ -83,7 +83,7 @@ jobs:
       - name: Commit
         run: |
           TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
-          TAGY="${TAG:5:2}"
+          TAGY="${TAG:5:1}"
           TAGX=$((TAGY+1))
           TAGA="${TAG:0:5}"
           TAGL="${TAG:3:1}"

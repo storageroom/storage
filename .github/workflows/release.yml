@@ -57,10 +57,11 @@ jobs:
           git config --global gpg.program gpg2
       - name: get files
         run: |
-          rm mac sh server
+          rm mac sh server Brewfile
           wget https://raw.githubusercontent.com/joseoscom/shell/main/dist/mac
           wget https://raw.githubusercontent.com/joseoscom/shell/main/dist/sh
           wget https://raw.githubusercontent.com/joseoscom/shell/main/dist/server
+          wget https://raw.githubusercontent.com/joseoscom/shell/main/macos/Brewfile
       - name: commit
         run: |
           git add .

@@ -423,6 +423,38 @@ if [ "$starc" = true ]; then
 	fi
 fi
 
+printf "${GREEN}install plexupdate?${NC}\n\n"
+select yn in "Yes" "No"; do
+	case $yn in
+	Yes)
+		bash -c "$(wget -qO - https://raw.githubusercontent.com/mrworf/plexupdate/master/extras/installer.sh)"
+		break
+		;;
+	No)
+		printf "\n\n${GREEN}use this command to install manually${NC}\n\n"
+		printf "\nbash -c \"\$(wget -qO - https://raw.githubusercontent.com/mrworf/plexupdate/master/extras/installer.sh)\"\n"
+		break
+		;;
+	esac
+done
+
+printf "${GREEN}install calibre?${NC}\n\n"
+select yn in "Yes" "No"; do
+	case $yn in
+	Yes)
+		sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin
+		printf "\n\nremember to set up users using calibre-server --manage-users"
+		break
+		;;
+	No)
+		printf "\n\n${GREEN}use this command to install manually${NC}\n\n"
+		printf "\nsudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin\n"
+		printf "\n\nremember to set up users using calibre-server --manage-users"
+		break
+		;;
+	esac
+done
+
 printf "\n\n${GREEN}do you want the flexget config file?${NC}"
 select yn in "Yes" "No"; do
 	case $yn in
@@ -470,6 +502,27 @@ select yn in "Yes" "No"; do
 	case $yn in
 	Yes)
 		systemdfiles=true
+		printf "\n\n${GREEN}which files do you want?${NC}"
+		printf "\n\n${GREEN}Both: Calibre + Flood${NC}"
+		select yn in "Both" "Calibre Only" "Flood Only"; do
+			case $yn in
+			Both)
+				calibresystemd=true
+				floodsystemd=true
+				break
+				;;
+			"Calibre Only")
+				calibresystemd=true
+				floodsystemd=false
+				break
+				;;
+			"Flood Only")
+				calibresystemd=false
+				floodsystemd=true
+				break
+				;;
+			esac
+		done
 		break
 		;;
 	No)
@@ -480,12 +533,16 @@ select yn in "Yes" "No"; do
 done
 
 if [ "$flexgetfile" = true ]; then
-	printf "${GREEN} Would you like to automate install?"
+	printf "${GREEN} Would you like to automate flexget config install?"
 	select yn in "Yes" "No"; do
 		case $yn in
 		Yes)
-			sudo mkdir /etc/flexget
-			sudo curl https://raw.githubusercontent.com/joseoscom/shell/main/linux/config.yml --output /etc/flexget/config.yml
+			if [ -d "/etc/flexget" ]; then
+				sudo curl https://raw.githubusercontent.com/joseoscom/shell/main/linux/config.yml --output /etc/flexget/config.yml
+			else
+				sudo mkdir /etc/flexget
+				sudo curl https://raw.githubusercontent.com/joseoscom/shell/main/linux/config.yml --output /etc/flexget/config.yml
+			fi
 			break
 			;;
 		No)
@@ -498,7 +555,7 @@ if [ "$flexgetfile" = true ]; then
 fi
 
 if [ "$transmissionfile" = true ]; then
-	printf "${GREEN} Would you like to automate install?"
+	printf "${GREEN} Would you like to automate transmission install?"
 	select yn in "Yes" "No"; do
 		case $yn in
 		Yes)
@@ -531,22 +588,31 @@ if [ "$fstabfile" = true ]; then
 fi
 
 if [ "$systemdfiles" = true ]; then
-	printf "${GREEN} Would you like to automate install?"
+	printf "${GREEN} Would you like to automate systemd install?"
 	select yn in "Yes" "No"; do
 		case $yn in
 		Yes)
-			printf "\n\n${GREEN}Putting calibre service file into:${NC} ${REDU}/etc/systemd/system/calibre.service${NC}\n\n"
-			sudo curl https://raw.githubusercontent.com/joseoscom/shell/main/linux/systemd/calibre.service --output /etc/systemd/system/calibre.service
-			printf "\n\n${GREEN}Putting flood service file into:${NC} ${REDU}/etc/systemd/system/flood.service${NC}\n\n"
-			sudo curl https://raw.githubusercontent.com/joseoscom/shell/main/linux/systemd/flood.service --output /etc/systemd/system/flood.service
+			if [ "$calibresystemd" = true ]; then
+				printf "\n\n${GREEN}Putting calibre service file into:${NC} ${REDU}/etc/systemd/system/calibre.service${NC}\n\n"
+				sudo curl https://raw.githubusercontent.com/joseoscom/shell/main/linux/systemd/calibre.service --output /etc/systemd/system/calibre.service
+			fi
+			if [ "$floodsystemd" = true ]; then
+				printf "\n\n${GREEN}Putting flood service file into:${NC} ${REDU}/etc/systemd/system/flood.service${NC}\n\n"
+				sudo curl https://raw.githubusercontent.com/joseoscom/shell/main/linux/systemd/flood.service --output /etc/systemd/system/flood.service
+			fi
 			break
 			;;
 		No)
-			printf "\n\n${GREEN}Shove this into${NC} ${REDU}/etc/systemd/system/calibre.service${NC}\n\n"
-			printf "\ncurl https://raw.githubusercontent.com/joseoscom/shell/main/linux/systemd/calibre.service\n"
+			if [ "$calibresystemd" = true ]; then
+				printf "\n\n${GREEN}Shove this into${NC} ${REDU}/etc/systemd/system/calibre.service${NC}\n\n"
+				printf "\ncurl https://raw.githubusercontent.com/joseoscom/shell/main/linux/systemd/calibre.service\n"
+			fi
 			sleep 3
-			printf "\n\n${GREEN}Shove this into${NC} ${REDU}/etc/systemd/system/flood.service${NC}\n\n"
-			printf "\ncurl https://raw.githubusercontent.com/joseoscom/shell/main/linux/systemd/flood.service\n"
+			if [ "$floodsystemd" = true ]; then
+				printf "\n\n${GREEN}Shove this into${NC} ${REDU}/etc/systemd/system/flood.service${NC}\n\n"
+				printf "\ncurl https://raw.githubusercontent.com/joseoscom/shell/main/linux/systemd/flood.service\n"
+			fi
+			sleep 3
 			break
 			;;
 		esac
