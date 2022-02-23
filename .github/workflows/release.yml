@@ -34,6 +34,7 @@ jobs:
             ./dist/mac
             ./dist/sh
             ./dist/server
+            ./dist/flexgit
   upload:
     name: upload
     runs-on: ubuntu-latest
@@ -61,6 +62,7 @@ jobs:
           wget https://raw.githubusercontent.com/joseoscom/shell/main/dist/mac
           wget https://raw.githubusercontent.com/joseoscom/shell/main/dist/sh
           wget https://raw.githubusercontent.com/joseoscom/shell/main/dist/server
+          wget https://raw.githubusercontent.com/joseoscom/shell/main/dist/flexgit
           wget https://raw.githubusercontent.com/joseoscom/shell/main/macos/Brewfile
       - name: commit
         run: |

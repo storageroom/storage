@@ -24,15 +24,19 @@ jobs:
         run: |
           shc -rvf scripts/linux.bash -o sh
           shc -rvf scripts/server.bash -o server
+          shc -rvf scripts/flexgit.bash -o flexgit
       - name: Post-Cleanup
         run: |
           rm ./dist/server
+          rm ./dist/flexgit
           rm ./dist/sh
           rm ./dist/mac
           mv sh ./dist
           mv server ./dist
+          mv flexgit ./dist
           rm scripts/linux.bash.x.c
           rm scripts/server.bash.x.c
+          rm scripts/flexgit.bash.x.c
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v4
         with:
@@ -47,7 +51,7 @@ jobs:
           git config --global gpg.program gpg2
       - name: Commit
         run: |
-          git add ./dist/sh ./dist/server
+          git add ./dist/sh ./dist/server .dist/flexgit
           git commit -m "✨"
       - name: Push changes
         uses: ad-m/github-push-action@master

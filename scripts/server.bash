@@ -455,19 +455,37 @@ select yn in "Yes" "No"; do
 	esac
 done
 
-printf "\n\n${GREEN}do you want the flexget config file?${NC}"
+printf "${GREEN}install flexget via git?${NC}\n\n"
 select yn in "Yes" "No"; do
 	case $yn in
 	Yes)
-		flexgetfile=true
+		gh auth login
+		cd /etc || printf "/etc does not exist?!?!?! nani?!?!?! mv it there manually"
+		gh repo clone storageroom/flexget
 		break
 		;;
 	No)
-		flexgetfile=false
+		flexgetclone=false
 		break
 		;;
 	esac
 done
+
+if [ "$flexgetclone" = false ]; then
+	printf "\n\n${GREEN}do you want the flexget config file?${NC}"
+	select yn in "Yes" "No"; do
+		case $yn in
+		Yes)
+			flexgetfile=true
+			break
+			;;
+		No)
+			flexgetfile=false
+			break
+			;;
+		esac
+	done
+fi
 
 printf "\n\n${GREEN}do you want the transmission config file?${NC}"
 select yn in "Yes" "No"; do
