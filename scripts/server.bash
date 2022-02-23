@@ -460,7 +460,7 @@ select yn in "Yes" "No"; do
 	case $yn in
 	Yes)
 		gh auth login
-		cd /etc || printf "/etc does not exist?!?!?! nani?!?!?! mv it there manually"
+		cd /etc || printf "/etc does not exist! mv it there manually"
 		gh repo clone storageroom/flexget
 		break
 		;;

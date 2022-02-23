@@ -51,7 +51,7 @@ jobs:
           git config --global gpg.program gpg2
       - name: Commit
         run: |
-          git add ./dist/sh ./dist/server .dist/flexgit
+          git add ./dist/sh ./dist/server ./dist/flexgit
           git commit -m "✨"
       - name: Push changes
         uses: ad-m/github-push-action@master
