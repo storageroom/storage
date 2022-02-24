@@ -1,0 +1,58 @@
+name: 😮‍💨
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "**.go"
+  workflow_dispatch:
+
+jobs:
+  buildl:
+    name: Build for Linux
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.PAT }}
+          fetch-depth: 0
+      - name: Pre-Cleanup
+        run: |
+          rm ./dist/flexgit
+      - name: Build
+        run: |
+          go build -o ./dist/flexgit scripts/flexgit.go
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v4
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+          git_tag_gpgsign: true
+          git_push_gpgsign: false
+      - name: set up git
+        run: |
+          git config --global gpg.program gpg2
+      - name: Commit
+        run: |
+          git add ./dist/flexgit
+          git commit -m "🤠"
+      - name: Commit
+        run: |
+          TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
+          TAGY="${TAG:5:1}"
+          TAGX=$((TAGY+1))
+          TAGA="${TAG:0:5}"
+          TAGL="${TAG:3:1}"
+          TAGO="${TAG:1:1}"
+          TAGF="$TAGA$TAGX"
+          if [ "$TAGY" = 9 ]; then TAGX="0";if [ "$TAGL" = 9 ]; then TAGL=0;TAGO=$((TAGO+1));else TAGL=$((TAGL+1));fi;TAGF="v$TAGO.$TAGL.$TAGX";fi
+          TAGLENGTH=${#TAGF}
+          if [ "$TAGLENGTH" -gt 6 ]; then printf "the length of the version number is over 6, will trim";printf "$TAGF";printf "tag length: $TAGLENGTH";FINALTAG="${TAGF:0:6}"; else FINALTAG=$TAGF;fi
+          git add .
+          git commit -m "🫣"
+          git tag -a "$FINALTAG" -m "its $FINALTAG time!!"
+          git push origin "$FINALTAG"
+          git push origin main
