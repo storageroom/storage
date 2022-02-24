@@ -54,7 +54,7 @@ MINIMAL() {
 		git clone https://aur.archlinux.org/yay.git
 		cd yay || printf "${RED}cd into yay failed, aborting${NC}"
 		makepkg -si --noconfirm
-		cd || printf "${RED}cd into home dir failed, aborting${NC}"
+		cd .. || printf "${RED}cd into home dir failed, aborting${NC}"
 		sudo rm -R yay
 		yay -S --noconfirm $(grep -o '^[^#]*' server)
 		sleep 5
@@ -255,6 +255,7 @@ HRINSTALL() {
 		printf "${GREEN}\nInstall of hr done${NC}"
 		printf "${GREEN}\nremoving source files${NC}"
 		sleep 5
+		cd ..
 		rm -rf hr
 	fi
 
