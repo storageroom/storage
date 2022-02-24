@@ -521,22 +521,31 @@ select yn in "Yes" "No"; do
 	Yes)
 		systemdfiles=true
 		printf "\n\n${GREEN}which files do you want?${NC}"
-		printf "\n\n${GREEN}Both: Calibre + Flood${NC}"
-		select yn in "Both" "Calibre Only" "Flood Only"; do
+		printf "\n\n${GREEN}All: Calibre + Flood + Flexget + Flexgit${NC}"
+		select yn in "All" "Calibre Only" "Flood Only" "Flexget + Flexgit only"; do
 			case $yn in
-			Both)
+			All)
 				calibresystemd=true
 				floodsystemd=true
+				flexgetflexgit=true
 				break
 				;;
 			"Calibre Only")
 				calibresystemd=true
 				floodsystemd=false
+				flexgetflexgit=false
 				break
 				;;
 			"Flood Only")
 				calibresystemd=false
 				floodsystemd=true
+				flexgetflexgit=false
+				break
+				;;
+			"Flexget + Flexgit only")
+				calibresystemd=false
+				floodsystemd=false
+				flexgetflexgit=true
 				break
 				;;
 			esac
@@ -613,10 +622,24 @@ if [ "$systemdfiles" = true ]; then
 			if [ "$calibresystemd" = true ]; then
 				printf "\n\n${GREEN}Putting calibre service file into:${NC} ${REDU}/etc/systemd/system/calibre.service${NC}\n\n"
 				sudo curl https://raw.githubusercontent.com/joseoscom/shell/main/linux/systemd/calibre.service --output /etc/systemd/system/calibre.service
+				sudo systemctl daemon-reload
+				sudo systemctl enable calibre
 			fi
 			if [ "$floodsystemd" = true ]; then
 				printf "\n\n${GREEN}Putting flood service file into:${NC} ${REDU}/etc/systemd/system/flood.service${NC}\n\n"
 				sudo curl https://raw.githubusercontent.com/joseoscom/shell/main/linux/systemd/flood.service --output /etc/systemd/system/flood.service
+				sudo systemctl daemon-reload
+				sudo systemctl enable flood
+			fi
+			if [ "$flexgetflexgit" = true ]; then
+				printf "\n\n${GREEN}Putting flexget&flexgit service file into:${NC} ${REDU}/etc/systemd/system/${NC}\n\n"
+				sudo curl https://raw.githubusercontent.com/joseoscom/shell/main/linux/systemd/flexget.service --output /etc/systemd/system/flood.service
+				sudo curl https://raw.githubusercontent.com/joseoscom/shell/main/linux/systemd/flexgit.service --output /etc/systemd/system/flood.service
+				sudo curl https://raw.githubusercontent.com/joseoscom/shell/main/linux/systemd/flexgit.timer --output /etc/systemd/system/flood.service
+				sudo systemctl daemon-reload
+				sudo systemctl enable flexget
+				sudo systemctl enable flexgit
+				sudo systemctl enable flexgit.timer
 			fi
 			break
 			;;
