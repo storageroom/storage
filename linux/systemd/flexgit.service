@@ -6,5 +6,5 @@ After=network.target
 User=root
 Group=root
 WorkingDirectory=/etc/flexget
-Type=oneshot
+Type=simple
 ExecStart=/bin/flexgit
