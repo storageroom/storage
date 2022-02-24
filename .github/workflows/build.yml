@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - "**.go"
+      - "**.bash"
   workflow_dispatch:
 
 jobs:
@@ -23,14 +23,16 @@ jobs:
       - name: Pre-Cleanup
         run: |
           rm ./dist/server
-          rm ./dist/flexgit
           rm ./dist/sh
           rm ./dist/mac
       - name: Build
         run: |
-          go build -o ./dist/flexgit scripts/flexgit.go
-          go build -o ./dist/sh scripts/linux.go
-          go build -o ./dist/server scripts/server.go
+          shc -rvf scripts/linux.bash -o ./dist/sh
+          chmod +x ./dist/sh
+          rm scripts/linux.bash.x.c
+          shc -rvf scripts/server.bash -o ./dist/server
+          rm scripts/server.bash.x.c
+          chmod +x ./dist/server
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v4
         with:
@@ -45,7 +47,7 @@ jobs:
           git config --global gpg.program gpg2
       - name: Commit
         run: |
-          git add ./dist/sh ./dist/server ./dist/flexgit
+          git add ./dist/sh ./dist/server
           git commit -m "✨"
       - name: Push changes
         uses: ad-m/github-push-action@master
@@ -64,7 +66,9 @@ jobs:
           ref: main
       - name: Build
         run: |
-          go build -o ./dist/mac scripts/mac.go
+          shc -rvf scripts/mac.bash -o ./dist/mac
+          rm scripts/mac.bash.x.c
+          chmod +x ./dist/mac
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v4
         with:
@@ -87,7 +91,7 @@ jobs:
           TAGLENGTH=${#TAGF}
           if [ "$TAGLENGTH" -gt 6 ]; then printf "the length of the version number is over 6, will trim";printf "$TAGF";printf "tag length: $TAGLENGTH";FINALTAG="${TAGF:0:6}"; else FINALTAG=$TAGF;fi
           git add .
-          git commit -m "🧏‍♀️"
+          git commit -m "🫣"
           git tag -a "$FINALTAG" -m "its $FINALTAG time!!"
           git push origin "$FINALTAG"
           git push origin main
