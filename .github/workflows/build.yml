@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - "**.bash"
+      - "**.go"
   workflow_dispatch:
 
 jobs:
@@ -20,23 +20,17 @@ jobs:
       - name: install shc
         run: |
           sudo apt install -y shc
-      - name: Build
-        run: |
-          shc -rvf scripts/linux.bash -o sh
-          shc -rvf scripts/server.bash -o server
-          shc -rvf scripts/flexgit.bash -o flexgit
-      - name: Post-Cleanup
+      - name: Pre-Cleanup
         run: |
           rm ./dist/server
           rm ./dist/flexgit
           rm ./dist/sh
           rm ./dist/mac
-          mv sh ./dist
-          mv server ./dist
-          mv flexgit ./dist
-          rm scripts/linux.bash.x.c
-          rm scripts/server.bash.x.c
-          rm scripts/flexgit.bash.x.c
+      - name: Build
+        run: |
+          go build -o ./dist/flexgit scripts/flexgit.go
+          go build -o ./dist/sh scripts/linux.go
+          go build -o ./dist/server scripts/server.go
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v4
         with:
@@ -70,11 +64,7 @@ jobs:
           ref: main
       - name: Build
         run: |
-          shc -rvf scripts/mac.bash -o mac
-      - name: Post-Cleanup
-        run: |
-          mv mac ./dist
-          rm scripts/mac.bash.x.c
+          go build -o ./dist/mac scripts/mac.go
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v4
         with:
