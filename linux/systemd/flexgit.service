@@ -2,16 +2,9 @@
 Description=Flexget Git Upload
 After=network.target
 
-[Timer]
-OnCalendar=daily
-Persistent=true
-
 [Service]
 User=root
 Group=root
 WorkingDirectory=/etc/flexget
-Type=simple
-ExecStart=/bin/zsh -c 'git add .;git commit -m "🌈";git push origin main'
-
-[Install]
-WantedBy=timers.target
+Type=oneshot
+ExecStart=/bin/zsh -c 'git add .;git commit -m "🌈 `date +\"%d/%m\"`";git push origin main'
