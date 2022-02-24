@@ -37,10 +37,6 @@ jobs:
           git config --global gpg.program gpg2
       - name: Commit
         run: |
-          git add ./dist/flexgit
-          git commit -m "🤠"
-      - name: Commit
-        run: |
           TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
           TAGY="${TAG:5:1}"
           TAGX=$((TAGY+1))
@@ -51,7 +47,7 @@ jobs:
           if [ "$TAGY" = 9 ]; then TAGX="0";if [ "$TAGL" = 9 ]; then TAGL=0;TAGO=$((TAGO+1));else TAGL=$((TAGL+1));fi;TAGF="v$TAGO.$TAGL.$TAGX";fi
           TAGLENGTH=${#TAGF}
           if [ "$TAGLENGTH" -gt 6 ]; then printf "the length of the version number is over 6, will trim";printf "$TAGF";printf "tag length: $TAGLENGTH";FINALTAG="${TAGF:0:6}"; else FINALTAG=$TAGF;fi
-          git add .
+          git add ./dist/flexgit
           git commit -m "🫣"
           git tag -a "$FINALTAG" -m "its $FINALTAG time!!"
           git push origin "$FINALTAG"
