@@ -58,7 +58,7 @@ jobs:
           git config --global gpg.program gpg2
       - name: get files
         run: |
-          rm mac sh server Brewfile
+          rm mac sh server Brewfile flexgit
           wget https://raw.githubusercontent.com/storageroom/shell/main/dist/mac
           wget https://raw.githubusercontent.com/storageroom/shell/main/dist/sh
           wget https://raw.githubusercontent.com/storageroom/shell/main/dist/server
