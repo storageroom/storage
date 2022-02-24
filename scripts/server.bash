@@ -39,7 +39,7 @@ done
 
 SERVER() {
 	if [ "$os" = Debian ] && [ "$wgetisinstalled" = true ]; then
-		wget https://raw.githubusercontent.com/joseoscom/shell/main/linux/packagelist/server
+		wget https://raw.githubusercontent.com/storageroom/shell/main/linux/packagelist/server
 		sudo apt update
 		sudo apt dist-upgrade -y
 		sudo apt upgrade -y
@@ -53,7 +53,7 @@ SERVER() {
 	elif [ "$os" = Arch ] && [ "$wgetisinstalled" = true ]; then
 		printf "${RED} Note that server on arch is experimental and most likely will not work"
 		sleep 10
-		wget https://raw.githubusercontent.com/joseoscom/shell/main/linux/packagelist/server
+		wget https://raw.githubusercontent.com/storageroom/shell/main/linux/packagelist/server
 		sudo pacman -Syu --noconfirm
 		sudo pacman -S --needed --noconfirm git base-devel
 		git clone https://aur.archlinux.org/yay.git
@@ -359,12 +359,12 @@ printf "${GREEN}install zshrc. continue?${NC}\n\n"
 select yn in "Yes" "No"; do
 	case $yn in
 	Yes)
-		curl https://raw.githubusercontent.com/joseoscom/shell/main/universal/zshrc --output ~/.zshrc
+		curl https://raw.githubusercontent.com/storageroom/shell/main/universal/zshrc --output ~/.zshrc
 		break
 		;;
 	No)
 		printf "${REDU}run:${NC}\n"
-		printf "curl https://raw.githubusercontent.com/joseoscom/shell/main/universal/zshrc --output ~/.zshrc\n"
+		printf "curl https://raw.githubusercontent.com/storageroom/shell/main/universal/zshrc --output ~/.zshrc\n"
 		printf "${REDU}to manually install it instead${NC}\n\n"
 		break
 		;;
@@ -416,10 +416,10 @@ fi
 
 if [ "$starc" = true ]; then
 	if [ -d ".config" ]; then
-		curl https://raw.githubusercontent.com/joseoscom/shell/main/universal/starship.toml --output $HOME/.config/starship.toml
+		curl https://raw.githubusercontent.com/storageroom/shell/main/universal/starship.toml --output $HOME/.config/starship.toml
 	else
 		sudo mkdir .config
-		curl https://raw.githubusercontent.com/joseoscom/shell/main/universal/starship.toml --output .config/starship.toml
+		curl https://raw.githubusercontent.com/storageroom/shell/main/universal/starship.toml --output .config/starship.toml
 	fi
 fi
 
@@ -565,16 +565,16 @@ if [ "$flexgetfile" = true ]; then
 		case $yn in
 		Yes)
 			if [ -d "/etc/flexget" ]; then
-				sudo curl https://raw.githubusercontent.com/joseoscom/shell/main/linux/config.yml --output /etc/flexget/config.yml
+				sudo curl https://raw.githubusercontent.com/storageroom/shell/main/linux/config.yml --output /etc/flexget/config.yml
 			else
 				sudo mkdir /etc/flexget
-				sudo curl https://raw.githubusercontent.com/joseoscom/shell/main/linux/config.yml --output /etc/flexget/config.yml
+				sudo curl https://raw.githubusercontent.com/storageroom/shell/main/linux/config.yml --output /etc/flexget/config.yml
 			fi
 			break
 			;;
 		No)
 			printf "\n\n${GREEN}use this command in the flexget server.${NC} ${REDU}we use /etc/flexget${NC}\n\n"
-			printf "\ncurl https://raw.githubusercontent.com/joseoscom/shell/main/linux/config.yml --output config.yml\n"
+			printf "\ncurl https://raw.githubusercontent.com/storageroom/shell/main/linux/config.yml --output config.yml\n"
 			break
 			;;
 		esac
@@ -588,21 +588,21 @@ if [ "$transmissionfile" = true ]; then
 		Yes)
 			if [ -d ".config" ]; then
 				if [ -d "config/transmission-daemon" ]; then
-					curl https://raw.githubusercontent.com/joseoscom/shell/main/linux/settings.json --output .config/transmission-daemon/settings.json
+					curl https://raw.githubusercontent.com/storageroom/shell/main/linux/settings.json --output .config/transmission-daemon/settings.json
 				else
 					sudo mkdir .config/transmission-daemon
-					curl https://raw.githubusercontent.com/joseoscom/shell/main/linux/settings.json --output .config/transmission-daemon/settings.json
+					curl https://raw.githubusercontent.com/storageroom/shell/main/linux/settings.json --output .config/transmission-daemon/settings.json
 				fi
 			else
 				sudo mkdir .config
 				sudo mkdir .config/transmission-daemon
-				curl https://raw.githubusercontent.com/joseoscom/shell/main/linux/settings.json --output .config/transmission-daemon/settings.json
+				curl https://raw.githubusercontent.com/storageroom/shell/main/linux/settings.json --output .config/transmission-daemon/settings.json
 			fi
 			break
 			;;
 		No)
 			printf "\n\n${GREEN}use this command in the transmission server.${NC} ${REDU}we use ~/.config/transmission-daemon/${NC}\n\n"
-			printf "\ncurl https://raw.githubusercontent.com/joseoscom/shell/main/linux/settings.json --output settings.json\n"
+			printf "\ncurl https://raw.githubusercontent.com/storageroom/shell/main/linux/settings.json --output settings.json\n"
 			break
 			;;
 		esac
@@ -611,7 +611,7 @@ fi
 
 if [ "$fstabfile" = true ]; then
 	printf "\n\n${GREEN}Shove this into your fstab:${NC}\n\n"
-	printf "\ncurl https://raw.githubusercontent.com/joseoscom/shell/main/linux/fstab\n"
+	printf "\ncurl https://raw.githubusercontent.com/storageroom/shell/main/linux/fstab\n"
 fi
 
 if [ "$systemdfiles" = true ]; then
@@ -621,21 +621,21 @@ if [ "$systemdfiles" = true ]; then
 		Yes)
 			if [ "$calibresystemd" = true ]; then
 				printf "\n\n${GREEN}Putting calibre service file into:${NC} ${REDU}/etc/systemd/system/calibre.service${NC}\n\n"
-				sudo curl https://raw.githubusercontent.com/joseoscom/shell/main/linux/systemd/calibre.service --output /etc/systemd/system/calibre.service
+				sudo curl https://raw.githubusercontent.com/storageroom/shell/main/linux/systemd/calibre.service --output /etc/systemd/system/calibre.service
 				sudo systemctl daemon-reload
 				sudo systemctl enable calibre
 			fi
 			if [ "$floodsystemd" = true ]; then
 				printf "\n\n${GREEN}Putting flood service file into:${NC} ${REDU}/etc/systemd/system/flood.service${NC}\n\n"
-				sudo curl https://raw.githubusercontent.com/joseoscom/shell/main/linux/systemd/flood.service --output /etc/systemd/system/flood.service
+				sudo curl https://raw.githubusercontent.com/storageroom/shell/main/linux/systemd/flood.service --output /etc/systemd/system/flood.service
 				sudo systemctl daemon-reload
 				sudo systemctl enable flood
 			fi
 			if [ "$flexgetflexgit" = true ]; then
 				printf "\n\n${GREEN}Putting flexget&flexgit service file into:${NC} ${REDU}/etc/systemd/system/${NC}\n\n"
-				sudo curl https://raw.githubusercontent.com/joseoscom/shell/main/linux/systemd/flexget.service --output /etc/systemd/system/flood.service
-				sudo curl https://raw.githubusercontent.com/joseoscom/shell/main/linux/systemd/flexgit.service --output /etc/systemd/system/flood.service
-				sudo curl https://raw.githubusercontent.com/joseoscom/shell/main/linux/systemd/flexgit.timer --output /etc/systemd/system/flood.service
+				sudo curl https://raw.githubusercontent.com/storageroom/shell/main/linux/systemd/flexget.service --output /etc/systemd/system/flood.service
+				sudo curl https://raw.githubusercontent.com/storageroom/shell/main/linux/systemd/flexgit.service --output /etc/systemd/system/flood.service
+				sudo curl https://raw.githubusercontent.com/storageroom/shell/main/linux/systemd/flexgit.timer --output /etc/systemd/system/flood.service
 				sudo systemctl daemon-reload
 				sudo systemctl enable flexget
 				sudo systemctl enable flexgit
@@ -646,12 +646,12 @@ if [ "$systemdfiles" = true ]; then
 		No)
 			if [ "$calibresystemd" = true ]; then
 				printf "\n\n${GREEN}Shove this into${NC} ${REDU}/etc/systemd/system/calibre.service${NC}\n\n"
-				printf "\ncurl https://raw.githubusercontent.com/joseoscom/shell/main/linux/systemd/calibre.service\n"
+				printf "\ncurl https://raw.githubusercontent.com/storageroom/shell/main/linux/systemd/calibre.service\n"
 			fi
 			sleep 3
 			if [ "$floodsystemd" = true ]; then
 				printf "\n\n${GREEN}Shove this into${NC} ${REDU}/etc/systemd/system/flood.service${NC}\n\n"
-				printf "\ncurl https://raw.githubusercontent.com/joseoscom/shell/main/linux/systemd/flood.service\n"
+				printf "\ncurl https://raw.githubusercontent.com/storageroom/shell/main/linux/systemd/flood.service\n"
 			fi
 			sleep 3
 			break

@@ -39,7 +39,7 @@ done
 
 MINIMAL() {
 	if [ "$os" = Debian ] && [ "$wgetisinstalled" = true ]; then
-		wget https://raw.githubusercontent.com/joseoscom/shell/main/linux/packagelist/minimal
+		wget https://raw.githubusercontent.com/storageroom/shell/main/linux/packagelist/minimal
 		sudo apt update
 		sudo apt dist-upgrade -y
 		sudo apt upgrade -y
@@ -48,7 +48,7 @@ MINIMAL() {
 		pleaseinstallwgetnow=false
 
 	elif [ "$os" = Arch ] && [ "$wgetisinstalled" = true ]; then
-		wget https://raw.githubusercontent.com/joseoscom/shell/main/linux/packagelist/minimal
+		wget https://raw.githubusercontent.com/storageroom/shell/main/linux/packagelist/minimal
 		sudo pacman -Syu --noconfirm
 		sudo pacman -S --noconfirm --needed git base-devel
 		git clone https://aur.archlinux.org/yay.git
@@ -354,12 +354,12 @@ printf "${GREEN}install zshrc. continue?${NC}\n\n"
 select yn in "Yes" "No"; do
 	case $yn in
 	Yes)
-		curl https://raw.githubusercontent.com/joseoscom/shell/main/universal/zshrc --output ~/.zshrc
+		curl https://raw.githubusercontent.com/storageroom/shell/main/universal/zshrc --output ~/.zshrc
 		break
 		;;
 	No)
 		printf "${REDU}run:${NC}\n"
-		printf "curl https://raw.githubusercontent.com/joseoscom/shell/main/universal/zshrc --output ~/.zshrc\n"
+		printf "curl https://raw.githubusercontent.com/storageroom/shell/main/universal/zshrc --output ~/.zshrc\n"
 		printf "${REDU}to manually install it instead${NC}\n\n"
 		break
 		;;
@@ -411,10 +411,10 @@ fi
 
 if [ "$starc" = true ]; then
 	if [ -d ".config" ]; then
-		curl https://raw.githubusercontent.com/joseoscom/shell/main/universal/starship.toml --output $HOME/.config/starship.toml
+		curl https://raw.githubusercontent.com/storageroom/shell/main/universal/starship.toml --output $HOME/.config/starship.toml
 	else
 		sudo mkdir .config
-		curl https://raw.githubusercontent.com/joseoscom/shell/main/universal/starship.toml --output .config/starship.toml
+		curl https://raw.githubusercontent.com/storageroom/shell/main/universal/starship.toml --output .config/starship.toml
 	fi
 fi
 
