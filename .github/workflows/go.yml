@@ -20,9 +20,11 @@ jobs:
       - name: Pre-Cleanup
         run: |
           rm ./dist/flexgit
+          rm ./dist/increment
       - name: Build
         run: |
           go build -o ./dist/flexgit scripts/flexgit.go
+          go build -o ./dist/increment scripts/increment.go
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v4
         with:
@@ -47,7 +49,7 @@ jobs:
           if [ "$TAGY" = 9 ]; then TAGX="0";if [ "$TAGL" = 9 ]; then TAGL=0;TAGO=$((TAGO+1));else TAGL=$((TAGL+1));fi;TAGF="v$TAGO.$TAGL.$TAGX";fi
           TAGLENGTH=${#TAGF}
           if [ "$TAGLENGTH" -gt 6 ]; then printf "the length of the version number is over 6, will trim";printf "$TAGF";printf "tag length: $TAGLENGTH";FINALTAG="${TAGF:0:6}"; else FINALTAG=$TAGF;fi
-          git add ./dist/flexgit
+          git add ./dist/flexgit ./dist/increment
           git commit -m "🫣"
           git tag -a "$FINALTAG" -m "its $FINALTAG time!!"
           git push origin "$FINALTAG"
