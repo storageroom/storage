@@ -72,9 +72,10 @@ func main() {
 		finaltag = finaltag[0:6]
 	}
 
-	exec.Command("git", "add", ".")
-	exec.Command("git", "commit", "-m", "🫣")
-	exec.Command("git", "tag", "-a", finaltag, "-m", "its new release time!! ✨")
-	exec.Command("git", "push", "origin", finaltag)
-	exec.Command("git", "push", "origin", "main")
+	fmt.Println("the latest tag is: ", finaltag)
+	exec.Command("git", "add", ".").Run()
+	exec.Command("git", "commit", "-m", "🫣").Run()
+	exec.Command("git", "tag", "-a", finaltag, "-m", "its new release time!! ✨").Run()
+	exec.Command("git", "push", "origin", finaltag).Run()
+	exec.Command("git", "push", "origin", "main").Run()
 }
