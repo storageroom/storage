@@ -93,11 +93,41 @@ func main() {
 	}
 
 	fmt.Println("the new tag is: ", finaltag)
-	exec.Command("git", "add", ".").Run()
-	exec.Command("git", "commit", "-m", "🫣").Run()
-	exec.Command("git", "tag", "-a", finaltag, "-m", "its new release time!! ✨").Run()
-	exec.Command("git", "push", "origin", finaltag).Run()
-	exec.Command("git", "push", "origin", "main").Run()
+
+	a := exec.Command("git", "add", ".").Run()
+	fmt.Println(a)
+	if a != nil {
+			log.Fatalf("sentry.Init: %s", err)
+			fmt.Println("there was an error when performing git add .")
+	}
+
+	b := exec.Command("git", "commit", "-m", "🫣").Run()
+	fmt.Println(b)
+	if b != nil {
+			log.Fatalf("sentry.Init: %s", err)
+			fmt.Println("there was an error when performing git commit")
+	}
+
+	c := exec.Command("git", "tag", "-a", finaltag, "-m", "its new release time!! ✨").Run()
+	fmt.Println(c)
+	if c != nil {
+			log.Fatalf("sentry.Init: %s", err)
+			fmt.Println("there was an error when performing git tag")
+	}
+
+	d := exec.Command("git", "push", "origin", finaltag).Run()
+	fmt.Println(d)
+	if d != nil {
+			log.Fatalf("sentry.Init: %s", err)
+			fmt.Println("there was an error when performing git push origin tag")
+	}
+
+	e := exec.Command("git", "push", "origin", "main").Run()
+	fmt.Println(e)
+	if e != nil {
+			log.Fatalf("sentry.Init: %s", err)
+			fmt.Println("there was an error when performing git push origin main")
+	}
 
 	// Flush buffered events before the program terminates.
 	defer sentry.Flush(2 * time.Second)
