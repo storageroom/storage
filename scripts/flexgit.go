@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	lmao := time.Now().Format("🌈 02 Jan PM")
+	lmao := time.Now().Format("🌈 02 Jan")
 	exec.Command("git", "add", ".").Run()
 	exec.Command("git", "commit", "-m", lmao).Run()
 	exec.Command("git", "push", "origin", "main").Run()
