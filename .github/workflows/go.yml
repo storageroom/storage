@@ -25,6 +25,7 @@ jobs:
         run: |
           go build -o ./dist/flexgit scripts/flexgit.go
           chmod +x ./dist/flexgit
+          go get -d ./scripts/increment/...
           go build -o ./dist/increment scripts/increment/increment.go
           chmod +x ./dist/increment
       - name: Import GPG key

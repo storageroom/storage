@@ -94,37 +94,37 @@ func main() {
 
 	fmt.Println("the new tag is: ", finaltag)
 
-	a := exec.Command("git", "add", ".").Run()
-	fmt.Println(a)
-	if a != nil {
+	gitadd := exec.Command("git", "add", ".").Run()
+	fmt.Println(gitadd)
+	if gitadd != nil {
 			log.Fatalf("sentry.Init: %s", err)
 			fmt.Println("there was an error when performing git add .")
 	}
 
-	b := exec.Command("git", "commit", "-m", "🫣").Run()
-	fmt.Println(b)
-	if b != nil {
+	gitcommit := exec.Command("git", "commit", "-m", "🫣").Run()
+	fmt.Println(gitcommit)
+	if gitcommit != nil {
 			log.Fatalf("sentry.Init: %s", err)
 			fmt.Println("there was an error when performing git commit")
 	}
 
-	c := exec.Command("git", "tag", "-a", finaltag, "-m", "its new release time!! ✨").Run()
-	fmt.Println(c)
-	if c != nil {
+	gittag := exec.Command("git", "tag", "-a", finaltag, "-m", "its new release time!! ✨").Run()
+	fmt.Println(gittag)
+	if gittag != nil {
 			log.Fatalf("sentry.Init: %s", err)
 			fmt.Println("there was an error when performing git tag")
 	}
 
-	d := exec.Command("git", "push", "origin", finaltag).Run()
-	fmt.Println(d)
-	if d != nil {
+	gitpushtag := exec.Command("git", "push", "origin", finaltag).Run()
+	fmt.Println(gitpushtag)
+	if gitpushtag != nil {
 			log.Fatalf("sentry.Init: %s", err)
 			fmt.Println("there was an error when performing git push origin tag")
 	}
 
-	e := exec.Command("git", "push", "origin", "main").Run()
-	fmt.Println(e)
-	if e != nil {
+	gitpushmain := exec.Command("git", "push", "origin", "main").Run()
+	fmt.Println(gitpushmain)
+	if gitpushmain != nil {
 			log.Fatalf("sentry.Init: %s", err)
 			fmt.Println("there was an error when performing git push origin main")
 	}
