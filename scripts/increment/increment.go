@@ -80,9 +80,9 @@ func main() {
 	TAGLENGTH := len(finaltag)
 	// if the length of the final tag is over 6, trim it
 	if TAGLENGTH > 6 {
-		fmt.Println("the length of the version number is over 6, will trim")
-		fmt.Println(finaltag)
-		fmt.Println("tag length: ", TAGLENGTH)
+		log.Println("the length of the version number is over 6, will trim")
+		log.Println(finaltag)
+		log.Println("tag length: ", TAGLENGTH)
 		finaltag = finaltag[0:6]
 	}
 
