@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os/exec"
 	"os"
@@ -23,8 +22,6 @@ func main() {
 	})
 	if uuuuuuuuu != nil {
 		log.Fatalf("sentry.Init: %s", uuuuuuuuu)
-	} else {
-		sentry.CaptureMessage("It worksssssssss!")
 	}
 
 	lmao, asdf := exec.Command("git", "describe", "--abbrev=0", "--tags").Output()
@@ -33,7 +30,7 @@ func main() {
 	}
 
 	getlatesttag := string(lmao)
-	fmt.Println("the initial (latest) tag is: ", getlatesttag)
+	log.Println("the initial (latest) tag is: ", getlatesttag)
 
 	getlastdigit := getlatesttag[5:6]
 	getfirstdigits := getlatesttag[0:5]
@@ -89,40 +86,35 @@ func main() {
 		finaltag = finaltag[0:6]
 	}
 
-	fmt.Println("the new tag is: ", finaltag)
+	log.Println("the new tag is: ", finaltag)
 
 	gitadd := exec.Command("git", "add", ".").Run()
-	fmt.Println("gitadd error: ", gitadd)
 	if gitadd != nil {
 		sentry.CaptureException(gitadd)
-		fmt.Println("there was an error when performing git add .")
+		log.Println("there was an error when performing git add .")
 	}
 
 	gitcommit := exec.Command("git", "commit", "-m", "🫣").Run()
-	fmt.Println("gitcommit error: ", gitcommit)
 	if gitcommit != nil {
 		sentry.CaptureException(gitcommit)
-		fmt.Println("there was an error when performing git commit")
+		log.Println("there was an error when performing git commit")
 	}
 
 	gittag := exec.Command("git", "tag", "-a", finaltag, "-m", "its new release time!! ✨").Run()
-	fmt.Println("gittag error: ", gittag)
 	if gittag != nil {
 		sentry.CaptureException(gittag)
-		fmt.Println("there was an error when performing git tag")
+		log.Println("there was an error when performing git tag")
 	}
 
 	gitpushtag := exec.Command("git", "push", "origin", finaltag).Run()
-	fmt.Println("gitpushtag error: ", gitpushtag)
 	if gitpushtag != nil {
 		sentry.CaptureException(gitpushtag)
-		fmt.Println("there was an error when performing git push origin tag")
+		log.Println("there was an error when performing git push origin tag")
 	}
 
 	gitpushmain := exec.Command("git", "push", "origin", "main").Run()
-	fmt.Println("gitpushmain error: ", gitpushmain)
 	if gitpushmain != nil {
 		sentry.CaptureException(gitpushmain)
-		fmt.Println("there was an error when performing git push origin main")
+		log.Println("there was an error when performing git push origin main")
 	}
 }
