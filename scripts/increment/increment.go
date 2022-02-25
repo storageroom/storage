@@ -1,12 +1,14 @@
 package main
 
 import (
+	"flag"
+	"fmt"
+	"log"
 	"os/exec"
 	"strconv"
-	"fmt"
 	"strings"
+
 	"github.com/getsentry/sentry-go"
-	"log"
 )
 
 func main() {
@@ -14,8 +16,12 @@ func main() {
 	// getlatesttag := "v10.9.9"
 	// map to bash: TAG -> getlatesttag, TAGY -> getlastdigit, TAGX -> incrementlastdigit, TAGA -> getfirstdigits, TAGL -> getseconddigit, TAGO -> getfirstdigit, TAGF -> finaltag
 
+	// declare key flag
+	sentrykey := flag.String("key", "nil", "a string")
+	flag.Parse()
+
 	uuuuuuuuu := sentry.Init(sentry.ClientOptions{
-		Dsn: "https://70f5eb6587754686892d08ceebc22bbc@o1153157.ingest.sentry.io/6232041",
+		Dsn: *sentrykey,
 	})
 	if uuuuuuuuu != nil {
 		log.Fatalf("sentry.Init: %s", uuuuuuuuu)
