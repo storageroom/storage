@@ -4,12 +4,22 @@ import (
 	"os/exec"
 	"strconv"
 	"fmt"
+	"time"
 	"strings"
+	"github.com/getsentry/sentry-go"
+	"log"
 )
 
 func main() {
 	// control variable for testing
 	// getlatesttag := "v10.9.9"
+
+	err := sentry.Init(sentry.ClientOptions{
+		Dsn: "https://70f5eb6587754686892d08ceebc22bbc@o1153157.ingest.sentry.io/6232041",
+	})
+	if err != nil {
+		log.Fatalf("sentry.Init: %s", err)
+	}
 
 	// MAP: 
 	// TAG -> getlatesttag
@@ -21,9 +31,9 @@ func main() {
 	// TAGF -> finaltag
 
 	lmao, err := exec.Command("git", "describe", "--abbrev=0", "--tags").Output()
-    if err != nil {
-        fmt.Println(err)
-    }
+	if err != nil {
+		log.Fatalf("sentry.Init: %s", err)
+	}
 
 	getlatesttag := string(lmao)
 	fmt.Println("the initial (latest) tag is: ", getlatesttag)
@@ -32,10 +42,14 @@ func main() {
 	getfirstdigits := getlatesttag[0:5]
 	getfirstdigit := getlatesttag[1:2]
 	getseconddigit := getlatesttag[3:4]
-	lastdigitconvertstringtonumber, _ := strconv.Atoi(getlastdigit)
+	lastdigitconvertstringtonumber, err := strconv.Atoi(getlastdigit)
 	incrementlastdigit := lastdigitconvertstringtonumber + 1
 	lastdigitconvertnumbertostring := strconv.Itoa(incrementlastdigit)
 	finaltag := strings.Join([]string{getfirstdigits, lastdigitconvertnumbertostring}, "")
+
+	if err != nil {
+		log.Fatalf("sentry.Init: %s", err)
+	}	
 
 	// if the last digit is 9, eg. v0.0.9,
 	if getlastdigit == "9" {
@@ -46,17 +60,23 @@ func main() {
 			// make the second digit 0 {
 			getseconddigit = "0"
 			// } add one to the first digit {
-			firstdigitconvertstringtonumber, _ := strconv.Atoi(getfirstdigit) // Convert string to int
+			firstdigitconvertstringtonumber, err := strconv.Atoi(getfirstdigit) // Convert string to int
 			newfirstdigit := firstdigitconvertstringtonumber + 1 // add one
 			getfirstdigit = strconv.Itoa(newfirstdigit) // Convert int to string as per variable type
 			// } result: 1.0.0
+			if err != nil {
+				log.Fatalf("sentry.Init: %s", err)
+			}
 		} else {
 			// else if it is not 9, eg. v0.8.9
 			// add one to the second digit {
-			seconddigitconvertstringtonumber, _ := strconv.Atoi(getseconddigit) // Convert string to int
+			seconddigitconvertstringtonumber, err := strconv.Atoi(getseconddigit) // Convert string to int
 			newseconddigit := seconddigitconvertstringtonumber + 1 // add one
 			getseconddigit = strconv.Itoa(newseconddigit) // Convert int to string as per variable type
 			// } result: v0.9.0
+			if err != nil {
+				log.Fatalf("sentry.Init: %s", err)
+			}
 		}
 		almostfinaltag := strings.Join([]string{getfirstdigit, getseconddigit, lastdigitconvertnumbertostring}, ".") //"v$TAGO.$TAGL.$TAGX"
 		finaltag = strings.Join([]string{"v", almostfinaltag}, "")
@@ -78,4 +98,8 @@ func main() {
 	exec.Command("git", "tag", "-a", finaltag, "-m", "its new release time!! ✨").Run()
 	exec.Command("git", "push", "origin", finaltag).Run()
 	exec.Command("git", "push", "origin", "main").Run()
+
+	// Flush buffered events before the program terminates.
+	defer sentry.Flush(2 * time.Second)
+	sentry.CaptureMessage("It works!")
 }

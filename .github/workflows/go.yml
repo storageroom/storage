@@ -23,8 +23,10 @@ jobs:
           rm ./dist/increment
       - name: Build
         run: |
-          go build -o ./dist/flexgit scripts/flexgit.go
-          go build -o ./dist/increment scripts/increment.go
+          go build -o ./dist/flexgit scripts/flexgit/flexgit.go
+          chmod +x ./dist/flexgit
+          go build -o ./dist/increment scripts/increment/increment.go
+          chmod +x ./dist/increment
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v4
         with:
