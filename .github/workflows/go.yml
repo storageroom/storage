@@ -23,7 +23,7 @@ jobs:
           rm ./dist/increment
       - name: Build
         run: |
-          go build -o ./dist/flexgit scripts/flexgit/flexgit.go
+          go build -o ./dist/flexgit scripts/flexgit.go
           chmod +x ./dist/flexgit
           go build -o ./dist/increment scripts/increment/increment.go
           chmod +x ./dist/increment
