@@ -4,7 +4,6 @@ import (
 	"os/exec"
 	"strconv"
 	"fmt"
-	"time"
 	"strings"
 	"github.com/getsentry/sentry-go"
 	"log"
@@ -13,26 +12,18 @@ import (
 func main() {
 	// control variable for testing
 	// getlatesttag := "v10.9.9"
+	// map to bash: TAG -> getlatesttag, TAGY -> getlastdigit, TAGX -> incrementlastdigit, TAGA -> getfirstdigits, TAGL -> getseconddigit, TAGO -> getfirstdigit, TAGF -> finaltag
 
-	err := sentry.Init(sentry.ClientOptions{
+	uuuuuuuuu := sentry.Init(sentry.ClientOptions{
 		Dsn: "https://70f5eb6587754686892d08ceebc22bbc@o1153157.ingest.sentry.io/6232041",
 	})
-	if err != nil {
-		log.Fatalf("sentry.Init: %s", err)
+	if uuuuuuuuu != nil {
+		log.Fatalf("sentry.Init: %s", uuuuuuuuu)
 	}
 
-	// MAP: 
-	// TAG -> getlatesttag
-	// TAGY -> getlastdigit
-	// TAGX -> incrementlastdigit
-	// TAGA -> getfirstdigits
-	// TAGL -> getseconddigit
-	// TAGO -> getfirstdigit
-	// TAGF -> finaltag
-
-	lmao, err := exec.Command("git", "describe", "--abbrev=0", "--tags").Output()
-	if err != nil {
-		log.Fatalf("sentry.Init: %s", err)
+	lmao, asdf := exec.Command("git", "describe", "--abbrev=0", "--tags").Output()
+	if asdf != nil {
+		sentry.CaptureException(asdf)
 	}
 
 	getlatesttag := string(lmao)
@@ -42,13 +33,13 @@ func main() {
 	getfirstdigits := getlatesttag[0:5]
 	getfirstdigit := getlatesttag[1:2]
 	getseconddigit := getlatesttag[3:4]
-	lastdigitconvertstringtonumber, err := strconv.Atoi(getlastdigit)
+	lastdigitconvertstringtonumber, sahdiahd := strconv.Atoi(getlastdigit)
 	incrementlastdigit := lastdigitconvertstringtonumber + 1
 	lastdigitconvertnumbertostring := strconv.Itoa(incrementlastdigit)
 	finaltag := strings.Join([]string{getfirstdigits, lastdigitconvertnumbertostring}, "")
 
-	if err != nil {
-		log.Fatalf("sentry.Init: %s", err)
+	if sahdiahd != nil {
+		sentry.CaptureException(sahdiahd)
 	}	
 
 	// if the last digit is 9, eg. v0.0.9,
@@ -60,22 +51,22 @@ func main() {
 			// make the second digit 0 {
 			getseconddigit = "0"
 			// } add one to the first digit {
-			firstdigitconvertstringtonumber, err := strconv.Atoi(getfirstdigit) // Convert string to int
+			firstdigitconvertstringtonumber, wkauhfsevuiejroefw := strconv.Atoi(getfirstdigit) // Convert string to int
 			newfirstdigit := firstdigitconvertstringtonumber + 1 // add one
 			getfirstdigit = strconv.Itoa(newfirstdigit) // Convert int to string as per variable type
 			// } result: 1.0.0
-			if err != nil {
-				log.Fatalf("sentry.Init: %s", err)
+			if wkauhfsevuiejroefw != nil {
+				sentry.CaptureException(wkauhfsevuiejroefw)
 			}
 		} else {
 			// else if it is not 9, eg. v0.8.9
 			// add one to the second digit {
-			seconddigitconvertstringtonumber, err := strconv.Atoi(getseconddigit) // Convert string to int
+			seconddigitconvertstringtonumber, ueworiyiou4783788 := strconv.Atoi(getseconddigit) // Convert string to int
 			newseconddigit := seconddigitconvertstringtonumber + 1 // add one
 			getseconddigit = strconv.Itoa(newseconddigit) // Convert int to string as per variable type
 			// } result: v0.9.0
-			if err != nil {
-				log.Fatalf("sentry.Init: %s", err)
+			if ueworiyiou4783788 != nil {
+				sentry.CaptureException(ueworiyiou4783788)
 			}
 		}
 		almostfinaltag := strings.Join([]string{getfirstdigit, getseconddigit, lastdigitconvertnumbertostring}, ".") //"v$TAGO.$TAGL.$TAGX"
@@ -95,41 +86,37 @@ func main() {
 	fmt.Println("the new tag is: ", finaltag)
 
 	gitadd := exec.Command("git", "add", ".").Run()
-	fmt.Println(gitadd)
+	fmt.Println("gitadd error: ", gitadd)
 	if gitadd != nil {
-			log.Fatalf("sentry.Init: %s", err)
-			fmt.Println("there was an error when performing git add .")
+		sentry.CaptureException(gitadd)
+		fmt.Println("there was an error when performing git add .")
 	}
 
 	gitcommit := exec.Command("git", "commit", "-m", "🫣").Run()
-	fmt.Println(gitcommit)
+	fmt.Println("gitcommit error: ", gitcommit)
 	if gitcommit != nil {
-			log.Fatalf("sentry.Init: %s", err)
-			fmt.Println("there was an error when performing git commit")
+		sentry.CaptureException(gitcommit)
+		fmt.Println("there was an error when performing git commit")
 	}
 
 	gittag := exec.Command("git", "tag", "-a", finaltag, "-m", "its new release time!! ✨").Run()
-	fmt.Println(gittag)
+	fmt.Println("gittag error: ", gittag)
 	if gittag != nil {
-			log.Fatalf("sentry.Init: %s", err)
-			fmt.Println("there was an error when performing git tag")
+		sentry.CaptureException(gittag)
+		fmt.Println("there was an error when performing git tag")
 	}
 
 	gitpushtag := exec.Command("git", "push", "origin", finaltag).Run()
-	fmt.Println(gitpushtag)
+	fmt.Println("gitpushtag error: ", gitpushtag)
 	if gitpushtag != nil {
-			log.Fatalf("sentry.Init: %s", err)
-			fmt.Println("there was an error when performing git push origin tag")
+		sentry.CaptureException(gitpushtag)
+		fmt.Println("there was an error when performing git push origin tag")
 	}
 
 	gitpushmain := exec.Command("git", "push", "origin", "main").Run()
-	fmt.Println(gitpushmain)
+	fmt.Println("gitpushmain error: ", gitpushmain)
 	if gitpushmain != nil {
-			log.Fatalf("sentry.Init: %s", err)
-			fmt.Println("there was an error when performing git push origin main")
+		sentry.CaptureException(gitpushmain)
+		fmt.Println("there was an error when performing git push origin main")
 	}
-
-	// Flush buffered events before the program terminates.
-	defer sentry.Flush(2 * time.Second)
-	sentry.CaptureMessage("It works!")
 }
