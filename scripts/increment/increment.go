@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os/exec"
-	“os”
+	"os"
 	"strconv"
 	"strings"
 
@@ -16,7 +16,7 @@ func main() {
 	// getlatesttag := "v10.9.9"
 	// map to bash: TAG -> getlatesttag, TAGY -> getlastdigit, TAGX -> incrementlastdigit, TAGA -> getfirstdigits, TAGL -> getseconddigit, TAGO -> getfirstdigit, TAGF -> finaltag
 
-	key := os.Getenv(“key”)
+	key := os.Getenv("key")
 
 	uuuuuuuuu := sentry.Init(sentry.ClientOptions{
 		Dsn: key,
