@@ -26,7 +26,7 @@ func main() {
     }
 
 	getlatesttag := string(lmao)
-	fmt.Printf("the initial (latest) tag is: ", getlatesttag)
+	fmt.Println("the initial (latest) tag is: ", getlatesttag)
 
 	getlastdigit := getlatesttag[5:6]
 	getfirstdigits := getlatesttag[0:5]
@@ -72,7 +72,7 @@ func main() {
 		finaltag = finaltag[0:6]
 	}
 
-	fmt.Printf("the new tag is: ", finaltag)
+	fmt.Println("the new tag is: ", finaltag)
 	exec.Command("git", "add", ".").Run()
 	exec.Command("git", "commit", "-m", "🫣").Run()
 	exec.Command("git", "tag", "-a", finaltag, "-m", "its new release time!! ✨").Run()
