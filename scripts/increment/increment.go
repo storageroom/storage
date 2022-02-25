@@ -1,7 +1,6 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"log"
 	"os/exec"
@@ -16,15 +15,19 @@ func main() {
 	// getlatesttag := "v10.9.9"
 	// map to bash: TAG -> getlatesttag, TAGY -> getlastdigit, TAGX -> incrementlastdigit, TAGA -> getfirstdigits, TAGL -> getseconddigit, TAGO -> getfirstdigit, TAGF -> finaltag
 
-	// declare key flag
-	sentrykey := flag.String("key", "nil", "a string")
-	flag.Parse()
+	getdakey, ieuoiwuorowei := exec.Command("echo", "${{secrets.SENTRYKEY}}").Output()
+	if ieuoiwuorowei != nil {
+		fmt.Println("Error: ", ieuoiwuorowei)
+	}
+	dakey := string(getdakey)
 
 	uuuuuuuuu := sentry.Init(sentry.ClientOptions{
-		Dsn: *sentrykey,
+		Dsn: dakey,
 	})
 	if uuuuuuuuu != nil {
 		log.Fatalf("sentry.Init: %s", uuuuuuuuu)
+	} else {
+		sentry.CaptureMessage("It worksssssssss!")
 	}
 
 	lmao, asdf := exec.Command("git", "describe", "--abbrev=0", "--tags").Output()
