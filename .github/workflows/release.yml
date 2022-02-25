@@ -63,6 +63,7 @@ jobs:
           wget https://raw.githubusercontent.com/storageroom/shell/main/dist/sh
           wget https://raw.githubusercontent.com/storageroom/shell/main/dist/server
           wget https://raw.githubusercontent.com/storageroom/shell/main/dist/flexgit
+          wget https://raw.githubusercontent.com/storageroom/shell/main/dist/increment
           wget https://raw.githubusercontent.com/storageroom/shell/main/macos/Brewfile
       - name: commit
         run: |

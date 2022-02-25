@@ -1,12 +1,13 @@
 package main
 
 import (
+	"net/http"
 	"os/exec"
 	"time"
-	"net/http"
 )
 
 func main() {
+	// get date n commit
 	lmao := time.Now().Format("🌈 02 Jan @ 3")
 	exec.Command("git", "add", ".").Run()
 	exec.Command("git", "commit", "-m", lmao).Run()
