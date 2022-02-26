@@ -58,9 +58,11 @@ tasks:
 schedules:
   - tasks: Anime
     schedule:
-      hour: 0-3
+      hour: 0-2
       minute: "*/8"
-
+  - tasks: Anime
+    schedule:
+      hour: 4
   - tasks: Anime
     schedule:
       hour: 21-23

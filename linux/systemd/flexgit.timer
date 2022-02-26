@@ -1,8 +1,8 @@
 [Unit]
-Description=Run flexgit twice daily
+Description=Run flexgit daily
 
 [Timer]
-OnCalendar=*-*-* 03:00:00
+OnCalendar=*-*-* 04:00:59
 Persistent=true
 
 [Install]

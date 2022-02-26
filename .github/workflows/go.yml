@@ -19,14 +19,11 @@ jobs:
           fetch-depth: 0
       - name: Pre-Cleanup
         run: |
-          rm ./dist/flexgit
           rm ./dist/increment
       - name: Build
         run: |
-          go build -o ./dist/flexgit scripts/flexgit.go
-          chmod +x ./dist/flexgit
-          go get -d ./scripts/increment/...
-          go build -o ./dist/increment scripts/increment/increment.go
+          go get -d ./increment/...
+          go build -o ./dist/increment increment/increment.go
           chmod +x ./dist/increment
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v4
