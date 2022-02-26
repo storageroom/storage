@@ -36,38 +36,3 @@ jobs:
             ./dist/server
             ./dist/increment-linux
             ./dist/increment-macos
-  upload:
-    name: upload
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          repository: joseoscom/dl
-          token: ${{ secrets.PATS }}
-          ref: main
-      - name: Import GPG key
-        uses: crazy-max/ghaction-import-gpg@v4
-        with:
-          gpg_private_key: ${{ secrets.GPGM }}
-          passphrase: ${{ secrets.PASSPHRASE }}
-          git_user_signingkey: true
-          git_commit_gpgsign: true
-          git_tag_gpgsign: true
-          git_push_gpgsign: false
-      - name: set up git
-        run: |
-          git config --global gpg.program gpg2
-      - name: get files
-        run: |
-          rm mac sh server Brewfile flexgit
-          wget https://raw.githubusercontent.com/storageroom/storage/main/dist/mac
-          wget https://raw.githubusercontent.com/storageroom/storage/main/dist/sh
-          wget https://raw.githubusercontent.com/storageroom/storage/main/dist/server
-          wget https://raw.githubusercontent.com/storageroom/storage/main/dist/increment-linux
-          wget https://raw.githubusercontent.com/storageroom/storage/main/dist/increment-macos
-          wget https://raw.githubusercontent.com/storageroom/storage/main/macos/Brewfile
-      - name: commit
-        run: |
-          git add .
-          git commit -m "😼"
-          git push origin main
