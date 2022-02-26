@@ -2,8 +2,8 @@ package main
 
 import (
 	"log"
-	"os/exec"
 	"os"
+	"os/exec"
 	"strconv"
 	"strings"
 
@@ -11,9 +11,8 @@ import (
 )
 
 func main() {
-	// control variable for testing
-	// getlatesttag := "v10.9.9"
-	// map to bash: TAG -> getlatesttag, TAGY -> getlastdigit, TAGX -> incrementlastdigit, TAGA -> getfirstdigits, TAGL -> getseconddigit, TAGO -> getfirstdigit, TAGF -> finaltag
+	var erroraaa bool = false
+	var finaltag string
 
 	key := os.Getenv("key")
 
@@ -26,29 +25,50 @@ func main() {
 
 	lmao, asdf := exec.Command("git", "describe", "--abbrev=0", "--tags").Output()
 	if asdf != nil {
-		sentry.CaptureException(asdf)
+		sentry.CaptureMessage(string(lmao))
 	}
 
 	getlatesttag := string(lmao)
 	log.Println("the initial (latest) tag is: ", getlatesttag)
 
-	getlastdigit := getlatesttag[5:6]
-	getfirstdigits := getlatesttag[0:5]
-	getfirstdigit := getlatesttag[1:2]
-	getseconddigit := getlatesttag[3:4]
-	lastdigitconvertstringtonumber, sahdiahd := strconv.Atoi(getlastdigit)
-	incrementlastdigit := lastdigitconvertstringtonumber + 1
-	lastdigitconvertnumbertostring := strconv.Itoa(incrementlastdigit)
-	finaltag := strings.Join([]string{getfirstdigits, lastdigitconvertnumbertostring}, "")
+	// set default values
+	dotposition1 := 2
+	dotposition2 := 3
 
-	if sahdiahd != nil {
-		sentry.CaptureException(sahdiahd)
-	}	
+	firstdigitposition1 := 1
+	firstdigitposition2 := 2
+
+	lastdigitposition1 := 5
+	lastdigitposition2 := 6
+
+	seconddigitposition1 := 3
+	seconddigitposition2 := 4
+
+	isdotthere := getlatesttag[dotposition1:dotposition2]
+
+	for isdotthere != "." {
+		dotposition1 = dotposition1 + 1
+		dotposition2 = dotposition2 + 1
+
+		firstdigitposition2 = firstdigitposition2 + 1
+	
+		seconddigitposition1 = seconddigitposition1 + 1
+		seconddigitposition2 = seconddigitposition2 + 1
+
+		lastdigitposition1 = lastdigitposition1 + 1
+		lastdigitposition2 = lastdigitposition2 + 1
+
+		isdotthere = getlatesttag[dotposition1:dotposition2]
+	}
+
+	getfirstdigit := getlatesttag[firstdigitposition1:firstdigitposition2]
+	getseconddigit := getlatesttag[seconddigitposition1:seconddigitposition2]
+	getlastdigit := getlatesttag[lastdigitposition1:lastdigitposition2]
 
 	// if the last digit is 9, eg. v0.0.9,
 	if getlastdigit == "9" {
 		// make the last digit 0 (and add one to the second digit later)
-		lastdigitconvertnumbertostring = "0"
+		getlastdigit = "0"
 		if getseconddigit == "9" {
 			// if the second digit is also 9, eg. v0.9.9
 			// make the second digit 0 {
@@ -72,49 +92,68 @@ func main() {
 				sentry.CaptureException(ueworiyiou4783788)
 			}
 		}
-		almostfinaltag := strings.Join([]string{getfirstdigit, getseconddigit, lastdigitconvertnumbertostring}, ".") //"v$TAGO.$TAGL.$TAGX"
-		finaltag = strings.Join([]string{"v", almostfinaltag}, "")
+	} else {
+		// if last digit is not 9, increment the last digit by 1
+		lastdigitconvertstringtonumber, sahdiahd := strconv.Atoi(getlastdigit)
+		if sahdiahd != nil {
+			sentry.CaptureException(sahdiahd)
+		}	
+		incrementlastdigit := lastdigitconvertstringtonumber + 1
+		getlastdigit = strconv.Itoa(incrementlastdigit)
 	}
 
-	// get the length of the final tag
-	TAGLENGTH := len(finaltag)
-	// if the length of the final tag is over 6, trim it
-	if TAGLENGTH > 6 {
-		log.Println("the length of the version number is over 6, will trim")
-		log.Println(finaltag)
-		log.Println("tag length: ", TAGLENGTH)
-		finaltag = finaltag[0:6]
-	}
+	almostfinaltag := strings.Join([]string{getfirstdigit, getseconddigit, getlastdigit}, ".")
+	finaltag = strings.Join([]string{"v", almostfinaltag}, "")
 
 	log.Println("the new tag is: ", finaltag)
 
-	gitadd := exec.Command("git", "add", ".").Run()
-	if gitadd != nil {
-		sentry.CaptureException(gitadd)
-		log.Println("there was an error when performing git add .")
+	gitadd, adderr := exec.Command("git", "add", ".").Output()
+	log.Println(string(gitadd))
+	if adderr != nil {
+		log.Println(adderr)
+		sentry.CaptureMessage(string(gitadd))
+		log.Println("there was an error when performing git push")
+		erroraaa = true
 	}
 
-	gitcommit := exec.Command("git", "commit", "-m", "🫣").Run()
-	if gitcommit != nil {
-		sentry.CaptureException(gitcommit)
-		log.Println("there was an error when performing git commit")
+	gitcommit, commiterr := exec.Command("git", "commit", "-m", "🫣").Output()
+	log.Println(string(gitcommit))
+	if commiterr != nil {
+		log.Println(commiterr)
+		sentry.CaptureMessage(string(gitcommit))
+		log.Println("there was an error when performing git push")
+		erroraaa = true
 	}
 
-	gittag := exec.Command("git", "tag", "-a", finaltag, "-m", "its new release time!! ✨").Run()
-	if gittag != nil {
-		sentry.CaptureException(gittag)
-		log.Println("there was an error when performing git tag")
+	gittag, tagerr := exec.Command("git", "tag", "-a", finaltag, "-m", "its new release time!! ✨").Output()
+	log.Println(string(gittag))
+	if tagerr != nil {
+		log.Println(tagerr)
+		sentry.CaptureMessage(string(gittag))
+		log.Println("there was an error when performing git push")
+		erroraaa = true
 	}
 
-	gitpushtag := exec.Command("git", "push", "origin", finaltag).Run()
-	if gitpushtag != nil {
-		sentry.CaptureException(gitpushtag)
-		log.Println("there was an error when performing git push origin tag")
+	gitpushtag, pushtagerr := exec.Command("git", "push", "origin", finaltag).Output()
+	log.Println(string(gitpushtag))
+	if pushtagerr != nil {
+		log.Println(pushtagerr)
+		sentry.CaptureMessage(string(gitpushtag))
+		log.Println("there was an error when performing git push")
+		erroraaa = true
 	}
 
-	gitpushmain := exec.Command("git", "push", "origin", "main").Run()
-	if gitpushmain != nil {
-		sentry.CaptureException(gitpushmain)
-		log.Println("there was an error when performing git push origin main")
+	gitpushmain, pushmainerr := exec.Command("git", "push", "origin", "main").Output()
+	log.Println(string(gitpushmain))
+	if pushmainerr != nil {
+		log.Println(pushmainerr)
+		sentry.CaptureMessage(string(gitpushmain))
+		log.Println("there was an error when performing git push")
+		erroraaa = true
 	}
+
+	if erroraaa {
+			log.Println("there was an error")
+		}
+
 }
