@@ -56,9 +56,11 @@ jobs:
     name: Build for MacOS
     runs-on: macos-latest
     steps:
-      - name: install shc
+      - name: install shc + increment
         run: |
           brew install shc
+          go get github.com/joshhhhyyyy/increment
+          go install github.com/joshhhhyyyy/increment
       - uses: actions/checkout@v2
         with:
           token: ${{ secrets.PATN }}
@@ -82,5 +84,5 @@ jobs:
         env:
           key: ${{ secrets.SENTRYKEY }}
         run: |
-          wget -O ../increment-macos https://github.com/joshhhhyyyy/increment/releases/latest/download/increment-linux
-          ../increment-macos
+          export PATH=$PATH:$(go env GOPATH)/bin
+          increment
