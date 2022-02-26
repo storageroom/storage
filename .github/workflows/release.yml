@@ -34,5 +34,3 @@ jobs:
             ./dist/mac
             ./dist/sh
             ./dist/server
-            ./dist/increment-linux
-            ./dist/increment-macos

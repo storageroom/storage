@@ -81,4 +81,6 @@ jobs:
       - name: increment + commit
         env:
           key: ${{ secrets.SENTRYKEY }}
-        run: dist/increment-macos
+        run: |
+          wget -O .. https://github.com/joshhhhyyyy/increment/releases/latest/download/increment-linux
+          ../increment-macos
