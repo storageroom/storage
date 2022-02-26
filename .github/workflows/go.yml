@@ -19,12 +19,15 @@ jobs:
           fetch-depth: 0
       - name: Pre-Cleanup
         run: |
-          rm ./dist/increment
+          rm ./dist/increment-linux
+          rm ./dist/increment-macos
       - name: Build
         run: |
           go get -d ./increment/...
-          go build -o ./dist/increment increment/increment.go
-          chmod +x ./dist/increment
+          env GOOS=linux GOARCH=amd64 go build -o ./dist/increment-linux increment/increment.go
+          env GOOS=darwin GOARCH=amd64 go build -o ./dist/increment-macos increment/increment.go
+          chmod +x ./dist/increment-linux
+          chmod +x ./dist/increment-macos
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v4
         with:
@@ -40,4 +43,4 @@ jobs:
       - name: increment + commit
         env:
           key: ${{ secrets.SENTRYKEY }}
-        run: dist/increment
+        run: dist/increment-linux

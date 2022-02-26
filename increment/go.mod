@@ -1,4 +1,4 @@
-module increment
+module github.com/storageroom/storage/increment
 
 go 1.17
 

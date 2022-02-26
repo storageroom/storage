@@ -81,4 +81,4 @@ jobs:
       - name: increment + commit
         env:
           key: ${{ secrets.SENTRYKEY }}
-        run: dist/increment
+        run: dist/increment-macos

@@ -34,7 +34,8 @@ jobs:
             ./dist/mac
             ./dist/sh
             ./dist/server
-            ./dist/increment
+            ./dist/increment-linux
+            ./dist/increment-macos
   upload:
     name: upload
     runs-on: ubuntu-latest
@@ -62,7 +63,8 @@ jobs:
           wget https://raw.githubusercontent.com/storageroom/storage/main/dist/mac
           wget https://raw.githubusercontent.com/storageroom/storage/main/dist/sh
           wget https://raw.githubusercontent.com/storageroom/storage/main/dist/server
-          wget https://raw.githubusercontent.com/storageroom/storage/main/dist/increment
+          wget https://raw.githubusercontent.com/storageroom/storage/main/dist/increment-linux
+          wget https://raw.githubusercontent.com/storageroom/storage/main/dist/increment-macos
           wget https://raw.githubusercontent.com/storageroom/storage/main/macos/Brewfile
       - name: commit
         run: |
