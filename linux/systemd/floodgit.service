@@ -5,6 +5,6 @@ After=network.target
 [Service]
 User=root
 Group=root
-WorkingDirectory=/etc/flood
+WorkingDirectory=/root/.local/share/flood
 Type=simple
 ExecStart=/bin/flexgit -key=""
