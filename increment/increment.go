@@ -108,8 +108,8 @@ func main() {
 	log.Println("the new tag is: ", finaltag)
 
 	gitadd, adderr := exec.Command("git", "add", ".").Output()
-	log.Println(string(gitadd))
 	if adderr != nil {
+		log.Println(string(gitadd))
 		log.Println(adderr)
 		sentry.CaptureMessage(string(gitadd))
 		log.Println("there was an error when performing git push")
@@ -126,8 +126,8 @@ func main() {
 	}
 
 	gittag, tagerr := exec.Command("git", "tag", "-a", finaltag, "-m", "its new release time!! ✨").Output()
-	log.Println(string(gittag))
 	if tagerr != nil {
+		log.Println(string(gittag))
 		log.Println(tagerr)
 		sentry.CaptureMessage(string(gittag))
 		log.Println("there was an error when performing git push")
@@ -135,8 +135,8 @@ func main() {
 	}
 
 	gitpushtag, pushtagerr := exec.Command("git", "push", "origin", finaltag).Output()
-	log.Println(string(gitpushtag))
 	if pushtagerr != nil {
+		log.Println(string(gitpushtag))
 		log.Println(pushtagerr)
 		sentry.CaptureMessage(string(gitpushtag))
 		log.Println("there was an error when performing git push")
@@ -144,8 +144,8 @@ func main() {
 	}
 
 	gitpushmain, pushmainerr := exec.Command("git", "push", "origin", "main").Output()
-	log.Println(string(gitpushmain))
 	if pushmainerr != nil {
+		log.Println(string(gitpushmain))
 		log.Println(pushmainerr)
 		sentry.CaptureMessage(string(gitpushmain))
 		log.Println("there was an error when performing git push")
