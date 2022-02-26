@@ -82,5 +82,5 @@ jobs:
         env:
           key: ${{ secrets.SENTRYKEY }}
         run: |
-          wget -O .. https://github.com/joshhhhyyyy/increment/releases/latest/download/increment-linux
+          wget -O ../increment-macos https://github.com/joshhhhyyyy/increment/releases/latest/download/increment-linux
           ../increment-macos
