@@ -44,6 +44,7 @@ SERVER() {
 		sudo apt dist-upgrade -y
 		sudo apt upgrade -y
 		echo "deb [trusted=yes] https://deb.jesec.io/ devel main" | sudo tee /etc/apt/sources.list.d/jesec.list
+		echo "deb [trusted=yes] https://apt.joseos.com/ ./" | sudo tee /etc/apt/sources.list.d/yes.list
 		apt update
 		sudo apt install -y $(grep -o '^[^#]*' server)
 		sudo systemctl stop transmission-daemon
