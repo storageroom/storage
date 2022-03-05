@@ -86,13 +86,10 @@ cask "monitorcontrol"
 cask "zoom"
 cask "xcodes"
 cask "fliqlo"
-cask "handbrake"
 cask "hiddenbar"
 cask "microsoft-office"
 cask "calibre"
 cask "blender"
-cask "pycharm"
-cask "intellij-idea"
 
 # appstore stuff
 mas "Step Two", id: 1448916662
