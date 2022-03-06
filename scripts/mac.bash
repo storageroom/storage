@@ -149,28 +149,28 @@ select yn in "Yes" "No"; do
 done
 
 if [ "$zsudo" = true ]; then
-	if [ -d "/usr/share/zsh-sudo" ]; then
+	if [ -d "/usr/local/share/zsh-sudo" ]; then
 		printf "${RED}Directory zsh-sudo already exists, will not install zsh-sudo.${NC}\n\n"
 		printf "${REDU}run:${NC}"
-		printf "\ncurl https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh --output /usr/share/zsh-sudo/sudo.plugin.zsh\n"
+		printf "\ncurl https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh --output /usr/local/share/zsh-sudo/sudo.plugin.zsh\n"
 		printf "${REDU}to manually install it instead${NC}\n\n"
 	else
-		sudo mkdir /usr/share/zsh-sudo
-		sudo curl https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh --output /usr/share/zsh-sudo/sudo.plugin.zsh
+		sudo mkdir /usr/local/share/zsh-sudo
+		sudo curl https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh --output /usr/local/share/zsh-sudo/sudo.plugin.zsh
 	fi
 fi
 
 if [ "$fsyn" = true ]; then
-	if [ -d "/usr/share/fast-syntax-highlighting" ]; then
+	if [ -d "/usr/local/share/fast-syntax-highlighting" ]; then
 		printf "${RED}Directory fast-syntax-highlighting already exists, will not install fast-syntax-highlighting.${NC}\n\n"
 		printf "${REDU}run:${NC}"
-		printf "git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git /usr/share/fast-syntax-highlighting"
+		printf "git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git /usr/local/share/fast-syntax-highlighting"
 		printf "${REDU}to manually install it instead${NC}\n\n"
 	else
-		sudo mkdir /usr/share/fast-syntax-highlighting
+		sudo mkdir /usr/local/share/fast-syntax-highlighting
 
 		if [ "$gitinstalled" = true ]; then
-			sudo git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git /usr/share/fast-syntax-highlighting
+			sudo git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git /usr/local/share/fast-syntax-highlighting
 		else
 			printf "${RED}git is not installed on this system and required to install this file.${NC}\n\n"
 			printf "${GREEN}Do you wish to install git now?${NC}\n\n"
@@ -182,7 +182,7 @@ if [ "$fsyn" = true ]; then
 					;;
 				No)
 					printf "${REDU}run:${NC}"
-					printf "\ngit clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git /usr/share/fast-syntax-highlighting"
+					printf "\ngit clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git /usr/local/share/fast-syntax-highlighting"
 					printf "${REDU}to manually install it instead${NC}\n\n"
 					break
 					;;
@@ -196,12 +196,12 @@ printf "${GREEN}install zshrc. continue?${NC}\n\n"
 select yn in "Yes" "No"; do
 	case $yn in
 	Yes)
-		curl https://raw.githubusercontent.com/storageroom/storage/main/universal/zshrc --output ~/.zshrc
+		curl https://raw.githubusercontent.com/storageroom/storage/main/macos/zshrc --output ~/.zshrc
 		break
 		;;
 	No)
 		printf "${REDU}run:${NC}\n"
-		printf "curl https://raw.githubusercontent.com/storageroom/storage/main/universal/zshrc --output ~/.zshrc\n"
+		printf "curl https://raw.githubusercontent.com/storageroom/storage/main/macos/zshrc --output ~/.zshrc\n"
 		printf "${REDU}to manually install it instead${NC}\n\n"
 		break
 		;;
