@@ -5,55 +5,93 @@ web_server:
   ssl_private_key: "/etc/flexget/haha.key"
   web_ui: yes
 
+variables: yes
+
 tasks:
   Anime:
     rss: https://subsplease.org/rss/?r=1080
     series:
       #      - X:
       #          set:
-      #            path: /mnt/bruh/anime/seasonal/X
+      #            path: "{? seasonaldir ?}X"
 
-      #      - X:
+      #      - Tate no Yuusha no Nariagari Season 2:
       #          set:
-      #            path: /mnt/bruh/anime/seasonal/X
+      #            path: "{? seasonaldir ?}Tate no Yuusha no Nariagari Season 2"
+
+      #      - Kaguya-sama wa Kokurasetai -Ultra Romantic-:
+      #          set:
+      #            path: "{? seasonaldir ?}Kaguya-sama wa Kokurasetai -Ultra Romantic-"
+
+      #      - Spy x Family:
+      #          set:
+      #            path: "{? seasonaldir ?}Spy x Family"
+
+      #      - Date A Live IV:
+      #          set:
+      #            path: "{? seasonaldir ?}Date A Live IV"
+
+      #      - Shijou Saikyou no Daimaou, Murabito A ni Tensei suru:
+      #          set:
+      #            path: "{? seasonaldir ?}Shijou Saikyou no Daimaou, Murabito A ni Tensei suru"
+
+      #      - Kawaii dake ja Nai Shikimori-san:
+      #          set:
+      #            path: "{? seasonaldir ?}Kawaii dake ja Nai Shikimori-san"
+
+      #      - Yuusha, Yamemasu:
+      #          set:
+      #            path: "{? seasonaldir ?}Yuusha, Yamemasu"
+
+      #      - Kakkou no Iinazuke:
+      #          set:
+      #            path: "{? seasonaldir ?}Kakkou no Iinazuke"
+
+      #      - Otome Game Sekai wa Mob ni Kibishii Sekai desu:
+      #          set:
+      #            path: "{? seasonaldir ?}Otome Game Sekai wa Mob ni Kibishii Sekai desu"
+
+      #      - Aharen-san wa Hakarenai:
+      #          set:
+      #            path: "{? seasonaldir ?}Aharen-san wa Hakarenai"
+
+      #      - Koi wa Sekai Seifuku no Ato de:
+      #          set:
+      #            path: "{? seasonaldir ?}Koi wa Sekai Seifuku no Ato de"
 
       - Arifureta Shokugyou de Sekai Saikyou S2:
           set:
-            path: /mnt/bruh/anime/seasonal/Arifureta Shokugyou de Sekai Saikyou/S02
+            path: "{? seasonaldir ?}Arifureta Shokugyou de Sekai Saikyou/S02"
 
       - Sabikui Bisco:
           set:
-            path: /mnt/bruh/anime/seasonal/Sabikui Bisco
+            path: "{? seasonaldir ?}Sabikui Bisco"
 
       - Tensai Ouji no Akaji Kokka Saisei Jutsu:
           set:
-            path: /mnt/bruh/anime/seasonal/Tensai Ouji no Akaji Kokka Saisei Jutsu
+            path: "{? seasonaldir ?}Tensai Ouji no Akaji Kokka Saisei Jutsu"
 
       - Shikkakumon no Saikyou Kenja:
           set:
-            path: /mnt/bruh/anime/seasonal/Shikkakumon no Saikyou Kenja
+            path: "{? seasonaldir ?}Shikkakumon no Saikyou Kenja"
 
       - Sono Bisque Doll wa Koi wo Suru:
           set:
-            path: /mnt/bruh/anime/seasonal/Sono Bisque Doll wa Koi wo Suru
+            path: "{? seasonaldir ?}Sono Bisque Doll wa Koi wo Suru"
 
       - Genjitsu Shugi Yuusha no Oukoku Saikenki:
           set:
-            path: /mnt/bruh/anime/seasonal/Genjitsu Shugi Yuusha no Oukoku Saikenki
-
-      - Kimetsu no Yaiba – Yuukaku-hen:
-          set:
-            path: /mnt/bruh/anime/seasonal/Kimetsu no Yaiba – Yuukaku-hen
+            path: "{? seasonaldir ?}Genjitsu Shugi Yuusha no Oukoku Saikenki"
 
       - Princess Connect! Re-Dive S2:
           set:
-            path: /mnt/bruh/anime/seasonal/Princess Connect! Re-Dive S2
+            path: "{? seasonaldir ?}Princess Connect! Re-Dive S2"
 
     transmission:
       host: localhost
       port: 42069
-      username: x
-      password: "x"
+      username: "{? trans.user ?}"
+      password: "'{? trans.pw ?}'"
 
 schedules:
   - tasks: Anime
