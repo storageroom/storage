@@ -89,7 +89,6 @@ cask "fliqlo"
 cask "hiddenbar"
 cask "microsoft-office"
 cask "calibre"
-cask "blender"
 
 # appstore stuff
 mas "Step Two", id: 1448916662
