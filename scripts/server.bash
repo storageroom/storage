@@ -29,9 +29,21 @@ select yn in "Yes" "No"; do
 	Yes)
 		installwhatpackages=Server
 		yessus=yes
+		echo "deb [trusted=yes] https://apt.joseos.com/ ./" | sudo tee /etc/apt/sources.list.d/yes.list
 		break
 		;;
 	No)
+		printf "${GREEN}would you like to install apt.joseos.com?${NC}\n"
+		select yn in "Yes" "No"; do
+			case $yn in
+			Yes)
+				echo "deb [trusted=yes] https://apt.joseos.com/ ./" | sudo tee /etc/apt/sources.list.d/yes.list
+				break
+				;;
+			No)
+				break
+				;;
+		esac
 		break
 		;;
 	esac
