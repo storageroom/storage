@@ -1,0 +1,41 @@
+eval "$(starship init zsh)"
+
+# Super
+alias upgrade="apt update;apt upgrade -y"
+
+# Clear aliases
+alias clear="clear && printf '\e[3J'"
+alias c="clear && printf '\e[3J'"
+alias cl="clear && printf '\e[3J'"
+alias cle="clear && printf '\e[3J'"
+alias clea="clear && printf '\e[3J'"
+
+# Sudo aliases
+alias please='sudo'
+alias s='sudo'
+alias sd='sudo'
+alias sud='sudo'
+
+alias sudoedit='sudo -e'
+
+# Auto-sudo applications
+alias mc='sudo mc'
+alias micro='sudo micro'
+alias m='micro'
+alias fc='sudo chmod -R 777'
+
+# ZSH PLUGINS
+source /usr/share/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+source /usr/share/zsh-sudo/sudo.plugin.zsh
+
+# MISC
+export EDITOR='micro'
+export VISUAL='micro'
+
+export LANG=en_SG.UTF-8
+export LANGUAGE=en_SG.UTF-8
+
+### Bashhub.com Installation
+if [ -f ~/.bashhub/bashhub.zsh ]; then
+    source ~/.bashhub/bashhub.zsh
+fi
