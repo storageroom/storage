@@ -233,23 +233,19 @@ elif [ "$istar" = false ]; then
 	printf "\n${REDU}to manually install it instead${NC}\n\n"
 fi
 
-if [ "$stari" = true ]; then
-	printf "${GREEN}install starship config. continue?${NC}\n\n"
-	select yn in "Yes" "No"; do
-		case $yn in
-		Yes)
-			starc=true
-			break
-			;;
-		No)
-			starc=false
-			break
-			;;
-		esac
-	done
-else
-	starc=false
-fi
+printf "${GREEN}install starship config. continue?${NC}\n\n"
+select yn in "Yes" "No"; do
+	case $yn in
+	Yes)
+		starc=true
+		break
+		;;
+	No)
+		starc=false
+		break
+		;;
+	esac
+done
 
 if [ "$starc" = true ]; then
 	if [ -d ".config" ]; then

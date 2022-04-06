@@ -360,7 +360,7 @@ select yn in "Yes" "No"; do
 		;;
 	No)
 		printf "${REDU}run:${NC}\n"
-		printf "curl https://raw.githubusercontent.com/storageroom/storage/main/universal/linux --output ~/.zshrc\n"
+		printf "curl https://raw.githubusercontent.com/storageroom/storage/main/linux/zshrc --output ~/.zshrc\n"
 		printf "${REDU}to manually install it instead${NC}\n\n"
 		break
 		;;
