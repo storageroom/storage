@@ -43,7 +43,8 @@ select yn in "Yes" "No"; do
 			No)
 				break
 				;;
-		esac
+			esac
+		done
 		break
 		;;
 	esac
@@ -400,11 +401,9 @@ select yn in "Yes" "No"; do
 done
 
 if [ "$istar" = true ]; then
-	stari=true
 	sh -c "$(curl -fsSL https://starship.rs/install.sh)"
 
 elif [ "$istar" = false ]; then
-	stari=false
 	printf "${REDU}run:${NC}\n"
 	echo "sh -c '$(curl -fsSL https://starship.rs/install.sh)'"
 	printf "\n${REDU}to manually install it instead${NC}\n\n"
