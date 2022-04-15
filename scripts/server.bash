@@ -641,12 +641,11 @@ if [ "$systemdfiles" = true ]; then
 			fi
 			if [ "$flexgetflexgit" = true ]; then
 				printf "\n\n${GREEN}Putting flexget&flexgit service file into:${NC} ${REDU}/etc/systemd/system/${NC}\n\n"
-				sudo curl https://raw.githubusercontent.com/storageroom/storage/main/linux/systemd/flexget.service --output /etc/systemd/system/flood.service
-				sudo curl https://raw.githubusercontent.com/storageroom/storage/main/linux/systemd/flexgit.service --output /etc/systemd/system/flood.service
-				sudo curl https://raw.githubusercontent.com/storageroom/storage/main/linux/systemd/flexgit.timer --output /etc/systemd/system/flood.service
+				sudo curl https://raw.githubusercontent.com/storageroom/storage/main/linux/systemd/flexget.service --output /etc/systemd/system/flexget.service
+				sudo curl https://raw.githubusercontent.com/storageroom/storage/main/linux/systemd/flexgit.service --output /etc/systemd/system/flexgit.service
+				sudo curl https://raw.githubusercontent.com/storageroom/storage/main/linux/systemd/flexgit.timer --output /etc/systemd/system/flexgit.timer
 				sudo systemctl daemon-reload
 				sudo systemctl enable flexget
-				sudo systemctl enable flexgit
 				sudo systemctl enable flexgit.timer
 			fi
 			break
