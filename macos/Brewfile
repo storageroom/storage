@@ -89,6 +89,7 @@ cask "fliqlo"
 cask "hiddenbar"
 #cask "microsoft-office"
 #cask "calibre"
+cask "cloudflare-warp"
 
 # appstore stuff
 #mas "Step Two", id: 1448916662
