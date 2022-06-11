@@ -98,7 +98,9 @@ cask "cloudflare-warp"
 mas "Tab Suspender", id: 1495356253
 #mas "GoodNotes", id: 1444383602
 #mas "Paste", id: 967805235
-#mas "Canary Mail", id: 1236045954
+mas "Timetable", id: 425121147
+mas "Infuse", id: 1136220934
+mas "AdBlock", id: 1402042596
 
 # dreaded xcode
 mas "Xcode", id: 497799835
