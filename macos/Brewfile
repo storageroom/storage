@@ -7,12 +7,14 @@ tap "homebrew/cask-fonts"
 tap "homebrew/cask-drivers"
 
 # Taps - Others
+tap "cloudflare/cloudflare"
 #tap "dart-lang/dart"
 tap "github/gh"
 #tap "hacker1024/hacker1024"
 #tap "sass/sass"
 
 # Utilities
+brew "cloudflare/cloudflare/cloudflared"
 brew "coreutils"
 brew "mas"
 brew "xclip"
