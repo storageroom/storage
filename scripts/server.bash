@@ -29,22 +29,6 @@ select yn in "Yes" "No"; do
 	Yes)
 		installwhatpackages=Server
 		yessus=yes
-		echo "deb [trusted=yes] https://apt.joseos.com/ ./" | sudo tee /etc/apt/sources.list.d/yes.list
-		break
-		;;
-	No)
-		printf "${GREEN}would you like to install apt.joseos.com?${NC}\n"
-		select yn in "Yes" "No"; do
-			case $yn in
-			Yes)
-				echo "deb [trusted=yes] https://apt.joseos.com/ ./" | sudo tee /etc/apt/sources.list.d/yes.list
-				break
-				;;
-			No)
-				break
-				;;
-			esac
-		done
 		break
 		;;
 	esac
@@ -53,16 +37,18 @@ done
 SERVER() {
 	if [ "$os" = Debian ] && [ "$wgetisinstalled" = true ]; then
 		wget https://raw.githubusercontent.com/storageroom/storage/main/linux/packagelist/server
+		curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+		sleep 3
+		echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+		sleep 3
+		echo "deb [trusted=yes] https://deb.jesec.io/ devel main" | sudo tee /etc/apt/sources.list.d/jesec.list
+		sleep 3
 		sudo apt update
 		sudo apt dist-upgrade -y
 		sudo apt upgrade -y
-		curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
-		echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
-		echo "deb [trusted=yes] https://deb.jesec.io/ devel main" | sudo tee /etc/apt/sources.list.d/jesec.list
-		echo "deb [trusted=yes] https://apt.joseos.com/ ./" | sudo tee /etc/apt/sources.list.d/yes.list
 		apt update
-		sudo apt install -y $(grep -o '^[^#]*' server)
-		sudo systemctl stop transmission-daemon
+		sudo apt install -y $(grep -o '^[^#]*' server) || exit 1
+		sudo systemctl stop transmission-daemon || exit 1
 		rm server
 		pleaseinstallwgetnow=false
 
@@ -77,7 +63,6 @@ SERVER() {
 		makepkg -si --noconfirm
 		cd .. || printf "${RED}cd into home dir failed, aborting${NC}"
 		sudo rm -R yay
-		yay -S --noconfirm nodejs-flood
 		yay -S --noconfirm $(grep -o '^[^#]*' server)
 		rm server
 		sudo systemctl stop transmission-daemon
@@ -376,12 +361,12 @@ printf "${GREEN}install zshrc. continue?${NC}\n\n"
 select yn in "Yes" "No"; do
 	case $yn in
 	Yes)
-		curl https://raw.githubusercontent.com/storageroom/storage/main/linux/zshrc --output ~/.zshrc
+		curl https://raw.githubusercontent.com/storageroom/storage/main/linux/zshrc --output ./.zshrc
 		break
 		;;
 	No)
 		printf "${REDU}run:${NC}\n"
-		printf "curl https://raw.githubusercontent.com/storageroom/storage/main/linux/zshrc --output ~/.zshrc\n"
+		printf "curl https://raw.githubusercontent.com/storageroom/storage/main/linux/zshrc --output ./.zshrc\n"
 		printf "${REDU}to manually install it instead${NC}\n\n"
 		break
 		;;
@@ -449,54 +434,6 @@ select yn in "Yes" "No"; do
 	esac
 done
 
-printf "${GREEN}install calibre?${NC}\n\n"
-select yn in "Yes" "No"; do
-	case $yn in
-	Yes)
-		sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin
-		printf "\n\nremember to set up users using calibre-server --manage-users"
-		break
-		;;
-	No)
-		printf "\n\n${GREEN}use this command to install manually${NC}\n\n"
-		printf "\nsudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin\n"
-		printf "\n\nremember to set up users using calibre-server --manage-users"
-		break
-		;;
-	esac
-done
-
-printf "${GREEN}install flexget via git?${NC}\n\n"
-select yn in "Yes" "No"; do
-	case $yn in
-	Yes)
-		gh auth login
-		sudo gh repo clone storageroom/flexget /etc/flexget
-		break
-		;;
-	No)
-		flexgetclone=false
-		break
-		;;
-	esac
-done
-
-if [ "$flexgetclone" = false ]; then
-	printf "\n\n${GREEN}do you want the flexget config file?${NC}"
-	select yn in "Yes" "No"; do
-		case $yn in
-		Yes)
-			flexgetfile=true
-			break
-			;;
-		No)
-			flexgetfile=false
-			break
-			;;
-		esac
-	done
-fi
-
 printf "\n\n${GREEN}do you want the transmission config file?${NC}"
 select yn in "Yes" "No"; do
 	case $yn in
@@ -511,20 +448,6 @@ select yn in "Yes" "No"; do
 	esac
 done
 
-printf "\n\n${GREEN}do you want the fstab file?${NC}"
-select yn in "Yes" "No"; do
-	case $yn in
-	Yes)
-		fstabfile=true
-		break
-		;;
-	No)
-		fstabfile=false
-		break
-		;;
-	esac
-done
-
 printf "\n\n${GREEN}do you want systemd service files?${NC}"
 select yn in "Yes" "No"; do
 	case $yn in
@@ -532,30 +455,10 @@ select yn in "Yes" "No"; do
 		systemdfiles=true
 		printf "\n\n${GREEN}which files do you want?${NC}"
 		printf "\n\n${GREEN}All: Calibre + Flood + Flexget + Flexgit${NC}"
-		select yn in "All" "Calibre Only" "Flood Only" "Flexget + Flexgit only"; do
+		select yn in "Flood"; do
 			case $yn in
-			All)
-				calibresystemd=true
+			"Flood")
 				floodsystemd=true
-				flexgetflexgit=true
-				break
-				;;
-			"Calibre Only")
-				calibresystemd=true
-				floodsystemd=false
-				flexgetflexgit=false
-				break
-				;;
-			"Flood Only")
-				calibresystemd=false
-				floodsystemd=true
-				flexgetflexgit=false
-				break
-				;;
-			"Flexget + Flexgit only")
-				calibresystemd=false
-				floodsystemd=false
-				flexgetflexgit=true
 				break
 				;;
 			esac
@@ -568,28 +471,6 @@ select yn in "Yes" "No"; do
 		;;
 	esac
 done
-
-if [ "$flexgetfile" = true ]; then
-	printf "${GREEN} Would you like to automate flexget config install?"
-	select yn in "Yes" "No"; do
-		case $yn in
-		Yes)
-			if [ -d "/etc/flexget" ]; then
-				sudo curl https://raw.githubusercontent.com/storageroom/storage/main/linux/config.yml --output /etc/flexget/config.yml
-			else
-				sudo mkdir /etc/flexget
-				sudo curl https://raw.githubusercontent.com/storageroom/storage/main/linux/config.yml --output /etc/flexget/config.yml
-			fi
-			break
-			;;
-		No)
-			printf "\n\n${GREEN}use this command in the flexget server.${NC} ${REDU}we use /etc/flexget${NC}\n\n"
-			printf "\ncurl https://raw.githubusercontent.com/storageroom/storage/main/linux/config.yml --output config.yml\n"
-			break
-			;;
-		esac
-	done
-fi
 
 if [ "$transmissionfile" = true ]; then
 	printf "${GREEN} Would you like to automate transmission install?"
@@ -619,45 +500,20 @@ if [ "$transmissionfile" = true ]; then
 	done
 fi
 
-if [ "$fstabfile" = true ]; then
-	printf "\n\n${GREEN}Shove this into your fstab:${NC}\n\n"
-	printf "\ncurl https://raw.githubusercontent.com/storageroom/storage/main/linux/fstab\n"
-fi
-
 if [ "$systemdfiles" = true ]; then
 	printf "${GREEN} Would you like to automate systemd install?"
 	select yn in "Yes" "No"; do
 		case $yn in
 		Yes)
-			if [ "$calibresystemd" = true ]; then
-				printf "\n\n${GREEN}Putting calibre service file into:${NC} ${REDU}/etc/systemd/system/calibre.service${NC}\n\n"
-				sudo curl https://raw.githubusercontent.com/storageroom/storage/main/linux/systemd/calibre.service --output /etc/systemd/system/calibre.service
-				sudo systemctl daemon-reload
-				sudo systemctl enable calibre
-			fi
 			if [ "$floodsystemd" = true ]; then
 				printf "\n\n${GREEN}Putting flood service file into:${NC} ${REDU}/etc/systemd/system/flood.service${NC}\n\n"
 				sudo curl https://raw.githubusercontent.com/storageroom/storage/main/linux/systemd/flood.service --output /etc/systemd/system/flood.service
 				sudo systemctl daemon-reload
 				sudo systemctl enable flood
 			fi
-			if [ "$flexgetflexgit" = true ]; then
-				printf "\n\n${GREEN}Putting flexget&flexgit service file into:${NC} ${REDU}/etc/systemd/system/${NC}\n\n"
-				sudo curl https://raw.githubusercontent.com/storageroom/storage/main/linux/systemd/flexget.service --output /etc/systemd/system/flexget.service
-				sudo curl https://raw.githubusercontent.com/storageroom/storage/main/linux/systemd/flexgit.service --output /etc/systemd/system/flexgit.service
-				sudo curl https://raw.githubusercontent.com/storageroom/storage/main/linux/systemd/flexgit.timer --output /etc/systemd/system/flexgit.timer
-				sudo systemctl daemon-reload
-				sudo systemctl enable flexget
-				sudo systemctl enable flexgit.timer
-			fi
 			break
 			;;
 		No)
-			if [ "$calibresystemd" = true ]; then
-				printf "\n\n${GREEN}Shove this into${NC} ${REDU}/etc/systemd/system/calibre.service${NC}\n\n"
-				printf "\ncurl https://raw.githubusercontent.com/storageroom/storage/main/linux/systemd/calibre.service\n"
-			fi
-			sleep 3
 			if [ "$floodsystemd" = true ]; then
 				printf "\n\n${GREEN}Shove this into${NC} ${REDU}/etc/systemd/system/flood.service${NC}\n\n"
 				printf "\ncurl https://raw.githubusercontent.com/storageroom/storage/main/linux/systemd/flood.service\n"
