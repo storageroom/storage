@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ "$EUID" -ne 0 ]
+  then echo "Please run as root"
+  exit 1
+fi
+
 # ASCII Colors
 RED="\e[1;31m"
 REDU="\e[1;31;4m"
@@ -37,16 +42,18 @@ done
 SERVER() {
 	if [ "$os" = Debian ] && [ "$wgetisinstalled" = true ]; then
 		wget https://raw.githubusercontent.com/storageroom/storage/main/linux/packagelist/server
-		curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+		curl https://cli.github.com/packages/githubcli-archive-keyring.gpg -o /usr/share/keyrings/githubcli-archive-keyring.gpg
+		curl https://pkg.cloudflare.com/cloudflare-main.gpg -o /usr/share/keyrings/cloudflare-main.gpg
+		curl https://pkg.cloudflareclient.com/pubkey.gpg | sudo gpg --yes --dearmor --output /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg
+		cat 'deb [signed-by=/usr/share/keyrings/cloudflare-main.gpg] https://pkg.cloudflare.com/ buster main' > /etc/apt/sources.list.d/cloudflare-main.list
+		cat "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" > /etc/apt/sources.list.d/github-cli.list
+		cat 'deb [arch=amd64 signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg] https://pkg.cloudflareclient.com/ bullseye main' > /etc/apt/sources.list.d/cloudflare-client.list
+		echo "deb [trusted=yes] https://deb.jesec.io/ devel main" > /etc/apt/sources.list.d/jesec.list
 		sleep 3
-		echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
-		sleep 3
-		echo "deb [trusted=yes] https://deb.jesec.io/ devel main" | sudo tee /etc/apt/sources.list.d/jesec.list
-		sleep 3
-		sudo apt update
-		sudo apt dist-upgrade -y
-		sudo apt upgrade -y
-		apt update
+		sudo apt update || exit 1
+		sudo apt dist-upgrade -y || exit 1
+		sudo apt upgrade -y || exit 1
+		apt update || exit 1
 		sudo apt install -y $(grep -o '^[^#]*' server) || exit 1
 		sudo systemctl stop transmission-daemon || exit 1
 		rm server
