@@ -41,19 +41,59 @@ done
 
 SERVER() {
 	if [ "$os" = Debian ] && [ "$wgetisinstalled" = true ]; then
+	
+		if [ -d "./server" ]; then
+		printf "${RED} packagelist already exists, skipping download"
+		else
 		wget https://raw.githubusercontent.com/storageroom/storage/main/linux/packagelist/server
+		fi
+		
+		if [ -d "/usr/share/keyrings/githubcli-archive-keyring.gpg" ]; then
+		printf "${RED} github keyring already exists, skipping download"
+		else
 		curl https://cli.github.com/packages/githubcli-archive-keyring.gpg -o /usr/share/keyrings/githubcli-archive-keyring.gpg
+		fi
+		
+		if [ -d "/usr/share/keyrings/cloudflare-main.gpg" ]; then
+		printf "${RED} cloudflare keyring already exists, skipping download"
+		else
 		curl https://pkg.cloudflare.com/cloudflare-main.gpg -o /usr/share/keyrings/cloudflare-main.gpg
+		fi
+		
+		if [ -d "/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg" ]; then
+		printf "${RED} cloudflare warp keyring already exists, skipping download"
+		else
 		curl https://pkg.cloudflareclient.com/pubkey.gpg | sudo gpg --yes --dearmor --output /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg
+		fi
+		
+		if [ -d "/etc/apt/sources.list.d/cloudflare-main.list" ]; then
+		printf "${RED} cloudflare list already exists, skipping download"
+		else
 		echo 'deb [signed-by=/usr/share/keyrings/cloudflare-main.gpg] https://pkg.cloudflare.com/ buster main' > /etc/apt/sources.list.d/cloudflare-main.list
+		fi
+		
+		if [ -d "/etc/apt/sources.list.d/github-cli.list" ]; then
+		printf "${RED} github list already exists, skipping download"
+		else
 		echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" > /etc/apt/sources.list.d/github-cli.list
+		fi
+		
+		if [ -d "/etc/apt/sources.list.d/cloudflare-client.list" ]; then
+		printf "${RED} cloudflareclient list already exists, skipping download"
+		else
 		echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg] https://pkg.cloudflareclient.com/ bullseye main' > /etc/apt/sources.list.d/cloudflare-client.list
+		fi
+		
+		if [ -d "/etc/apt/sources.list.d/jesec.list" ]; then
+		printf "${RED} jesec list already exists, skipping download"
+		else
 		echo "deb [trusted=yes] https://deb.jesec.io/ devel main" > /etc/apt/sources.list.d/jesec.list
-		sleep 3
+		fi
+
+		sleep 7
 		sudo apt update || exit 1
 		sudo apt dist-upgrade -y || exit 1
 		sudo apt upgrade -y || exit 1
-		apt update || exit 1
 		sudo apt install -y $(grep -o '^[^#]*' server) || exit 1
 		sudo systemctl stop transmission-daemon || exit 1
 		rm server
@@ -83,7 +123,9 @@ else
 	whichisinstalled=false
 fi
 
-if [ "$whichisinstalled" = true ]; then
+if [ "$whichisinstalled" = true ]; thenif [ -d "/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg" ]; then
+		printf "${RED} cloudflare warp keyring already exists, skipping download"
+		else
 	if which wget >/dev/null; then
 		wgetisinstalled=true
 	else
