@@ -139,6 +139,27 @@ else
 	done
 fi
 
+# offer to install curl
+if which curl >/dev/null; then
+	curlisinstalled=true
+else
+	curlisinstalled=false
+	printf "${RED}\n\ncurl is not installed on this system and is needed for later steps.${NC}"
+	printf "${GREEN}Do you wish to install curl now?${NC}\n\n"
+	select yn in "Yes" "No"; do
+		case $yn in
+		Yes)
+			installcurl=true
+			break
+			;;
+		No)
+			installcurl=false
+			break
+			;;
+		esac
+	done
+fi
+
 SMH() {
 	if [ "$os" = Debian ]; then
 		sudo apt update
@@ -154,6 +175,23 @@ if [ "$installgit" = true ]; then
 	SMH
 	gitinstalled=true
 fi
+
+if [ "$curlisinstalled" = false ]; then
+	if [ "$installcurl" = true ]; then
+		if [ "$os" = Debian ]; then
+			sudo apt update
+			sudo apt install -y curl
+
+		elif [ "$os" = Arch ]; then
+			sudo pacman -Sy
+			sudo pacman -S --noconfirm curl
+		fi
+	else
+		printf "${RED}curl is needed for install${NC}"
+		exit 1
+	fi
+fi
+
 
 if [ "$installwhatpackages" = Server ] && [ "$wgetisinstalled" = true ]; then
 	SERVER
@@ -192,44 +230,6 @@ elif [ "$pleaseinstallwgetnow" = true ] && [ "$os" = Arch ]; then
 
 	if [ "$installwhatpackages" = Server ]; then
 		SERVER
-	fi
-fi
-
-# install zsh plugins, zshrc and starship.toml
-# install curl
-if which curl >/dev/null; then
-	curlisinstalled=true
-else
-	curlisinstalled=false
-	printf "${RED}\n\ncurl is not installed on this system and is needed for later steps.${NC}"
-	printf "${GREEN}Do you wish to install curl now?${NC}\n\n"
-	select yn in "Yes" "No"; do
-		case $yn in
-		Yes)
-			installcurl=true
-			break
-			;;
-		No)
-			installcurl=false
-			break
-			;;
-		esac
-	done
-fi
-
-if [ "$curlisinstalled" = false ]; then
-	if [ "$installcurl" = true ]; then
-		if [ "$os" = Debian ]; then
-			sudo apt update
-			sudo apt install -y curl
-
-		elif [ "$os" = Arch ]; then
-			sudo pacman -Sy
-			sudo pacman -S --noconfirm curl
-		fi
-	else
-		printf "${RED}curl is needed for install${NC}"
-		exit
 	fi
 fi
 
