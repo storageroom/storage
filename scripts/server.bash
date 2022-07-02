@@ -123,9 +123,7 @@ else
 	whichisinstalled=false
 fi
 
-if [ "$whichisinstalled" = true ]; thenif [ -d "/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg" ]; then
-		printf "${RED} cloudflare warp keyring already exists, skipping download"
-		else
+if [ "$whichisinstalled" = true ]; then
 	if which wget >/dev/null; then
 		wgetisinstalled=true
 	else
