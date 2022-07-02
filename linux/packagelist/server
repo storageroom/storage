@@ -10,7 +10,6 @@ mediainfo
 coreutils
 flood
 build-essential
-linux-headers
 gh
 cloudflare-warp
 cloudflared
