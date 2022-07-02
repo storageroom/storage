@@ -45,9 +45,9 @@ SERVER() {
 		curl https://cli.github.com/packages/githubcli-archive-keyring.gpg -o /usr/share/keyrings/githubcli-archive-keyring.gpg
 		curl https://pkg.cloudflare.com/cloudflare-main.gpg -o /usr/share/keyrings/cloudflare-main.gpg
 		curl https://pkg.cloudflareclient.com/pubkey.gpg | sudo gpg --yes --dearmor --output /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg
-		cat 'deb [signed-by=/usr/share/keyrings/cloudflare-main.gpg] https://pkg.cloudflare.com/ buster main' > /etc/apt/sources.list.d/cloudflare-main.list
-		cat "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" > /etc/apt/sources.list.d/github-cli.list
-		cat 'deb [arch=amd64 signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg] https://pkg.cloudflareclient.com/ bullseye main' > /etc/apt/sources.list.d/cloudflare-client.list
+		echo 'deb [signed-by=/usr/share/keyrings/cloudflare-main.gpg] https://pkg.cloudflare.com/ buster main' > /etc/apt/sources.list.d/cloudflare-main.list
+		echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" > /etc/apt/sources.list.d/github-cli.list
+		echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg] https://pkg.cloudflareclient.com/ bullseye main' > /etc/apt/sources.list.d/cloudflare-client.list
 		echo "deb [trusted=yes] https://deb.jesec.io/ devel main" > /etc/apt/sources.list.d/jesec.list
 		sleep 3
 		sudo apt update || exit 1
@@ -139,6 +139,27 @@ else
 	done
 fi
 
+# offer to install gpg
+if which gpg >/dev/null; then
+	gpginstalled=true
+else
+	gpginstalled=false
+	printf "${RED}\ngpg is not installed on this system and we reccomend you install it.\n${NC}"
+	printf "${GREEN}Do you wish to install git now?${NC}\n\n"
+	select yn in "Yes" "No"; do
+		case $yn in
+		Yes)
+			installgpg=true
+			break
+			;;
+		No)
+			installgpg=false
+			break
+			;;
+		esac
+	done
+fi
+
 # offer to install curl
 if which curl >/dev/null; then
 	curlisinstalled=true
@@ -192,6 +213,21 @@ if [ "$curlisinstalled" = false ]; then
 	fi
 fi
 
+if [ "$gpginstalled" = false ]; then
+	if [ "$installgpg" = true ]; then
+		if [ "$os" = Debian ]; then
+			sudo apt update
+			sudo apt install -y gpg
+
+		elif [ "$os" = Arch ]; then
+			sudo pacman -Sy
+			sudo pacman -S --noconfirm gpg
+		fi
+	else
+		printf "${RED}gpg is needed for install${NC}"
+		exit 1
+	fi
+fi
 
 if [ "$installwhatpackages" = Server ] && [ "$wgetisinstalled" = true ]; then
 	SERVER
