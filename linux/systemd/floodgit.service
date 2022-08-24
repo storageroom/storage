@@ -7,4 +7,4 @@ User=root
 Group=root
 WorkingDirectory=/root/.local/share/flood
 Type=simple
-ExecStart=/bin/flexgit -key="" -bup=""
+ExecStart=/bin/backup
