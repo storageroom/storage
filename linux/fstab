@@ -1,1 +1,1 @@
-joshy@XXX.XXX.XXX.XXX:/bruh /mnt/bruh fuse.sshfs delay_connect,port=443,reconnect,_netdev,user,idmap=user,transform_symlinks,allow_other,default_permissions,rw,nosuid,nodev,uid=1000,gid=1000 0 0
+//192.168.86.69/bruh  /bruh  cifs  credentials=/etc/win-credentials,file_mode=0777,dir_mode=0777 0       0
