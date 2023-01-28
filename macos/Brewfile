@@ -66,7 +66,7 @@ cask "font-meslo-lg-nerd-font"
 # Apps
 cask "iterm2"
 cask "tiles"
-cask "alfred"
+#cask "alfred"
 cask "whatsapp"
 cask "the-unarchiver"
 #cask "google-chrome"
@@ -74,14 +74,14 @@ cask "the-unarchiver"
 cask "github"
 #cask "inkscape"
 #cask "notion"
-cask "plex"
+#cask "plex"
 #cask "plexamp"
 #cask "powershell"
 cask "raspberry-pi-imager"
 cask "visual-studio-code-insiders"
 cask "appcleaner"
 #cask "coconutbattery"
-cask "iina"
+#cask "iina"
 #cask "mpv"
 #cask "usbimager"
 #cask "logitech-options"
@@ -89,7 +89,7 @@ cask "iina"
 #cask "zoom"
 #cask "xcodes"
 cask "fliqlo"
-cask "hiddenbar"
+#cask "hiddenbar"
 #cask "microsoft-office"
 #cask "calibre"
 cask "cloudflare-warp"
@@ -103,7 +103,7 @@ mas "Tab Suspender", id: 1495356253
 #mas "Paste", id: 967805235
 mas "Timetable", id: 425121147
 mas "Infuse", id: 1136220934
-mas "AdBlock", id: 1402042596
+#mas "AdBlock", id: 1402042596
 
 # dreaded xcode
 mas "Xcode", id: 497799835
