@@ -1,3 +1,5 @@
+# use "brew bundle" to install
+#
 # Taps - Brew
 tap "homebrew/bundle"
 tap "homebrew/cask"
@@ -67,9 +69,10 @@ cask "font-meslo-lg-nerd-font"
 
 # Apps
 cask "iterm2"
+cask "arc"
 cask "tiles"
 #cask "alfred"
-cask "whatsapp"
+#cask "whatsapp"
 cask "the-unarchiver"
 #cask "google-chrome"
 #cask "discord"
