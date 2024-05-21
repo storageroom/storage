@@ -1,11 +1,7 @@
-
 eval "$(starship init zsh)"
 
-# Super
+# Shortcuts
 alias upgrade="brew update;brew outdated;brew upgrade"
-
-# uncategorised aliases
-alias code="code-insiders"
 
 # Clear aliases
 alias clear="clear && printf '\e[3J'"
@@ -15,55 +11,19 @@ alias cle="clear && printf '\e[3J'"
 alias clea="clear && printf '\e[3J'"
 
 # Sudo aliases
-alias please='sudo'
 alias s='sudo'
-alias sd='sudo'
-alias sud='sudo'
-
-alias sudoedit='sudo -e'
 
 # Auto-sudo applications
-alias tidal='sudo tidal-dl'
 alias mc='sudo mc'
-alias micro='sudo micro'
-alias sn='sudo micro'
 alias sm='sudo micro'
 alias m='micro'
-alias ch='sudo chmod'
-alias fastchmod='sudo chmod -R 777'
-alias fc='sudo chmod -R 777'
 alias pipupgrade="s -H pip_upgrade_outdated -3 -p"
-alias checkrain="sudo /private/etc/racoon/9ec5be08a8790d5d9a080166dfccc82da0997ce5b487df69273ca6e2643f164fa3d1824800f4df2a07d5a2082178d30592663ad5e4548c89a72c2b12b47d5fda"
-
-
-
-# Autocorrect
-alias python='python3'
-alias google='googler'
-
-# Vagrant
-alias vmstatus="vagrant global-status"
-
-alias debup="vagrant up d92d716;vagrant ssh d92d716"
-alias deb="vagrant ssh d92d716"
-alias debdown="vagrant halt d92d716"
-
-alias archup="vagrant up 79ef79d;vagrant ssh 79ef79d"
-alias arch="vagrant ssh 79ef79d"
-alias archdown="vagrant halt 79ef79d"
-
-# ASCII Art fun
-alias shrek="/Users/joshy/shrek.txt"
-alias nothentai="/Users/joshy/LMAO.txt"
-alias hentai="/Users/joshy/HAHAHAHAHAH.txt"
 
 # ZSH PLUGINS
-source /usr/local/share/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
-source /usr/local/share/zsh-sudo/sudo.plugin.zsh
+source $HOMEBREW_PREFIX/opt/zsh-fast-syntax-highlighting/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 
 # MISC
 alias zshrc="sudo micro .zshrc"
-alias woo='git add .;git commit -m "pp";git push'
 export PATH="/usr/local/sbin:$PATH"
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 export EDITOR='micro'
@@ -72,9 +32,3 @@ export VISUAL='micro'
 export LC_ALL=en_SG.UTF-8
 export LANG=en_SG.UTF-8
 export LANGUAGE=en_SG.UTF-8
-
-### Bashhub.com Installation
-if [ -f ~/.bashhub/bashhub.zsh ]; then
-    source ~/.bashhub/bashhub.zsh
-fi
-
