@@ -41,6 +41,7 @@ brew "libusbmuxd"
 #brew "libimobiledevice"
 #brew "libpq"
 brew "pinentry-mac"
+brew "zsh-fast-syntax-highlighting"
 
 # Programs - user utils
 #brew "node"
